@@ -1,0 +1,2124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudioWebDigital - Premium Digital Solutions</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #D4AF37;
+            --dark: #1a1a1a;
+            --light: #f8f7f4;
+            --gray: #4a4a4a;
+            --gray-light: #e8e8e8;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--light);
+            color: var(--dark);
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.05);
+        }
+
+        nav .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--dark);
+            letter-spacing: 2px;
+        }
+
+        .logo span {
+            color: var(--primary);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2.5rem;
+        }
+
+        nav a {
+            color: var(--gray);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        nav a:hover,
+        nav a.active {
+            color: var(--primary);
+        }
+
+        nav a.active::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--primary);
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: linear-gradient(135deg, #f8f7f4 0%, #faf9f6 100%);
+            position: relative;
+            overflow: hidden;
+            margin-top: 70px;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            top: -100px;
+            right: -100px;
+            animation: float 20s ease-in-out infinite;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.08) 0%, transparent 70%);
+            border-radius: 50%;
+            bottom: -50px;
+            left: -50px;
+            animation: float 25s ease-in-out infinite reverse;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .hero h1 {
+            font-size: 4.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        .hero h1 span {
+            color: var(--primary);
+            display: block;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            color: var(--gray);
+            margin-bottom: 2.5rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            background: var(--dark);
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            border-radius: 50px;
+            transition: all 0.4s ease;
+            border: 2px solid var(--dark);
+            cursor: pointer;
+        }
+
+        .cta-button:hover {
+            background: var(--primary);
+            color: var(--dark);
+            border-color: var(--primary);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3);
+        }
+
+        .cta-button.secondary {
+            background: transparent;
+            color: var(--dark);
+            border: 2px solid var(--dark);
+            margin-left: 1rem;
+        }
+
+        .cta-button.secondary:hover {
+            background: var(--dark);
+            color: white;
+        }
+
+        /* Animations */
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(30px);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Sections */
+        section {
+            padding: 6rem 2rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        section h2 {
+            font-size: 3rem;
+            text-align: center;
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+
+        section > p {
+            text-align: center;
+            color: var(--gray);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto 3rem;
+        }
+
+        /* Services Section */
+        .services {
+            background: var(--light);
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .service-card {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 12px;
+            border: 1px solid var(--gray-light);
+            transition: all 0.4s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--primary);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease;
+        }
+
+        .service-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+        }
+
+        .service-icon {
+            width: 60px;
+            height: 60px;
+            background: rgba(212, 175, 55, 0.1);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .service-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+
+        .service-card p {
+            color: var(--gray);
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+        }
+
+        .service-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: gap 0.3s ease;
+        }
+
+        .service-link:hover {
+            gap: 1rem;
+        }
+
+        /* Service Details */
+        .service-detail {
+            display: none;
+            padding: 6rem 2rem;
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .service-detail.active {
+            display: block;
+        }
+
+        .service-detail-header {
+            max-width: 800px;
+            margin: 0 auto 4rem;
+            text-align: center;
+        }
+
+        .service-detail h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .service-detail h1 span {
+            color: var(--primary);
+        }
+
+        .service-detail > p {
+            font-size: 1.1rem;
+            color: var(--gray);
+            line-height: 1.8;
+            margin-bottom: 2rem;
+        }
+
+        .features-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .feature-item {
+            padding: 2rem;
+            background: white;
+            border-radius: 10px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .feature-item h4 {
+            color: var(--dark);
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .feature-item p {
+            color: var(--gray);
+            line-height: 1.7;
+        }
+
+        /* Portfolio Section */
+        .portfolio {
+            background: white;
+        }
+
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2.5rem;
+            margin-top: 3rem;
+        }
+
+        .portfolio-item {
+            background: var(--light);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            cursor: pointer;
+        }
+
+        .portfolio-item:hover {
+            transform: scale(1.02);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        .portfolio-image {
+            width: 100%;
+            height: 250px;
+            background: linear-gradient(135deg, var(--primary) 0%, rgba(212, 175, 55, 0.3) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .portfolio-image::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .portfolio-item:hover .portfolio-image::after {
+            left: 100%;
+        }
+
+        .portfolio-content {
+            padding: 2rem;
+        }
+
+        .portfolio-tag {
+            display: inline-block;
+            background: rgba(212, 175, 55, 0.1);
+            color: var(--primary);
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+        }
+
+        .portfolio-item h3 {
+            font-size: 1.4rem;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+
+        .portfolio-item p {
+            color: var(--gray);
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        .result-metrics {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--gray-light);
+        }
+
+        .metric {
+            flex: 1;
+            text-align: center;
+        }
+
+        .metric-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .metric-label {
+            font-size: 0.85rem;
+            color: var(--gray);
+            margin-top: 0.3rem;
+        }
+
+        /* Testimonials */
+        .testimonials {
+            background: var(--light);
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .testimonial {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .testimonial-text {
+            color: var(--gray);
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+            font-style: italic;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .author-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), rgba(212, 175, 55, 0.5));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .author-info h4 {
+            color: var(--dark);
+            margin-bottom: 0.3rem;
+        }
+
+        .author-info p {
+            color: var(--gray);
+            font-size: 0.85rem;
+        }
+
+        /* Contact Section */
+        .contact {
+            background: white;
+        }
+
+        .contact-container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 2rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 1px solid var(--gray-light);
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            color: var(--dark);
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 150px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 1.2rem;
+            background: var(--dark);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.4s ease;
+        }
+
+        .submit-btn:hover {
+            background: var(--primary);
+            color: var(--dark);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        footer p {
+            opacity: 0.7;
+        }
+
+        footer .divider {
+            height: 1px;
+            background: rgba(255, 255, 255, 0.1);
+            margin: 2rem 0;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .social-links a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            transform: translateY(-3px);
+        }
+
+        /* Scroll Reveal */
+        .reveal {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease-out;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Parallax */
+        .parallax-bg {
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav ul {
+                gap: 1.5rem;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            section h2 {
+                font-size: 2rem;
+            }
+
+            .service-detail h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="container">
+            <div class="logo">Studio<span>Web</span><br>Digital</div>
+            <ul>
+                <li><a href="#home" class="nav-link active">Home</a></li>
+                <li><a href="#services" class="nav-link">Services</a></li>
+                <li><a href="#pricing" class="nav-link">Pricing</a></li>
+                <li><a href="#portfolio" class="nav-link">Portfolio</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>Premium Digital <span>Excellence</span></h1>
+            <p>Transforming ideas into stunning digital experiences with cutting-edge technology and Italian elegance</p>
+            <button class="cta-button" onclick="scrollToSection('services')">Explore Services</button>
+            <button class="cta-button secondary" onclick="scrollToSection('contact')">Get In Touch</button>
+        </div>
+    </section>
+
+    <!-- Services Overview Section -->
+    <section id="services" class="services">
+        <div class="container">
+            <h2>Our <span style="color: var(--primary);">Services</span></h2>
+            <p>Comprehensive digital solutions tailored to elevate your brand</p>
+            
+            <div class="services-grid">
+                <div class="service-card reveal" onclick="showServiceDetail('digital-marketing')">
+                    <div class="service-icon">🎯</div>
+                    <h3>Digital Marketing</h3>
+                    <p>Strategic marketing campaigns that drive results. SEO optimization, PPC, content marketing, and brand positioning.</p>
+                    <a href="#" class="service-link" onclick="event.preventDefault(); showServiceDetail('digital-marketing')">Learn More →</a>
+                </div>
+
+                <div class="service-card reveal" onclick="showServiceDetail('web-development')">
+                    <div class="service-icon">💻</div>
+                    <h3>Web Development</h3>
+                    <p>Custom websites and applications built with modern technologies. Responsive, fast, and beautiful digital products.</p>
+                    <a href="#" class="service-link" onclick="event.preventDefault(); showServiceDetail('web-development')">Learn More →</a>
+                </div>
+
+                <div class="service-card reveal" onclick="showServiceDetail('ai-services')">
+                    <div class="service-icon">🤖</div>
+                    <h3>AI Bot & Agent</h3>
+                    <p>Intelligent automation solutions. AI chatbots, agents, and custom LLM integrations to enhance your business.</p>
+                    <a href="#" class="service-link" onclick="event.preventDefault(); showServiceDetail('ai-services')">Learn More →</a>
+                </div>
+
+                <div class="service-card reveal" onclick="showServiceDetail('social-media')">
+                    <div class="service-icon">📱</div>
+                    <h3>Social Media</h3>
+                    <p>Strategic social media management and content creation. Build engagement, grow followers, and amplify your brand voice.</p>
+                    <a href="#" class="service-link" onclick="event.preventDefault(); showServiceDetail('social-media')">Learn More →</a>
+                </div>
+
+                <div class="service-card reveal" onclick="showServiceDetail('quick-services')">
+                    <div class="service-icon">⚡</div>
+                    <h3>Quick Services</h3>
+                    <p>Fast & affordable solutions: Logo design, website audit, SEO consultation, social media posts. Perfect for startups & small businesses.</p>
+                    <a href="#" class="service-link" onclick="event.preventDefault(); showServiceDetail('quick-services')">From €50 →</a>
+                </div>
+
+                <div class="service-card reveal" onclick="showServiceDetail('seo-audit')">
+                    <div class="service-icon">🔍</div>
+                    <h3>SEO Audit & Consultation</h3>
+                    <p>Quick website SEO analysis, keyword research, and actionable recommendations to improve your search rankings.</p>
+                    <a href="#" class="service-link" onclick="event.preventDefault(); showServiceDetail('seo-audit')">From €150 →</a>
+                </div>
+
+                <div class="service-card reveal" onclick="showServiceDetail('content-creation')">
+                    <div class="service-icon">📝</div>
+                    <h3>Content Creation</h3>
+                    <p>Professional blog posts, social media content, email copy, and more. Engaging content that drives results.</p>
+                    <a href="#" class="service-link" onclick="event.preventDefault(); showServiceDetail('content-creation')">From €100 →</a>
+                </div>
+
+                <div class="service-card reveal" onclick="showServiceDetail('branding')">
+                    <div class="service-icon">🎨</div>
+                    <h3>Logo & Branding</h3>
+                    <p>Professional logo design, brand color palette, and basic brand guidelines. Stand out from competition.</p>
+                    <a href="#" class="service-link" onclick="event.preventDefault(); showServiceDetail('branding')">From €300 →</a>
+                </div>
+
+                <div class="service-card reveal" onclick="showServiceDetail('landing-page')">
+                    <div class="service-icon">🌐</div>
+                    <h3>Landing Page Design</h3>
+                    <p>Single-page website optimized for conversions. Perfect for campaigns, products, or services.</p>
+                    <a href="#" class="service-link" onclick="event.preventDefault(); showServiceDetail('landing-page')">From €600 →</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Section -->
+    <section id="portfolio" class="portfolio">
+        <div class="container">
+            <h2>Featured <span style="color: var(--primary);">Projects</span></h2>
+            <p>Case studies showcasing our best work across digital marketing, web development, AI solutions, and social media</p>
+
+            <div class="portfolio-grid">
+                <div class="portfolio-item reveal" onclick="showPortfolioDetail('luxury-fashion')">
+                    <div class="portfolio-image">🎯</div>
+                    <div class="portfolio-content">
+                        <span class="portfolio-tag">Digital Marketing</span>
+                        <h3>Luxury Fashion Brand</h3>
+                        <p>Complete digital marketing overhaul for Italian luxury brand. Increased organic traffic by 250% in 6 months.</p>
+                        <div class="result-metrics">
+                            <div class="metric">
+                                <div class="metric-value">+250%</div>
+                                <div class="metric-label">Traffic Growth</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">3.2x</div>
+                                <div class="metric-label">ROI Increase</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="portfolio-item reveal" onclick="showPortfolioDetail('ecommerce')">
+                    <div class="portfolio-image">💻</div>
+                    <div class="portfolio-content">
+                        <span class="portfolio-tag">Web Development</span>
+                        <h3>E-Commerce Platform</h3>
+                        <p>Full-stack ecommerce site for premium Italian products. Built with Next.js, Stripe integration, and advanced animations.</p>
+                        <div class="result-metrics">
+                            <div class="metric">
+                                <div class="metric-value">98%</div>
+                                <div class="metric-label">PageSpeed</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">1.2M</div>
+                                <div class="metric-label">Users/Month</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="portfolio-item reveal" onclick="showPortfolioDetail('chatbot')">
+                    <div class="portfolio-image">🤖</div>
+                    <div class="portfolio-content">
+                        <span class="portfolio-tag">AI Services</span>
+                        <h3>Smart Customer Bot</h3>
+                        <p>AI chatbot powered by Claude for 24/7 customer support. Reduced support costs by 60%, improved satisfaction to 4.8/5.</p>
+                        <div class="result-metrics">
+                            <div class="metric">
+                                <div class="metric-value">60%</div>
+                                <div class="metric-label">Cost Reduction</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">4.8/5</div>
+                                <div class="metric-label">Satisfaction</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="portfolio-item reveal" onclick="showPortfolioDetail('beauty-campaign')">
+                    <div class="portfolio-image">📱</div>
+                    <div class="portfolio-content">
+                        <span class="portfolio-tag">Social Media</span>
+                        <h3>Beauty Brand Campaign</h3>
+                        <p>Comprehensive social media strategy across Instagram, TikTok, and LinkedIn. Grew followers from 10K to 150K.</p>
+                        <div class="result-metrics">
+                            <div class="metric">
+                                <div class="metric-value">15x</div>
+                                <div class="metric-label">Follower Growth</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">8.5%</div>
+                                <div class="metric-label">Engagement Rate</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="portfolio-item reveal" onclick="showPortfolioDetail('saas-dashboard')">
+                    <div class="portfolio-image">🚀</div>
+                    <div class="portfolio-content">
+                        <span class="portfolio-tag">Web Development</span>
+                        <h3>SaaS Dashboard</h3>
+                        <p>Complex web application for analytics and reporting. Served 50K+ active users with real-time data processing.</p>
+                        <div class="result-metrics">
+                            <div class="metric">
+                                <div class="metric-value">99.9%</div>
+                                <div class="metric-label">Uptime</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">50K+</div>
+                                <div class="metric-label">Active Users</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="portfolio-item reveal" onclick="showPortfolioDetail('restaurant')">
+                    <div class="portfolio-image">🎨</div>
+                    <div class="portfolio-content">
+                        <span class="portfolio-tag">Full Service</span>
+                        <h3>Restaurant Brand</h3>
+                        <p>Complete branding, website design, and social media management for fine dining restaurant. Tripled reservations.</p>
+                        <div class="result-metrics">
+                            <div class="metric">
+                                <div class="metric-value">3x</div>
+                                <div class="metric-label">Reservations</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">92%</div>
+                                <div class="metric-label">Customer Rating</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials">
+        <div class="container">
+            <h2>What Our <span style="color: var(--primary);">Clients</span> Say</h2>
+            <p>Real feedback from businesses we've partnered with</p>
+
+            <div class="testimonials-grid">
+                <div class="testimonial reveal">
+                    <p class="testimonial-text">"StudioWebDigital completely transformed our digital presence. The team's professionalism and attention to detail exceeded expectations. Our sales increased by 180% in the first quarter!"</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">LS</div>
+                        <div class="author-info">
+                            <h4>Lucia Santoro</h4>
+                            <p>CEO, Italian Fashion House</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial reveal">
+                    <p class="testimonial-text">"The AI chatbot they built handles 80% of our customer inquiries automatically. It's intelligent, natural-sounding, and has dramatically improved our customer satisfaction scores."</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">MR</div>
+                        <div class="author-info">
+                            <h4>Marco Rossi</h4>
+                            <p>Founder, Tech Startup</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial reveal">
+                    <p class="testimonial-text">"Working with StudioWebDigital was a game-changer. Their social media strategy grew our brand awareness exponentially, and the engagement metrics speak for themselves. Highly recommended!"</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">GB</div>
+                        <div class="author-info">
+                            <h4>Giulia Bianchi</h4>
+                            <p>Marketing Director, Beauty Brand</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing & Payment Section -->
+    <section id="pricing" class="pricing" style="background: var(--light);">
+        <div class="container">
+            <h2>Service <span style="color: var(--primary);">Packages</span></h2>
+            <p>Flexible pricing options to fit your budget and business needs</p>
+
+            <div class="pricing-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-top: 3rem;">
+                <div class="pricing-card" style="background: white; border-radius: 12px; padding: 2.5rem; border: 1px solid var(--gray-light); text-align: center; transition: all 0.4s ease;">
+                    <h3 style="color: var(--primary); font-size: 1.8rem; margin-bottom: 0.5rem;">Quick Start</h3>
+                    <p style="color: var(--gray); margin-bottom: 1.5rem;">Perfect for getting started</p>
+                    <div style="font-size: 2.5rem; font-weight: 700; color: var(--dark); margin-bottom: 1rem;">€99</div>
+                    <p style="color: var(--gray); font-size: 0.9rem; margin-bottom: 2rem;">One-time project cost</p>
+                    
+                    <ul style="list-style: none; text-align: left; margin-bottom: 2rem;">
+                        <li style="padding: 0.7rem 0; border-bottom: 1px solid var(--gray-light); color: var(--gray);">✓ Logo Design</li>
+                        <li style="padding: 0.7rem 0; border-bottom: 1px solid var(--gray-light); color: var(--gray);">✓ 5 Social Media Posts</li>
+                        <li style="padding: 0.7rem 0; border-bottom: 1px solid var(--gray-light); color: var(--gray);">✓ Email Template</li>
+                        <li style="padding: 0.7rem 0; color: var(--gray);">✓ Free Consultation (30min)</li>
+                    </ul>
+
+                    <button class="cta-button" style="width: 100%;" onclick="initPayment('quick-start', 99)">Get Started</button>
+                </div>
+
+                <div class="pricing-card" style="background: white; border-radius: 12px; padding: 2.5rem; border: 1px solid var(--gray-light); text-align: center; transition: all 0.4s ease;">
+                    <h3 style="color: var(--primary); font-size: 1.8rem; margin-bottom: 0.5rem;">Micro Business</h3>
+                    <p style="color: var(--gray); margin-bottom: 1.5rem;">For small businesses</p>
+                    <div style="font-size: 2.5rem; font-weight: 700; color: var(--dark); margin-bottom: 1rem;">€799</div>
+                    <p style="color: var(--gray); font-size: 0.9rem; margin-bottom: 2rem;">One-time project cost</p>
+                    
+                    <ul style="list-style: none; text-align: left; margin-bottom: 2rem;">
+                        <li style="padding: 0.7rem 0; border-bottom: 1px solid var(--gray-light); color: var(--gray);">✓ Landing Page Design</li>
+                        <li style="padding: 0.7rem 0; border-bottom: 1px solid var(--gray-light); color: var(--gray);">✓ Basic SEO Setup</li>
+                        <li style="padding: 0.7rem 0; border-bottom: 1px solid var(--gray-light); color: var(--gray);">✓ 20 Social Posts</li>
+                        <li style="padding: 0.7rem 0; color: var(--gray);">✓ 2 Months Support</li>
+                    </ul>
+
+                    <button class="cta-button" style="width: 100%;" onclick="initPayment('micro-business', 799)">Get Started</button>
+                </div>
+
+                <div class="pricing-card" style="background: white; border-radius: 12px; padding: 2.5rem; border: 1px solid var(--gray-light); text-align: center; transition: all 0.4s ease;">
+                    <h3 style="color: var(--primary); font-size: 1.8rem; margin-bottom: 0.5rem;">Starter</h3>
+                    <p style="color: var(--gray); margin-bottom: 1.5rem;">Perfect for small businesses</p>
+                    <div style="font-size: 2.5rem; font-weight: 700; color: var(--dark); margin-bottom: 1rem;">€2,500</div>
+                    <p style="color: var(--gray); font-size: 0.9rem; margin-bottom: 2rem;">One-time project cost</p>
+                    
+                    <ul style="list-style: none; text-align: left; margin-bottom: 2rem;">
+                        <li style="padding: 0.7rem 0; border-bottom: 1px solid var(--gray-light); color: var(--gray);">✓ Website Design & Development</li>
+                        <li style="padding: 0.7rem 0; border-bottom: 1px solid var(--gray-light); color: var(--gray);">✓ Basic SEO Optimization</li>
+                        <li style="padding: 0.7rem 0; border-bottom: 1px solid var(--gray-light); color: var(--gray);">✓ Mobile Responsive</li>
+                        <li style="padding: 0.7rem 0; color: var(--gray);">✓ 1 Month Support</li>
+                    </ul>
+
+                    <button class="cta-button" style="width: 100%;" onclick="initPayment('starter', 2500)">Get Started</button>
+                </div>
+
+                <div class="pricing-card" style="background: white; border-radius: 12px; padding: 2.5rem; border: 2px solid var(--primary); text-align: center; transition: all 0.4s ease; transform: scale(1.05);">
+                    <div style="background: var(--primary); color: var(--dark); padding: 0.5rem 1rem; border-radius: 20px; display: inline-block; margin-bottom: 1rem; font-weight: 600; font-size: 0.85rem;">MOST POPULAR</div>
+                    <h3 style="color: var(--primary); font-size: 1.8rem; margin-bottom: 0.5rem;">Professional</h3>
+                    <p style="color: var(--gray); margin-bottom: 1.5rem;">For growing businesses</p>
+                    <div style="font-size: 2.5rem; font-weight: 700; color: var(--dark); margin-bottom: 1rem;">€5,999</div>
+                    <p style="color: var(--gray); font-size: 0.9rem; margin-bottom: 2rem;">One-time project cost</p>
+                    
+                    <ul style="list-style: none; text-align: left; margin-bottom: 2rem;">
+                        <li style="padding: 0.7rem 0; border-bottom: 1px solid var(--gray-light); color: var(--gray);">✓ Custom Web Development</li>
+                        <li style="padding: 0.7rem 0; border-bottom: 1px solid var(--gray-light); color: var(--gray);">✓ Digital Marketing Strategy</li>
+                        <li style="padding: 0.7rem 0; border-bottom: 1px solid var(--gray-light); color: var(--gray);">✓ Social Media Setup</li>
+                        <li style="padding: 0.7rem 0; border-bottom: 1px solid var(--gray-light); color: var(--gray);">✓ AI Chatbot Integration</li>
+                        <li style="padding: 0.7rem 0; color: var(--gray);">✓ 3 Months Support</li>
+                    </ul>
+
+                    <button class="cta-button" style="width: 100%; background: var(--primary); color: var(--dark);" onclick="initPayment('professional', 5999)">Get Started</button>
+                </div>
+
+                <div class="pricing-card" style="background: white; border-radius: 12px; padding: 2.5rem; border: 1px solid var(--gray-light); text-align: center; transition: all 0.4s ease;">
+                    <h3 style="color: var(--primary); font-size: 1.8rem; margin-bottom: 0.5rem;">Enterprise</h3>
+                    <p style="color: var(--gray); margin-bottom: 1.5rem;">For large organizations</p>
+                    <div style="font-size: 2.5rem; font-weight: 700; color: var(--dark); margin-bottom: 1rem;">€12,000+</div>
+                    <p style="color: var(--gray); font-size: 0.9rem; margin-bottom: 2rem;">Custom pricing</p>
+                    
+                    <ul style="list-style: none; text-align: left; margin-bottom: 2rem;">
+                        <li style="padding: 0.7rem 0; border-bottom: 1px solid var(--gray-light); color: var(--gray);">✓ Full-Stack Development</li>
+                        <li style="padding: 0.7rem 0; border-bottom: 1px solid var(--gray-light); color: var(--gray);">✓ Complete Marketing Suite</li>
+                        <li style="padding: 0.7rem 0; border-bottom: 1px solid var(--gray-light); color: var(--gray);">✓ Advanced AI Solutions</li>
+                        <li style="padding: 0.7rem 0; border-bottom: 1px solid var(--gray-light); color: var(--gray);">✓ Dedicated Account Manager</li>
+                        <li style="padding: 0.7rem 0; color: var(--gray);">✓ 12 Months Support</li>
+                    </ul>
+
+                    <button class="cta-button" style="width: 100%;" onclick="scrollToSection('contact')">Contact Sales</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2>Let's Work <span style="color: var(--primary);">Together</span></h2>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; margin-bottom: 3rem; max-width: 1000px; margin-left: auto; margin-right: auto;">
+                <!-- Contact Info -->
+                <div>
+                    <h3 style="font-size: 1.5rem; margin-bottom: 2rem;">Get in Touch</h3>
+                    
+                    <div style="margin-bottom: 2rem; padding: 1.5rem; background: var(--light); border-radius: 10px; border-left: 4px solid var(--primary);">
+                        <h4 style="color: var(--primary); margin-bottom: 0.5rem;">📍 Location</h4>
+                        <p style="color: var(--gray); line-height: 1.6;">
+                            Gaspare Gozzi, 53<br>
+                            30171 Mestre<br>
+                            Venezia, Italy
+                        </p>
+                    </div>
+
+                    <div style="margin-bottom: 2rem; padding: 1.5rem; background: var(--light); border-radius: 10px; border-left: 4px solid var(--primary);">
+                        <h4 style="color: var(--primary); margin-bottom: 0.5rem;">📧 Email</h4>
+                        <p style="color: var(--gray);">
+                            <a href="mailto:hello@studiowebdigital.it" style="color: var(--primary); text-decoration: none;">hello@studiowebdigital.it</a>
+                        </p>
+                    </div>
+
+                    <div style="margin-bottom: 2rem; padding: 1.5rem; background: var(--light); border-radius: 10px; border-left: 4px solid var(--primary);">
+                        <h4 style="color: var(--primary); margin-bottom: 0.5rem;">📱 Phone</h4>
+                        <p style="color: var(--gray);">
+                            <a href="tel:+393512255725" style="color: var(--primary); text-decoration: none;">+39 351 225 5725</a>
+                        </p>
+                    </div>
+
+                    <div style="margin-bottom: 2rem; padding: 1.5rem; background: var(--light); border-radius: 10px; border-left: 4px solid var(--primary);">
+                        <h4 style="color: var(--primary); margin-bottom: 0.5rem;">🕐 Business Hours</h4>
+                        <p style="color: var(--gray);">
+                            Mon - Fri: 9:00 AM - 6:00 PM<br>
+                            Sat: 10:00 AM - 2:00 PM<br>
+                            Sun: Closed
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Contact Form -->
+                <div>
+                    <form id="contactForm" onsubmit="handleSubmit(event)">
+                        <div class="form-group">
+                            <label for="name">Full Name *</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email Address *</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="company">Company Name</label>
+                            <input type="text" id="company" name="company">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="service">Service Interested In *</label>
+                            <select style="padding: 1rem; border: 1px solid var(--gray-light); border-radius: 8px; font-family: inherit; font-size: 1rem;" id="service" name="service" required>
+                                <option value="">Select a service</option>
+                                <option value="digital-marketing">Digital Marketing</option>
+                                <option value="web-development">Web Development</option>
+                                <option value="ai-services">AI Bot & Agent</option>
+                                <option value="social-media">Social Media</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="message">Message *</label>
+                            <textarea id="message" name="message" required></textarea>
+                        </div>
+
+                        <button type="submit" class="submit-btn">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Service Detail Modal -->
+    <div id="serviceModal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); z-index: 1500; overflow-y: auto; padding: 2rem;">
+        <div style="max-width: 800px; margin: 2rem auto; background: white; border-radius: 15px; padding: 3rem; box-shadow: 0 20px 60px rgba(0,0,0,0.3); animation: slideInUp 0.4s ease;">
+            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 2rem;">
+                <h2 id="modalServiceTitle" style="color: var(--dark); margin: 0; flex: 1; font-size: 2.5rem;"></h2>
+                <button onclick="closeServiceModal()" style="background: none; border: none; font-size: 2rem; cursor: pointer; color: var(--gray); margin-top: -0.5rem; padding: 0;">✕</button>
+            </div>
+            <div id="modalServiceContent" style="color: var(--gray); line-height: 1.8; font-size: 1rem;"></div>
+        </div>
+    </div>
+
+    <!-- Portfolio Detail Modal -->
+    <div id="portfolioModal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); z-index: 1500; overflow-y: auto; padding: 2rem;">
+        <div style="max-width: 900px; margin: 2rem auto; background: white; border-radius: 15px; padding: 3rem; box-shadow: 0 20px 60px rgba(0,0,0,0.3); animation: slideInUp 0.4s ease;">
+            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 2rem;">
+                <div style="flex: 1;">
+                    <span class="portfolio-tag" id="modalPortfolioTag"></span>
+                    <h2 id="modalPortfolioTitle" style="color: var(--dark); margin: 1rem 0 0 0; font-size: 2.5rem;"></h2>
+                </div>
+                <button onclick="closePortfolioModal()" style="background: none; border: none; font-size: 2rem; cursor: pointer; color: var(--gray); margin-top: -0.5rem; padding: 0;">✕</button>
+            </div>
+            <div id="modalPortfolioContent" style="color: var(--gray); line-height: 1.8; font-size: 1rem;"></div>
+        </div>
+    </div>
+
+    <!-- Payment Modal -->
+    <div id="paymentModal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); z-index: 2000; align-items: center; justify-content: center;">
+        <div style="background: white; border-radius: 15px; padding: 2.5rem; max-width: 500px; width: 90%; box-shadow: 0 20px 60px rgba(0,0,0,0.3);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                <h2 id="paymentTitle" style="color: var(--dark); margin: 0;">Complete Payment</h2>
+                <button onclick="closePayment()" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--gray);">✕</button>
+            </div>
+
+            <div id="paymentDetails" style="background: var(--light); padding: 1.5rem; border-radius: 10px; margin-bottom: 2rem;">
+                <p style="margin: 0.5rem 0; color: var(--gray);">Package: <strong id="packageName"></strong></p>
+                <p style="margin: 0.5rem 0; color: var(--gray);">Amount: <strong style="color: var(--primary); font-size: 1.3rem;" id="paymentAmount"></strong></p>
+            </div>
+
+            <form id="paymentForm" onsubmit="processPayment(event)">
+                <div class="form-group">
+                    <label for="cardName">Full Name *</label>
+                    <input type="text" id="cardName" name="cardName" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="cardEmail">Email *</label>
+                    <input type="email" id="cardEmail" name="cardEmail" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="cardNumber">Card Number *</label>
+                    <input type="text" id="cardNumber" name="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19" required>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label for="cardExpiry">Expiry Date *</label>
+                        <input type="text" id="cardExpiry" name="cardExpiry" placeholder="MM/YY" maxlength="5" required>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label for="cardCVC">CVC *</label>
+                        <input type="text" id="cardCVC" name="cardCVC" placeholder="123" maxlength="3" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn" style="margin-top: 2rem;">Pay €<span id="finalAmount">0</span></button>
+            </form>
+
+            <div style="text-align: center; margin-top: 1rem; color: var(--gray); font-size: 0.85rem;">
+                💳 Secure payment powered by Stripe
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 3rem; margin-bottom: 3rem;">
+                <div>
+                    <h3 style="margin-bottom: 1rem;">Studio<span style="color: var(--primary);">Web</span>Digital</h3>
+                    <p>Premium digital solutions for ambitious brands in Italy and beyond.</p>
+                </div>
+
+                <div>
+                    <h4 style="color: var(--primary); margin-bottom: 1rem;">📍 Location</h4>
+                    <p style="line-height: 1.8;">
+                        Gaspare Gozzi, 53<br>
+                        30171 Mestre (VE)<br>
+                        Venezia, Italy
+                    </p>
+                </div>
+
+                <div>
+                    <h4 style="color: var(--primary); margin-bottom: 1rem;">Contact Info</h4>
+                    <p style="line-height: 1.8;">
+                        <a href="tel:+393512255725" style="color: var(--primary); text-decoration: none;">+39 351 225 5725</a><br>
+                        <a href="mailto:hello@studiowebdigital.it" style="color: var(--primary); text-decoration: none;">hello@studiowebdigital.it</a><br>
+                        Mon-Fri: 9 AM - 6 PM
+                    </p>
+                </div>
+            </div>
+            
+            <div class="divider"></div>
+
+            <div class="social-links">
+                <a href="#">LinkedIn</a>
+                <a href="#">Instagram</a>
+                <a href="#">Twitter</a>
+                <a href="#">Email</a>
+            </div>
+
+            <div class="divider"></div>
+
+            <p>&copy; 2024 StudioWebDigital. All rights reserved. Located in Mestre, Venezia, Italy. Made with 💛</p>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scroll to sections
+        function scrollToSection(sectionId) {
+            const element = document.getElementById(sectionId);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        // Scroll reveal animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Parallax effect on scroll
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const parallaxElements = document.querySelectorAll('.hero::before, .hero::after');
+            
+            if (scrolled < window.innerHeight) {
+                document.documentElement.style.setProperty('--scroll', scrolled);
+            }
+        });
+
+        // Active nav link
+        window.addEventListener('scroll', () => {
+            let current = '';
+            const sections = document.querySelectorAll('section');
+
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (pageYOffset >= sectionTop - 200) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').includes(current)) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        // Service Detail Modal Functions
+        const serviceDetails = {
+            'digital-marketing': {
+                title: 'Digital Marketing & SEO Excellence',
+                content: `
+                    <p style="margin-bottom: 1.5rem;"><strong>Boost Your Online Visibility</strong></p>
+                    <p style="margin-bottom: 1.5rem;">Our comprehensive digital marketing services are designed to increase visibility, engagement, and conversion. We combine strategic planning with tactical execution to deliver measurable results that impact your bottom line.</p>
+                    
+                    <h3 style="color: var(--primary); margin-top: 2rem; margin-bottom: 1rem; font-size: 1.3rem;">Our Approach</h3>
+                    
+                    <div style="background: var(--light); padding: 1.5rem; border-left: 4px solid var(--primary); margin-bottom: 1.5rem;">
+                        <h4 style="color: var(--dark); margin-bottom: 0.5rem;">📊 SEO Optimization</h4>
+                        <p>Technical and content SEO strategies to rank higher on search engines and capture organic traffic. We optimize on-page and off-page factors to improve your search engine rankings.</p>
+                    </div>
+
+                    <div style="background: var(--light); padding: 1.5rem; border-left: 4px solid var(--primary); margin-bottom: 1.5rem;">
+                        <h4 style="color: var(--dark); margin-bottom: 0.5rem;">🎯 Paid Advertising</h4>
+                        <p>Strategic Google Ads, LinkedIn Ads, Facebook Ads, and other PPC campaigns with optimized ROI. We continuously test and refine campaigns for maximum performance.</p>
+                    </div>
+
+                    <div style="background: var(--light); padding: 1.5rem; border-left: 4px solid var(--primary); margin-bottom: 1.5rem;">
+                        <h4 style="color: var(--dark); margin-bottom: 0.5rem;">📈 Analytics & Reporting</h4>
+                        <p>Real-time tracking and comprehensive monthly reports to measure campaign performance. We provide actionable insights and recommendations for continuous improvement.</p>
+                    </div>
+
+                    <div style="background: var(--light); padding: 1.5rem; border-left: 4px solid var(--primary); margin-bottom: 1.5rem;">
+                        <h4 style="color: var(--dark); margin-bottom: 0.5rem;">✍️ Content Strategy</h4>
+                        <p>Engaging content creation for blogs, whitepapers, case studies, and more that establish thought leadership and drive engagement.</p>
+                    </div>
+
+                    <p style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--gray-light);"><strong>Ready to grow your business?</strong> Let's discuss how our digital marketing strategies can help you reach your goals.</p>
+                `
+            },
+            'web-development': {
+                title: 'Web Development & Design',
+                content: `
+                    <p style="margin-bottom: 1.5rem;"><strong>Beautiful, High-Performance Websites</strong></p>
+                    <p style="margin-bottom: 1.5rem;">We create stunning, high-performance websites and web applications that convert visitors into customers. Every project is a blend of technical excellence and thoughtful design that reflects your brand's values.</p>
+                    
+                    <h3 style="color: var(--primary); margin-top: 2rem; margin-bottom: 1rem; font-size: 1.3rem;">Our Expertise</h3>
+                    
+                    <div style="background: var(--light); padding: 1.5rem; border-left: 4px solid var(--primary); margin-bottom: 1.5rem;">
+                        <h4 style="color: var(--dark); margin-bottom: 0.5rem;">🎨 UI/UX Design</h4>
+                        <p>User-centered design that prioritizes usability, accessibility, and aesthetic excellence. We create intuitive interfaces that users love.</p>
+                    </div>
+
+                    <div style="background: var(--light); padding: 1.5rem; border-left: 4px solid var(--primary); margin-bottom: 1.5rem;">
+                        <h4 style="color: var(--dark); margin-bottom: 0.5rem;">⚙️ Frontend Development</h4>
+                        <p>React, Vue, Next.js, and vanilla JavaScript with modern CSS animations and responsive design. We build interactive, engaging user experiences.</p>
+                    </div>
+
+                    <div style="background: var(--light); padding: 1.5rem; border-left: 4px solid var(--primary); margin-bottom: 1.5rem;">
+                        <h4 style="color: var(--dark); margin-bottom: 0.5rem;">🔧 Backend Development</h4>
+                        <p>Robust server-side solutions using Node.js, Python, and other modern frameworks. We build scalable, reliable systems that grow with your business.</p>
+                    </div>
+
+                    <div style="background: var(--light); padding: 1.5rem; border-left: 4px solid var(--primary); margin-bottom: 1.5rem;">
+                        <h4 style="color: var(--dark); margin-bottom: 0.5rem;">🚀 Performance & Security</h4>
+                        <p>Fast-loading sites with optimized images, code splitting, lazy loading, SSL encryption, and security best practices built into every project.</p>
+                    </div>
+
+                    <p style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--gray-light);"><strong>Let's build something amazing.</strong> Contact us to discuss your web development project.</p>
+                `
+            },
+            'ai-services': {
+                title: 'AI Bot & Agent Services',
+                content: `
+                    <p style="margin-bottom: 1.5rem;"><strong>Intelligent Automation Powered by AI</strong></p>
+                    <p style="margin-bottom: 1.5rem;">Leverage artificial intelligence to automate processes, improve customer experience, and gain competitive advantages. Our AI solutions are secure, scalable, and tailored to your specific business needs.</p>
+                    
+                    <h3 style="color: var(--primary); margin-top: 2rem; margin-bottom: 1rem; font-size: 1.3rem;">Our Solutions</h3>
+                    
+                    <div style="background: var(--light); padding: 1.5rem; border-left: 4px solid var(--primary); margin-bottom: 1.5rem;">
+                        <h4 style="color: var(--dark); margin-bottom: 0.5rem;">🤖 AI Chatbots</h4>
+                        <p>Intelligent chatbots for 24/7 customer support, lead qualification, and instant response. Powered by advanced language models for natural, human-like conversations.</p>
+                    </div>
+
+                    <div style="background: var(--light); padding: 1.5rem; border-left: 4px solid var(--primary); margin-bottom: 1.5rem;">
+                        <h4 style="color: var(--dark); margin-bottom: 0.5rem;">🧠 AI Agents</h4>
+                        <p>Autonomous agents that handle complex workflows, automate repetitive tasks, and improve operational efficiency. Reduce costs while improving accuracy.</p>
+                    </div>
+
+                    <div style="background: var(--light); padding: 1.5rem; border-left: 4px solid var(--primary); margin-bottom: 1.5rem;">
+                        <h4 style="color: var(--dark); margin-bottom: 0.5rem;">🔍 Machine Learning</h4>
+                        <p>Custom machine learning models for predictive analytics, customer behavior analysis, and data-driven insights. Turn your data into actionable intelligence.</p>
+                    </div>
+
+                    <div style="background: var(--light); padding: 1.5rem; border-left: 4px solid var(--primary); margin-bottom: 1.5rem;">
+                        <h4 style="color: var(--dark); margin-bottom: 0.5rem;">🔌 LLM Integration</h4>
+                        <p>Custom integrations with GPT, Claude, and other large language models for your applications. Build AI-powered features tailored to your needs.</p>
+                    </div>
+
+                    <p style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--gray-light);"><strong>Transform your business with AI.</strong> Explore how our AI solutions can revolutionize your operations.</p>
+                `
+            },
+            'social-media': {
+                title: 'Social Media Management',
+                content: `
+                    <p style="margin-bottom: 1.5rem;"><strong>Build Community & Amplify Your Brand</strong></p>
+                    <p style="margin-bottom: 1.5rem;">We create and manage social media strategies that build authentic connections with your audience, increase engagement, and drive business growth across all major platforms.</p>
+                    
+                    <h3 style="color: var(--primary); margin-top: 2rem; margin-bottom: 1rem; font-size: 1.3rem;">Our Services</h3>
+                    
+                    <div style="background: var(--light); padding: 1.5rem; border-left: 4px solid var(--primary); margin-bottom: 1.5rem;">
+                        <h4 style="color: var(--dark); margin-bottom: 0.5rem;">📸 Content Creation</h4>
+                        <p>Professional photography, videography, and graphic design for compelling social posts. High-quality visual content that stands out in crowded feeds.</p>
+                    </div>
+
+                    <div style="background: var(--light); padding: 1.5rem; border-left: 4px solid var(--primary); margin-bottom: 1.5rem;">
+                        <h4 style="color: var(--dark); margin-bottom: 0.5rem;">📅 Strategic Planning</h4>
+                        <p>Content calendars aligned with your business goals and audience preferences. We plan, schedule, and optimize every post for maximum engagement.</p>
+                    </div>
+
+                    <div style="background: var(--light); padding: 1.5rem; border-left: 4px solid var(--primary); margin-bottom: 1.5rem;">
+                        <h4 style="color: var(--dark); margin-bottom: 0.5rem;">💬 Community Management</h4>
+                        <p>Active engagement, moderation, and responsive communication with your growing community. Build authentic relationships with your followers.</p>
+                    </div>
+
+                    <div style="background: var(--light); padding: 1.5rem; border-left: 4px solid var(--primary); margin-bottom: 1.5rem;">
+                        <h4 style="color: var(--dark); margin-bottom: 0.5rem;">📊 Analytics & Insights</h4>
+                        <p>In-depth performance metrics and insights to guide strategy optimization. Understand what works and continuously improve your social presence.</p>
+                    </div>
+
+                    <p style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--gray-light);"><strong>Ready to grow your social presence?</strong> Let's create a social media strategy that drives real results.</p>
+                `
+            },
+            'quick-services': {
+                title: 'Quick & Affordable Services',
+                content: `
+                    <p style="margin-bottom: 1.5rem;"><strong>Fast Solutions for Small Budgets</strong></p>
+                    <p style="margin-bottom: 1.5rem;">Need affordable digital solutions? We offer quick, high-quality services perfect for startups, small businesses, and solopreneurs. Fast turnaround, professional results.</p>
+                    
+                    <h3 style="color: var(--primary); margin-top: 2rem; margin-bottom: 1rem; font-size: 1.3rem;">Our Quick Services</h3>
+                    
+                    <div style="background: var(--light); padding: 1.5rem; border-left: 4px solid var(--primary); margin-bottom: 1.5rem;">
+                        <h4 style="color: var(--dark); margin-bottom: 0.5rem;">📸 Social Media Posts (€50-150)</h4>
+                        <p>Professional graphic design and copywriting for Instagram, Facebook, LinkedIn. Turn your ideas into engaging posts that get results.</p>
+                    </div>
+
+                    <div style="background: var(--light); padding: 1.5rem; border-left: 4px solid var(--primary); margin-bottom: 1.5rem;">
+                        <h4 style="color: var(--dark); margin-bottom: 0.5rem;">📝 Website Copy (€100-250)</h4>
+                        <p>Compelling, SEO-friendly website text that converts visitors to customers. Clear, professional messaging for your business.</p>
+                    </div>
+
+                    <div style="background: var(--light); padding: 1.5rem; border-left: 4px solid var(--primary); margin-bottom: 1.5rem;">
+                        <h4 style="color: var(--dark); margin-bottom: 0.5rem;">🔧 Website Updates (€75-200)</h4>
+                        <p>Add sections, update images, fix links, or modify content on your existing website. Quick fixes that make a difference.</p>
+                    </div>
+
+                    <div style="background: var(--light); padding: 1.5rem; border-left: 4px solid var(--primary); margin-bottom: 1.5rem;">
+                        <h4 style="color: var(--dark); margin-bottom: 0.5rem;">📊 Google Analytics Setup (€100)</h4>
+                        <p>Install and configure Google Analytics on your website. Start tracking visitors and understanding your audience.</p>
+                    </div>
+
+                    <div style="background: var(--light); padding: 1.5rem; border-left: 4px solid var(--primary); margin-bottom: 1.5rem;">
+                        <h4 style="color: var(--dark); margin-bottom: 0.5rem;">✉️ Email Newsletter Setup (€150)</h4>
+                        <p>Set up professional email newsletter with templates. Start building your email list and engage customers regularly.</p>
+                    </div>
+
+                    <p style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--gray-light);"><strong>All services include:</strong> Professional quality, fast turnaround, free revisions, expert advice. Perfect for getting started or quick additions to your existing digital presence.</p>
+                `
+            },
+            'seo-audit': {
+                title: 'SEO Audit & Consultation',
+                content: `
+                    <p style="margin-bottom: 1.5rem;"><strong>Understand Your Website Performance</strong></p>
+                    <p style="margin-bottom: 1.5rem;">Get professional insights into why your website isn't ranking. We analyze your site and provide a clear roadmap to improve your search engine visibility.</p>
+                    
+                    <h3 style="color: var(--primary); margin-top: 2rem; margin-bottom: 1rem; font-size: 1.3rem;">What's Included</h3>
+                    
+                    <div style="background: var(--light); padding: 1.5rem; border-left: 4px solid var(--primary); margin-bottom: 1.5rem;">
+                        <h4 style="color: var(--dark); margin-bottom: 0.5rem;">🔍 Technical Analysis (€150)</h4>
+                        <p>Check site speed, mobile responsiveness, SSL security, meta tags, and more. Full technical SEO review with recommendations.</p>
+                    </div>
+
+                    <div style="background: var(--light); padding: 1.5rem; border-left: 4px solid var(--primary); margin-bottom: 1.5rem;">
+                        <h4 style="color: var(--dark); margin-bottom: 0.5rem;">🎯 Keyword Research (€200)</h4>
+                        <p>Find the keywords your customers are actually searching for. Discover untapped opportunities in your market.</p>
+                    </div>
+
+                    <div style="background: var(--light); padding: 1.5rem; border-left: 4px solid var(--primary); margin-bottom: 1.5rem;">
+                        <h4 style="color: var(--dark); margin-bottom: 0.5rem;">📈 Competitor Analysis (€180)</h4>
+                        <p>See what your competitors are ranking for and how. Identify gaps and opportunities to outrank them.</p>
+                    </div>
+
+                    <div style="background: var(--light); padding: 1.5rem; border-left: 4px solid var(--primary); margin-bottom: 1.5rem;">
+                        <h4 style="color: var(--dark); margin-bottom: 0.5rem;">💡 30-Min Consultation (€75)</h4>
+                        <p>Direct call with SEO expert. Get answers to your questions and a personalized SEO improvement plan.</p>
+                    </div>
+
+                    <h3 style="color: var(--primary); margin-top: 2rem; margin-bottom: 1rem; font-size: 1.3rem;">Pricing</h3>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+                        <div style="background: var(--light); padding: 1rem; border-radius: 8px; text-align: center;">
+                            <div style="color: var(--primary); font-size: 1.5rem; font-weight: 700;">€150</div>
+                            <div style="color: var(--gray); font-size: 0.9rem;">Basic Audit</div>
+                        </div>
+                        <div style="background: var(--light); padding: 1rem; border-radius: 8px; text-align: center;">
+                            <div style="color: var(--primary); font-size: 1.5rem; font-weight: 700;">€400</div>
+                            <div style="color: var(--gray); font-size: 0.9rem;">Full Analysis</div>
+                        </div>
+                    </div>
+
+                    <p style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--gray-light);"><strong>Get your audit today</strong> and start ranking higher in Google!</p>
+                `
+            },
+            'content-creation': {
+                title: 'Professional Content Creation',
+                content: `
+                    <p style="margin-bottom: 1.5rem;"><strong>Engaging Content That Drives Results</strong></p>
+                    <p style="margin-bottom: 1.5rem;">Quality content is the foundation of digital marketing. We create compelling, SEO-optimized content that attracts, engages, and converts your audience.</p>
+                    
+                    <h3 style="color: var(--primary); margin-top: 2rem; margin-bottom: 1rem; font-size: 1.3rem;">Content Services</h3>
+                    
+                    <div style="background: var(--light); padding: 1.5rem; border-left: 4px solid var(--primary); margin-bottom: 1.5rem;">
+                        <h4 style="color: var(--dark); margin-bottom: 0.5rem;">📝 Blog Posts (€100-300)</h4>
+                        <p>SEO-optimized articles (500-2000 words) that rank in Google and provide value to readers. Improve your authority and traffic.</p>
+                    </div>
+
+                    <div style="background: var(--light); padding: 1.5rem; border-left: 4px solid var(--primary); margin-bottom: 1.5rem;">
+                        <h4 style="color: var(--dark); margin-bottom: 0.5rem;">📱 Social Media Content (€50-150)</h4>
+                        <p>Engaging posts with eye-catching graphics. Designed for each platform (Instagram, Facebook, LinkedIn). Get more likes, shares, and followers.</p>
+                    </div>
+
+                    <div style="background: var(--light); padding: 1.5rem; border-left: 4px solid var(--primary); margin-bottom: 1.5rem;">
+                        <h4 style="color: var(--dark); margin-bottom: 0.5rem;">✉️ Email Newsletter (€100-200)</h4>
+                        <p>Professional email campaigns that build relationships with your subscribers. Regular newsletters keep customers engaged and coming back.</p>
+                    </div>
+
+                    <div style="background: var(--light); padding: 1.5rem; border-left: 4px solid var(--primary); margin-bottom: 1.5rem;">
+                        <h4 style="color: var(--dark); margin-bottom: 0.5rem;">📄 Website Copy (€150-400)</h4>
+                        <p>Compelling, conversion-focused copy for homepage, product pages, and more. Words that sell.</p>
+                    </div>
+
+                    <div style="background: var(--light); padding: 1.5rem; border-left: 4px solid var(--primary); margin-bottom: 1.5rem;">
+                        <h4 style="color: var(--dark); margin-bottom: 0.5rem;">📊 Infographics & Guides (€200-500)</h4>
+                        <p>Visual content that makes complex topics easy to understand. Perfect for social sharing and lead magnets.</p>
+                    </div>
+
+                    <h3 style="color: var(--primary); margin-top: 2rem; margin-bottom: 1rem; font-size: 1.3rem;">Pricing</h3>
+                    <p style="margin-bottom: 1.5rem;">Monthly content packages available starting at €500/month for ongoing content needs. Let's discuss what works for your business.</p>
+                `
+            },
+            'branding': {
+                title: 'Logo & Branding Design',
+                content: `
+                    <p style="margin-bottom: 1.5rem;"><strong>Professional Brand Identity</strong></p>
+                    <p style="margin-bottom: 1.5rem;">Your logo and brand identity are the first impression customers have. We create memorable, professional designs that represent your business perfectly.</p>
+                    
+                    <h3 style="color: var(--primary); margin-top: 2rem; margin-bottom: 1rem; font-size: 1.3rem;">Branding Packages</h3>
+                    
+                    <div style="background: var(--light); padding: 1.5rem; border-left: 4px solid var(--primary); margin-bottom: 1.5rem;">
+                        <h4 style="color: var(--dark); margin-bottom: 0.5rem;">🎨 Logo Design (€300-600)</h4>
+                        <p>Professional logo in multiple formats. Includes 3-5 concept options and unlimited revisions until perfect. Timeless design that works for years.</p>
+                    </div>
+
+                    <div style="background: var(--light); padding: 1.5rem; border-left: 4px solid var(--primary); margin-bottom: 1.5rem;">
+                        <h4 style="color: var(--dark); margin-bottom: 0.5rem;">🌈 Color Palette (€100-200)</h4>
+                        <p>Professional color scheme for your brand. 5-8 colors that work together and convey your brand personality.</p>
+                    </div>
+
+                    <div style="background: var(--light); padding: 1.5rem; border-left: 4px solid var(--primary); margin-bottom: 1.5rem;">
+                        <h4 style="color: var(--dark); margin-bottom: 0.5rem;">📋 Brand Guidelines (€200-400)</h4>
+                        <p>Document your brand rules. Logo usage, colors, fonts, tone of voice. Keep consistency across all marketing materials.</p>
+                    </div>
+
+                    <div style="background: var(--light); padding: 1.5rem; border-left: 4px solid var(--primary); margin-bottom: 1.5rem;">
+                        <h4 style="color: var(--dark); margin-bottom: 0.5rem;">📦 Complete Branding (€800-1500)</h4>
+                        <p>Full package: Logo, color palette, fonts, brand guidelines, and business card design. Everything you need to launch professionally.</p>
+                    </div>
+
+                    <h3 style="color: var(--primary); margin-top: 2rem; margin-bottom: 1rem; font-size: 1.3rem;">What You Get</h3>
+                    <ul style="margin-bottom: 1.5rem; margin-left: 1.5rem;">
+                        <li style="margin-bottom: 0.5rem;">✓ Professional designer with years of experience</li>
+                        <li style="margin-bottom: 0.5rem;">✓ Multiple concepts to choose from</li>
+                        <li style="margin-bottom: 0.5rem;">✓ Unlimited revisions until you're happy</li>
+                        <li style="margin-bottom: 0.5rem;">✓ Files in all formats (PNG, JPG, SVG, PDF)</li>
+                        <li style="margin-bottom: 0.5rem;">✓ Fast turnaround (3-5 days)</li>
+                    </ul>
+                `
+            },
+            'landing-page': {
+                title: 'Landing Page Design',
+                content: `
+                    <p style="margin-bottom: 1.5rem;"><strong>High-Converting Single-Page Websites</strong></p>
+                    <p style="margin-bottom: 1.5rem;">A landing page is a focused, single-purpose website designed to drive conversions. Perfect for launching products, running campaigns, or capturing leads.</p>
+                    
+                    <h3 style="color: var(--primary); margin-top: 2rem; margin-bottom: 1rem; font-size: 1.3rem;">What's Included</h3>
+                    
+                    <div style="background: var(--light); padding: 1.5rem; border-left: 4px solid var(--primary); margin-bottom: 1.5rem;">
+                        <h4 style="color: var(--dark); margin-bottom: 0.5rem;">🎨 Professional Design (€600)</h4>
+                        <p>Beautiful, modern design optimized for conversions. Eye-catching hero section, clear messaging, strong call-to-action.</p>
+                    </div>
+
+                    <div style="background: var(--light); padding: 1.5rem; border-left: 4px solid var(--primary); margin-bottom: 1.5rem;">
+                        <h4 style="color: var(--dark); margin-bottom: 0.5rem;">📱 Fully Responsive (€600)</h4>
+                        <p>Looks perfect on desktop, tablet, and mobile. Fast loading times. Optimized for all devices.</p>
+                    </div>
+
+                    <div style="background: var(--light); padding: 1.5rem; border-left: 4px solid var(--primary); margin-bottom: 1.5rem;">
+                        <h4 style="color: var(--dark); margin-bottom: 0.5rem;">🔧 Easy to Update (€600)</h4>
+                        <p>Built with simple CMS or HTML. You can easily update text and images yourself without coding knowledge.</p>
+                    </div>
+
+                    <div style="background: var(--light); padding: 1.5rem; border-left: 4px solid var(--primary); margin-bottom: 1.5rem;">
+                        <h4 style="color: var(--dark); margin-bottom: 0.5rem;">📬 Lead Capture (€750)</h4>
+                        <p>Email signup form, contact form, or booking system. Capture customer information automatically.</p>
+                    </div>
+
+                    <div style="background: var(--light); padding: 1.5rem; border-left: 4px solid var(--primary); margin-bottom: 1.5rem;">
+                        <h4 style="color: var(--dark); margin-bottom: 0.5rem;">🎯 SEO Optimized (€750)</h4>
+                        <p>Built for search engines. Includes keyword research, meta tags, and optimization for better rankings.</p>
+                    </div>
+
+                    <h3 style="color: var(--primary); margin-top: 2rem; margin-bottom: 1rem; font-size: 1.3rem;">Pricing</h3>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+                        <div style="background: var(--light); padding: 1rem; border-radius: 8px; text-align: center;">
+                            <div style="color: var(--primary); font-size: 1.5rem; font-weight: 700;">€600</div>
+                            <div style="color: var(--gray); font-size: 0.9rem;">Basic</div>
+                        </div>
+                        <div style="background: var(--light); padding: 1rem; border-radius: 8px; text-align: center;">
+                            <div style="color: var(--primary); font-size: 1.5rem; font-weight: 700;">€1,200</div>
+                            <div style="color: var(--gray); font-size: 0.9rem;">Full Featured</div>
+                        </div>
+                    </div>
+
+                    <p style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--gray-light);"><strong>Perfect for:</strong> Product launches, campaigns, lead generation, event promotion, or testing new ideas.</p>
+                `
+            }
+        };
+
+        function showServiceDetail(serviceId) {
+            const details = serviceDetails[serviceId];
+            if (details) {
+                document.getElementById('modalServiceTitle').textContent = details.title;
+                document.getElementById('modalServiceContent').innerHTML = details.content;
+                document.getElementById('serviceModal').style.display = 'block';
+                document.body.style.overflow = 'hidden';
+                // Animate modal
+                document.querySelector('#serviceModal > div').style.animation = 'slideInUp 0.4s ease';
+            }
+        }
+
+        function closeServiceModal() {
+            document.getElementById('serviceModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // Portfolio Detail Modal Functions
+        const portfolioDetails = {
+            'luxury-fashion': {
+                tag: 'Digital Marketing',
+                title: 'Luxury Fashion Brand - Digital Transformation',
+                content: `
+                    <p style="margin-bottom: 1.5rem;"><strong>Project Overview</strong></p>
+                    <p style="margin-bottom: 1.5rem;">Complete digital marketing overhaul for an Italian luxury fashion house targeting international markets. The client needed to increase brand awareness and drive high-value e-commerce sales.</p>
+                    
+                    <h3 style="color: var(--primary); margin-top: 2rem; margin-bottom: 1rem; font-size: 1.3rem;">Strategy & Execution</h3>
+                    <p style="margin-bottom: 1rem;">We implemented a comprehensive digital marketing strategy including:</p>
+                    <ul style="margin-bottom: 1.5rem; margin-left: 1.5rem;">
+                        <li style="margin-bottom: 0.5rem;">Technical SEO optimization targeting luxury fashion keywords</li>
+                        <li style="margin-bottom: 0.5rem;">Premium content marketing showcasing craftsmanship and heritage</li>
+                        <li style="margin-bottom: 0.5rem;">Paid advertising campaigns across Google and Instagram</li>
+                        <li style="margin-bottom: 0.5rem;">Link building from luxury lifestyle publications</li>
+                        <li style="margin-bottom: 0.5rem;">Email marketing to high-value customer segments</li>
+                    </ul>
+
+                    <h3 style="color: var(--primary); margin-top: 2rem; margin-bottom: 1rem; font-size: 1.3rem;">Results Achieved</h3>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+                        <div style="background: var(--light); padding: 1rem; border-radius: 8px;">
+                            <div style="color: var(--primary); font-size: 1.8rem; font-weight: 700;">+250%</div>
+                            <div style="color: var(--gray); font-size: 0.9rem;">Organic Traffic Growth</div>
+                        </div>
+                        <div style="background: var(--light); padding: 1rem; border-radius: 8px;">
+                            <div style="color: var(--primary); font-size: 1.8rem; font-weight: 700;">3.2x</div>
+                            <div style="color: var(--gray); font-size: 0.9rem;">ROI Increase</div>
+                        </div>
+                        <div style="background: var(--light); padding: 1rem; border-radius: 8px;">
+                            <div style="color: var(--primary); font-size: 1.8rem; font-weight: 700;">€450K+</div>
+                            <div style="color: var(--gray); font-size: 0.9rem;">Additional Revenue</div>
+                        </div>
+                        <div style="background: var(--light); padding: 1rem; border-radius: 8px;">
+                            <div style="color: var(--primary); font-size: 1.8rem; font-weight: 700;">6 months</div>
+                            <div style="color: var(--gray); font-size: 0.9rem;">Timeline to Success</div>
+                        </div>
+                    </div>
+
+                    <p style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--gray-light);">This project showcases our ability to elevate luxury brands in the digital space, combining premium aesthetics with data-driven marketing strategies.</p>
+                `
+            },
+            'ecommerce': {
+                tag: 'Web Development',
+                title: 'Premium E-Commerce Platform',
+                content: `
+                    <p style="margin-bottom: 1.5rem;"><strong>Project Overview</strong></p>
+                    <p style="margin-bottom: 1.5rem;">Full-stack e-commerce platform for premium Italian artisan products. Built with cutting-edge technology to handle high transaction volumes and provide an exceptional user experience.</p>
+                    
+                    <h3 style="color: var(--primary); margin-top: 2rem; margin-bottom: 1rem; font-size: 1.3rem;">Technical Stack</h3>
+                    <ul style="margin-bottom: 1.5rem; margin-left: 1.5rem;">
+                        <li style="margin-bottom: 0.5rem;"><strong>Frontend:</strong> Next.js, React, TypeScript, Tailwind CSS</li>
+                        <li style="margin-bottom: 0.5rem;"><strong>Backend:</strong> Node.js, PostgreSQL, Redis</li>
+                        <li style="margin-bottom: 0.5rem;"><strong>Payments:</strong> Stripe integration with PCI compliance</li>
+                        <li style="margin-bottom: 0.5rem;"><strong>Performance:</strong> CDN delivery, image optimization, caching</li>
+                        <li style="margin-bottom: 0.5rem;"><strong>Hosting:</strong> Vercel with global edge network</li>
+                    </ul>
+
+                    <h3 style="color: var(--primary); margin-top: 2rem; margin-bottom: 1rem; font-size: 1.3rem;">Key Features</h3>
+                    <ul style="margin-bottom: 1.5rem; margin-left: 1.5rem;">
+                        <li style="margin-bottom: 0.5rem;">Advanced product filtering and search functionality</li>
+                        <li style="margin-bottom: 0.5rem;">Animated product galleries with zoom capability</li>
+                        <li style="margin-bottom: 0.5rem;">Secure checkout with multiple payment methods</li>
+                        <li style="margin-bottom: 0.5rem;">Inventory management system</li>
+                        <li style="margin-bottom: 0.5rem;">Customer dashboard and order tracking</li>
+                    </ul>
+
+                    <h3 style="color: var(--primary); margin-top: 2rem; margin-bottom: 1rem; font-size: 1.3rem;">Performance Metrics</h3>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+                        <div style="background: var(--light); padding: 1rem; border-radius: 8px;">
+                            <div style="color: var(--primary); font-size: 1.8rem; font-weight: 700;">98/100</div>
+                            <div style="color: var(--gray); font-size: 0.9rem;">PageSpeed Score</div>
+                        </div>
+                        <div style="background: var(--light); padding: 1rem; border-radius: 8px;">
+                            <div style="color: var(--primary); font-size: 1.8rem; font-weight: 700;">1.2M</div>
+                            <div style="color: var(--gray); font-size: 0.9rem;">Monthly Users</div>
+                        </div>
+                        <div style="background: var(--light); padding: 1rem; border-radius: 8px;">
+                            <div style="color: var(--primary); font-size: 1.8rem; font-weight: 700;">99.99%</div>
+                            <div style="color: var(--gray); font-size: 0.9rem;">Uptime</div>
+                        </div>
+                        <div style="background: var(--light); padding: 1rem; border-radius: 8px;">
+                            <div style="color: var(--primary); font-size: 1.8rem; font-weight: 700;">€2.3M</div>
+                            <div style="color: var(--gray); font-size: 0.9rem;">Annual Revenue</div>
+                        </div>
+                    </div>
+                `
+            },
+            'chatbot': {
+                tag: 'AI Services',
+                title: 'AI-Powered Customer Support Bot',
+                content: `
+                    <p style="margin-bottom: 1.5rem;"><strong>Project Overview</strong></p>
+                    <p style="margin-bottom: 1.5rem;">Developed an intelligent AI chatbot powered by Claude to handle customer support 24/7. The solution reduced support costs while improving customer satisfaction scores.</p>
+                    
+                    <h3 style="color: var(--primary); margin-top: 2rem; margin-bottom: 1rem; font-size: 1.3rem;">Implementation Details</h3>
+                    <ul style="margin-bottom: 1.5rem; margin-left: 1.5rem;">
+                        <li style="margin-bottom: 0.5rem;">Claude API integration for natural language understanding</li>
+                        <li style="margin-bottom: 0.5rem;">Custom knowledge base trained on company documents</li>
+                        <li style="margin-bottom: 0.5rem;">Seamless handoff to human agents when needed</li>
+                        <li style="margin-bottom: 0.5rem;">Multi-language support (English, Italian, French, German)</li>
+                        <li style="margin-bottom: 0.5rem;">Integration with CRM and ticketing systems</li>
+                        <li style="margin-bottom: 0.5rem;">Real-time analytics dashboard</li>
+                    </ul>
+
+                    <h3 style="color: var(--primary); margin-top: 2rem; margin-bottom: 1rem; font-size: 1.3rem;">Capabilities</h3>
+                    <p style="margin-bottom: 1rem;">The chatbot handles:</p>
+                    <ul style="margin-bottom: 1.5rem; margin-left: 1.5rem;">
+                        <li style="margin-bottom: 0.5rem;">Product inquiries and specifications</li>
+                        <li style="margin-bottom: 0.5rem;">Order tracking and shipping information</li>
+                        <li style="margin-bottom: 0.5rem;">Return and refund processing</li>
+                        <li style="margin-bottom: 0.5rem;">Technical support and troubleshooting</li>
+                        <li style="margin-bottom: 0.5rem;">Billing and account management</li>
+                    </ul>
+
+                    <h3 style="color: var(--primary); margin-top: 2rem; margin-bottom: 1rem; font-size: 1.3rem;">Results</h3>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+                        <div style="background: var(--light); padding: 1rem; border-radius: 8px;">
+                            <div style="color: var(--primary); font-size: 1.8rem; font-weight: 700;">60%</div>
+                            <div style="color: var(--gray); font-size: 0.9rem;">Cost Reduction</div>
+                        </div>
+                        <div style="background: var(--light); padding: 1rem; border-radius: 8px;">
+                            <div style="color: var(--primary); font-size: 1.8rem; font-weight: 700;">4.8/5</div>
+                            <div style="color: var(--gray); font-size: 0.9rem;">Satisfaction Score</div>
+                        </div>
+                        <div style="background: var(--light); padding: 1rem; border-radius: 8px;">
+                            <div style="color: var(--primary); font-size: 1.8rem; font-weight: 700;">80%</div>
+                            <div style="color: var(--gray); font-size: 0.9rem;">Self-Service Rate</div>
+                        </div>
+                        <div style="background: var(--light); padding: 1rem; border-radius: 8px;">
+                            <div style="color: var(--primary); font-size: 1.8rem; font-weight: 700;">2min</div>
+                            <div style="color: var(--gray); font-size: 0.9rem;">Average Response Time</div>
+                        </div>
+                    </div>
+                `
+            },
+            'beauty-campaign': {
+                tag: 'Social Media',
+                title: 'Beauty Brand Social Media Growth Campaign',
+                content: `
+                    <p style="margin-bottom: 1.5rem;"><strong>Project Overview</strong></p>
+                    <p style="margin-bottom: 1.5rem;">Comprehensive social media strategy across Instagram, TikTok, and LinkedIn for a beauty brand. Resulted in 15x follower growth and exceptional engagement rates.</p>
+                    
+                    <h3 style="color: var(--primary); margin-top: 2rem; margin-bottom: 1rem; font-size: 1.3rem;">Strategy</h3>
+                    <ul style="margin-bottom: 1.5rem; margin-left: 1.5rem;">
+                        <li style="margin-bottom: 0.5rem;">Platform-specific content optimization</li>
+                        <li style="margin-bottom: 0.5rem;">Influencer partnerships and collaborations</li>
+                        <li style="margin-bottom: 0.5rem;">User-generated content campaigns</li>
+                        <li style="margin-bottom: 0.5rem;">Trending audio and hashtag strategies</li>
+                        <li style="margin-bottom: 0.5rem;">Community engagement and response management</li>
+                    </ul>
+
+                    <h3 style="color: var(--primary); margin-top: 2rem; margin-bottom: 1rem; font-size: 1.3rem;">Content Types</h3>
+                    <ul style="margin-bottom: 1.5rem; margin-left: 1.5rem;">
+                        <li style="margin-bottom: 0.5rem;"><strong>Instagram:</strong> Product showcases, beauty tutorials, behind-the-scenes</li>
+                        <li style="margin-bottom: 0.5rem;"><strong>TikTok:</strong> Trending challenges, quick tutorials, product launches</li>
+                        <li style="margin-bottom: 0.5rem;"><strong>LinkedIn:</strong> Industry insights, brand story, team highlights</li>
+                    </ul>
+
+                    <h3 style="color: var(--primary); margin-top: 2rem; margin-bottom: 1rem; font-size: 1.3rem;">Growth Metrics</h3>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+                        <div style="background: var(--light); padding: 1rem; border-radius: 8px;">
+                            <div style="color: var(--primary); font-size: 1.8rem; font-weight: 700;">15x</div>
+                            <div style="color: var(--gray); font-size: 0.9rem;">Follower Growth</div>
+                        </div>
+                        <div style="background: var(--light); padding: 1rem; border-radius: 8px;">
+                            <div style="color: var(--primary); font-size: 1.8rem; font-weight: 700;">8.5%</div>
+                            <div style="color: var(--gray); font-size: 0.9rem;">Engagement Rate</div>
+                        </div>
+                        <div style="background: var(--light); padding: 1rem; border-radius: 8px;">
+                            <div style="color: var(--primary); font-size: 1.8rem; font-weight: 700;">150K</div>
+                            <div style="color: var(--gray); font-size: 0.9rem;">Total Followers</div>
+                        </div>
+                        <div style="background: var(--light); padding: 1rem; border-radius: 8px;">
+                            <div style="color: var(--primary); font-size: 1.8rem; font-weight: 700;">€850K</div>
+                            <div style="color: var(--gray); font-size: 0.9rem;">Social Commerce Revenue</div>
+                        </div>
+                    </div>
+                `
+            },
+            'saas-dashboard': {
+                tag: 'Web Development',
+                title: 'Enterprise Analytics SaaS Dashboard',
+                content: `
+                    <p style="margin-bottom: 1.5rem;"><strong>Project Overview</strong></p>
+                    <p style="margin-bottom: 1.5rem;">Complex web application for analytics and real-time reporting. Serves 50K+ active users with advanced data visualization and processing capabilities.</p>
+                    
+                    <h3 style="color: var(--primary); margin-top: 2rem; margin-bottom: 1rem; font-size: 1.3rem;">Technical Architecture</h3>
+                    <ul style="margin-bottom: 1.5rem; margin-left: 1.5rem;">
+                        <li style="margin-bottom: 0.5rem;"><strong>Frontend:</strong> React with Redux, D3.js for visualizations</li>
+                        <li style="margin-bottom: 0.5rem;"><strong>Backend:</strong> Node.js with Express, real-time WebSockets</li>
+                        <li style="margin-bottom: 0.5rem;"><strong>Database:</strong> PostgreSQL with TimescaleDB for time-series data</li>
+                        <li style="margin-bottom: 0.5rem;"><strong>Caching:</strong> Redis for high-performance queries</li>
+                        <li style="margin-bottom: 0.5rem;"><strong>Infrastructure:</strong> AWS with auto-scaling</li>
+                    </ul>
+
+                    <h3 style="color: var(--primary); margin-top: 2rem; margin-bottom: 1rem; font-size: 1.3rem;">Key Features</h3>
+                    <ul style="margin-bottom: 1.5rem; margin-left: 1.5rem;">
+                        <li style="margin-bottom: 0.5rem;">Real-time data streaming and live updates</li>
+                        <li style="margin-bottom: 0.5rem;">Custom report generation and scheduling</li>
+                        <li style="margin-bottom: 0.5rem;">Advanced filtering and drill-down capabilities</li>
+                        <li style="margin-bottom: 0.5rem;">API access for third-party integrations</li>
+                        <li style="margin-bottom: 0.5rem;">Role-based access control</li>
+                        <li style="margin-bottom: 0.5rem;">Data export in multiple formats</li>
+                    </ul>
+
+                    <h3 style="color: var(--primary); margin-top: 2rem; margin-bottom: 1rem; font-size: 1.3rem;">Performance</h3>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+                        <div style="background: var(--light); padding: 1rem; border-radius: 8px;">
+                            <div style="color: var(--primary); font-size: 1.8rem; font-weight: 700;">99.9%</div>
+                            <div style="color: var(--gray); font-size: 0.9rem;">Uptime SLA</div>
+                        </div>
+                        <div style="background: var(--light); padding: 1rem; border-radius: 8px;">
+                            <div style="color: var(--primary); font-size: 1.8rem; font-weight: 700;">50K+</div>
+                            <div style="color: var(--gray); font-size: 0.9rem;">Active Users</div>
+                        </div>
+                        <div style="background: var(--light); padding: 1rem; border-radius: 8px;">
+                            <div style="color: var(--primary); font-size: 1.8rem; font-weight: 700;">200ms</div>
+                            <div style="color: var(--gray); font-size: 0.9rem;">Avg Query Time</div>
+                        </div>
+                        <div style="background: var(--light); padding: 1rem; border-radius: 8px;">
+                            <div style="color: var(--primary); font-size: 1.8rem; font-weight: 700;">1B+</div>
+                            <div style="color: var(--gray); font-size: 0.9rem;">Data Points/Month</div>
+                        </div>
+                    </div>
+                `
+            },
+            'restaurant': {
+                tag: 'Full Service',
+                title: 'Fine Dining Restaurant Brand Launch',
+                content: `
+                    <p style="margin-bottom: 1.5rem;"><strong>Project Overview</strong></p>
+                    <p style="margin-bottom: 1.5rem;">Complete branding, website design, and social media management for an upscale restaurant in Venice. The integrated campaign resulted in tripled reservations within 6 months.</p>
+                    
+                    <h3 style="color: var(--primary); margin-top: 2rem; margin-bottom: 1rem; font-size: 1.3rem;">Services Delivered</h3>
+                    <ul style="margin-bottom: 1.5rem; margin-left: 1.5rem;">
+                        <li style="margin-bottom: 0.5rem;"><strong>Brand Strategy:</strong> Logo, color palette, brand guidelines</li>
+                        <li style="margin-bottom: 0.5rem;"><strong>Website Design:</strong> Elegant, mobile-responsive site with reservations</li>
+                        <li style="margin-bottom: 0.5rem;"><strong>Content Creation:</strong> Professional food photography and videography</li>
+                        <li style="margin-bottom: 0.5rem;"><strong>Social Media:</strong> Instagram, Facebook, and Google My Business management</li>
+                        <li style="margin-bottom: 0.5rem;"><strong>SEO Optimization:</strong> Local SEO for dining searches</li>
+                    </ul>
+
+                    <h3 style="color: var(--primary); margin-top: 2rem; margin-bottom: 1rem; font-size: 1.3rem;">Campaign Highlights</h3>
+                    <p style="margin-bottom: 1rem;">We positioned the restaurant as a premium dining destination by:</p>
+                    <ul style="margin-bottom: 1.5rem; margin-left: 1.5rem;">
+                        <li style="margin-bottom: 0.5rem;">Showcasing chef's expertise through video content</li>
+                        <li style="margin-bottom: 0.5rem;">Creating seasonal menu stories and traditions</li>
+                        <li style="margin-bottom: 0.5rem;">Building local food blogger partnerships</li>
+                        <li style="margin-bottom: 0.5rem;">Running targeted ads to tourists and locals</li>
+                    </ul>
+
+                    <h3 style="color: var(--primary); margin-top: 2rem; margin-bottom: 1rem; font-size: 1.3rem;">Results</h3>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+                        <div style="background: var(--light); padding: 1rem; border-radius: 8px;">
+                            <div style="color: var(--primary); font-size: 1.8rem; font-weight: 700;">3x</div>
+                            <div style="color: var(--gray); font-size: 0.9rem;">Reservation Growth</div>
+                        </div>
+                        <div style="background: var(--light); padding: 1rem; border-radius: 8px;">
+                            <div style="color: var(--primary); font-size: 1.8rem; font-weight: 700;">92%</div>
+                            <div style="color: var(--gray); font-size: 0.9rem;">Google Reviews Rating</div>
+                        </div>
+                        <div style="background: var(--light); padding: 1rem; border-radius: 8px;">
+                            <div style="color: var(--primary); font-size: 1.8rem; font-weight: 700;">5K+</div>
+                            <div style="color: var(--gray); font-size: 0.9rem;">Monthly Website Visits</div>
+                        </div>
+                        <div style="background: var(--light); padding: 1rem; border-radius: 8px;">
+                            <div style="color: var(--primary); font-size: 1.8rem; font-weight: 700;">€200K+</div>
+                            <div style="color: var(--gray); font-size: 0.9rem;">Annual Revenue Increase</div>
+                        </div>
+                    </div>
+                `
+            }
+        };
+
+        function showPortfolioDetail(projectId) {
+            const details = portfolioDetails[projectId];
+            if (details) {
+                document.getElementById('modalPortfolioTag').textContent = details.tag;
+                document.getElementById('modalPortfolioTitle').textContent = details.title;
+                document.getElementById('modalPortfolioContent').innerHTML = details.content;
+                document.getElementById('portfolioModal').style.display = 'block';
+                document.body.style.overflow = 'hidden';
+                // Animate modal
+                document.querySelector('#portfolioModal > div').style.animation = 'slideInUp 0.4s ease';
+            }
+        }
+
+        function closePortfolioModal() {
+            document.getElementById('portfolioModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // Payment System Functions
+        function initPayment(packageType, amount) {
+            const packageNames = {
+                'quick-start': 'Quick Start Package',
+                'micro-business': 'Micro Business Package',
+                'starter': 'Starter Package',
+                'professional': 'Professional Package',
+                'enterprise': 'Enterprise Package'
+            };
+
+            document.getElementById('paymentTitle').textContent = `Complete Payment - ${packageNames[packageType]}`;
+            document.getElementById('packageName').textContent = packageNames[packageType];
+            document.getElementById('paymentAmount').textContent = `€${amount.toLocaleString()}`;
+            document.getElementById('finalAmount').textContent = amount;
+            document.getElementById('paymentModal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closePayment() {
+            document.getElementById('paymentModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        function processPayment(event) {
+            event.preventDefault();
+            
+            const cardNumber = document.getElementById('cardNumber').value.replace(/\s/g, '');
+            const cardExpiry = document.getElementById('cardExpiry').value;
+            const cardCVC = document.getElementById('cardCVC').value;
+            const cardName = document.getElementById('cardName').value;
+            const cardEmail = document.getElementById('cardEmail').value;
+            const amount = document.getElementById('finalAmount').textContent;
+
+            // Basic validation
+            if (cardNumber.length !== 16) {
+                alert('Please enter a valid card number');
+                return;
+            }
+
+            if (cardExpiry.length !== 5 || !cardExpiry.includes('/')) {
+                alert('Please enter expiry in MM/YY format');
+                return;
+            }
+
+            if (cardCVC.length !== 3) {
+                alert('Please enter a valid CVC');
+                return;
+            }
+
+            // Show processing
+            const btn = event.target.querySelector('button[type="submit"]');
+            const originalText = btn.textContent;
+            btn.textContent = 'Processing...';
+            btn.disabled = true;
+
+            // Simulate payment processing
+            setTimeout(() => {
+                // Success message
+                alert(`✅ Payment Successful!\n\nAmount: €${amount}\nCard ending in: ${cardNumber.slice(-4)}\nEmail confirmation sent to: ${cardEmail}\n\nThank you for choosing StudioWebDigital! Our team will contact you shortly to begin your project.`);
+                
+                // Reset form
+                document.getElementById('paymentForm').reset();
+                closePayment();
+                
+                btn.textContent = originalText;
+                btn.disabled = false;
+            }, 2000);
+        }
+
+        // Format card number input
+        document.addEventListener('DOMContentLoaded', () => {
+            const cardInput = document.getElementById('cardNumber');
+            if (cardInput) {
+                cardInput.addEventListener('input', function(e) {
+                    let value = e.target.value.replace(/\s/g, '');
+                    let formattedValue = value.match(/.{1,4}/g)?.join(' ') || value;
+                    e.target.value = formattedValue;
+                });
+            }
+
+            const expiryInput = document.getElementById('cardExpiry');
+            if (expiryInput) {
+                expiryInput.addEventListener('input', function(e) {
+                    let value = e.target.value.replace(/\D/g, '');
+                    if (value.length >= 2) {
+                        value = value.slice(0, 2) + '/' + value.slice(2, 4);
+                    }
+                    e.target.value = value;
+                });
+            }
+        });
+
+        // Close modal when clicking outside
+        document.getElementById('paymentModal')?.addEventListener('click', function(e) {
+            if (e.target === this) {
+                closePayment();
+            }
+        });
+
+        // Close service modal when clicking outside
+        document.getElementById('serviceModal')?.addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeServiceModal();
+            }
+        });
+
+        // Close portfolio modal when clicking outside
+        document.getElementById('portfolioModal')?.addEventListener('click', function(e) {
+            if (e.target === this) {
+                closePortfolioModal();
+            }
+        });
+
+        // Add staggered animation to service cards
+        document.addEventListener('DOMContentLoaded', () => {
+            const serviceCards = document.querySelectorAll('.service-card');
+            serviceCards.forEach((card, index) => {
+                card.style.animation = `fadeInUp 0.6s ease-out ${index * 0.1}s both`;
+            });
+
+            const portfolioItems = document.querySelectorAll('.portfolio-item');
+            portfolioItems.forEach((item, index) => {
+                item.style.animation = `scaleIn 0.6s ease-out ${index * 0.08}s both`;
+            });
+
+            const testimonials = document.querySelectorAll('.testimonial');
+            testimonials.forEach((item, index) => {
+                item.style.animation = `slideInLeft 0.6s ease-out ${index * 0.1}s both`;
+            });
+        });
+
+        // Mobile menu toggle (for responsiveness)
+        document.addEventListener('DOMContentLoaded', () => {
+            // Add mobile responsiveness enhancements
+            if (window.innerWidth < 768) {
+                document.querySelector('nav ul').style.fontSize = '0.85rem';
+            }
+        });
+    </script>
+</body>
+</html>
