@@ -1,39 +1,49 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { motion, Variants } from "framer-motion";
-import { ArrowRight, Sparkles, Activity, ShieldCheck, Cpu } from "lucide-react";
+import { Star, LayoutGrid, Sparkles } from "lucide-react";
+
+interface BgDot {
+  id: number;
+  size: number;
+  x: number;
+  y: number;
+  duration: number;
+}
 
 export default function Hero() {
+  const [dots, setDots] = useState<BgDot[]>([]);
+
+  useEffect(() => {
+    const generated = [...Array(20)].map((_, i) => ({
+      id: i,
+      size: Math.random() * 2 + 1,
+      x: Math.random() * 90 + 5,
+      y: Math.random() * 90 + 5,
+      duration: 10 + Math.random() * 10,
+    }));
+    setDots(generated);
+  }, []);
   const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.15,
-        delayChildren: 0.2,
+        staggerChildren: 0.1,
+        delayChildren: 0.1,
       },
     },
   };
 
   const itemVariants: Variants = {
-    hidden: { opacity: 0, y: 25 },
+    hidden: { opacity: 0, y: 15 },
     visible: {
       opacity: 1,
       y: 0,
-      transition: { type: "spring", stiffness: 100, damping: 15 },
+      transition: { type: "spring", stiffness: 100, damping: 18 },
     },
   };
-
-  const floatVariants = (yOffset: number, duration: number) => ({
-    animate: {
-      y: [0, yOffset, 0],
-      transition: {
-        duration: duration,
-        repeat: Infinity,
-        ease: "easeInOut" as const,
-      },
-    },
-  });
 
   const handleCtaClick = (sectionId: string) => {
     const element = document.getElementById(sectionId);
@@ -45,152 +55,160 @@ export default function Hero() {
   return (
     <section
       id="home"
-      className="scroll-section relative flex flex-col justify-between px-6 md:px-12 py-24 z-10 w-full overflow-hidden"
+      className="scroll-section relative flex flex-col justify-between items-center px-6 pt-[12vh] pb-[3vh] z-10 w-full h-full overflow-hidden text-center"
     >
-      {/* Decorative center glow */}
-      <div className="absolute top-[30%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] md:w-[600px] h-[350px] md:h-[600px] rounded-full bg-white/[0.02] blur-[120px] pointer-events-none -z-10" />
-
-      {/* Spacing alignment helper */}
-      <div className="h-16 md:h-20 lg:h-12" />
-
-      {/* Main Content Area */}
-      <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center my-auto relative">
-        
-        {/* Left: Content */}
+      {/* Drifting background dots */}
+      {dots.map((dot) => (
         <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-          className="lg:col-span-7 flex flex-col text-left space-y-6 md:space-y-8"
-        >
-          {/* Announcement Badge */}
-          <motion.div variants={itemVariants} className="inline-flex">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-neutral-800 bg-neutral-950/60 text-xs text-neutral-400 tracking-wider font-mono">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-neutral-100"></span>
-              </span>
-              <span>NOW ACCEPTING PROJECTS FOR Q3 2026</span>
-            </div>
-          </motion.div>
+          key={dot.id}
+          className="absolute rounded-full bg-white pointer-events-none z-0"
+          style={{
+            width: dot.size,
+            height: dot.size,
+            left: `${dot.x}%`,
+            top: `${dot.y}%`,
+          }}
+          animate={{
+            y: [0, -60, 0],
+            opacity: [0.2, 0.8, 0.2],
+          }}
+          transition={{
+            duration: dot.duration,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+        />
+      ))}
 
-          {/* Headline */}
-          <motion.h1
-            variants={itemVariants}
-            className="text-4xl sm:text-5xl md:text-6xl xl:text-7xl font-extrabold tracking-tight text-white leading-[1.05]"
-          >
-            Premium Digital <br className="hidden md:inline" />
-            <span className="text-glow text-neutral-100 font-light">Excellence.</span>
-          </motion.h1>
+      {/* Decorative breathing/moving center glow */}
+      <motion.div
+        animate={{
+          scale: [1, 1.2, 1],
+          opacity: [0.2, 0.5, 0.2],
+          x: ["-50%", "-47%", "-53%", "-50%"],
+          y: ["-50%", "-54%", "-46%", "-50%"],
+        }}
+        transition={{
+          duration: 18,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+        className="absolute top-[40%] left-1/2 w-[350px] md:w-[650px] h-[350px] md:h-[650px] rounded-full bg-white/10 blur-[130px] pointer-events-none z-0"
+      />
 
-          {/* Subtitle */}
-          <motion.p
-            variants={itemVariants}
-            className="text-sm md:text-base xl:text-lg text-neutral-400 max-w-xl font-normal leading-relaxed"
-          >
-            Transforming ideas into stunning digital experiences. We craft high-performance websites, bespoke designs, and tailored AI systems with Italian elegance.
-          </motion.p>
-
-          {/* CTAs */}
-          <motion.div
-            variants={itemVariants}
-            className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-2"
-          >
-            <button
-              onClick={() => handleCtaClick("services")}
-              className="group flex items-center justify-center gap-2 px-6 py-3.5 bg-white text-[#050505] font-semibold text-xs uppercase tracking-wider rounded-xl hover:bg-neutral-200 transition-colors duration-300 shadow-[0_0_20px_rgba(255,255,255,0.1)]"
-            >
-              Explore Services
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
-            </button>
-            <button
-              onClick={() => handleCtaClick("contact")}
-              className="flex items-center justify-center gap-2 px-6 py-3.5 border border-neutral-800 hover:border-neutral-700 bg-neutral-950/30 text-white font-semibold text-xs uppercase tracking-wider rounded-xl hover:bg-neutral-900/40 transition-colors duration-300"
-            >
-              Get In Touch
-            </button>
-          </motion.div>
-        </motion.div>
-
-        {/* Right: Floating UI Dashboard (Teasing Metrics) */}
-        <div className="lg:col-span-5 relative w-full h-[320px] md:h-[400px] flex items-center justify-center">
-          {/* Central Radial Gradient glow for cards */}
-          <div className="absolute w-[200px] h-[200px] rounded-full bg-white/[0.03] blur-[60px] pointer-events-none" />
-
-          {/* Card 1: SEO Traffic Growth */}
-          <motion.div
-            variants={floatVariants(-12, 5)}
-            animate="animate"
-            className="absolute top-[10%] left-[5%] md:left-[10%] w-[190px] p-4 rounded-2xl border border-neutral-900 bg-neutral-950/80 backdrop-blur-md glow-sm"
-          >
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-[10px] font-mono text-neutral-500 uppercase tracking-wider">
-                TRAFFIC
-              </span>
-              <div className="p-1 rounded bg-white/5 border border-neutral-800 text-neutral-300">
-                <Activity className="w-3.5 h-3.5" />
-              </div>
-            </div>
-            <p className="text-xl font-bold tracking-tight text-white">+250%</p>
-            <p className="text-[10px] text-neutral-400 mt-1 font-mono">Luxury Brand Overhaul</p>
-          </motion.div>
-
-          {/* Card 2: Speed / PageSpeed Performance */}
-          <motion.div
-            variants={floatVariants(10, 6.2)}
-            animate="animate"
-            className="absolute bottom-[15%] right-[5%] md:right-[10%] w-[190px] p-4 rounded-2xl border border-neutral-900 bg-neutral-950/80 backdrop-blur-md glow-sm"
-          >
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-[10px] font-mono text-neutral-500 uppercase tracking-wider">
-                PERFORMANCE
-              </span>
-              <div className="p-1 rounded bg-white/5 border border-neutral-800 text-neutral-300">
-                <Cpu className="w-3.5 h-3.5" />
-              </div>
-            </div>
-            <p className="text-xl font-bold tracking-tight text-white">98 / 100</p>
-            <p className="text-[10px] text-neutral-400 mt-1 font-mono">Core Web Vitals</p>
-          </motion.div>
-
-          {/* Card 3: AI Assistant Automation */}
-          <motion.div
-            variants={floatVariants(-8, 4.2)}
-            animate="animate"
-            className="absolute top-[45%] right-[10%] md:right-[15%] w-[170px] p-3.5 rounded-2xl border border-neutral-900 bg-neutral-950/80 backdrop-blur-md glow-sm"
-          >
-            <div className="flex items-center justify-between mb-1.5">
-              <span className="text-[10px] font-mono text-neutral-500 uppercase tracking-wider">
-                AI SYSTEMS
-              </span>
-              <ShieldCheck className="w-3.5 h-3.5 text-neutral-400" />
-            </div>
-            <p className="text-lg font-bold tracking-tight text-white">-60%</p>
-            <p className="text-[9px] text-neutral-400 mt-0.5 font-mono">Support Costs Saved</p>
-          </motion.div>
-        </div>
-      </div>
-
-      {/* Bottom: Trusted Companies Logo Strip */}
-      <div className="max-w-7xl mx-auto w-full mt-auto">
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.8, duration: 0.6 }}
-          className="border-t border-neutral-900/60 pt-8"
-        >
-          <p className="text-[10px] tracking-[0.2em] font-mono text-neutral-500 text-left uppercase mb-6 flex items-center gap-1.5">
-            <Sparkles className="w-3 h-3 text-neutral-500" />
-            TRUSTED PARTNER FOR DIGITAL DOMINANCE
-          </p>
-          <div className="flex flex-wrap items-center justify-start gap-x-12 gap-y-6 opacity-35 hover:opacity-55 transition-opacity duration-300">
-            <span className="text-sm font-bold tracking-[0.3em] text-white">VERCEL</span>
-            <span className="text-sm font-bold tracking-[0.3em] text-white">STRIPE</span>
-            <span className="text-sm font-semibold tracking-[0.3em] text-white">LINEAR</span>
-            <span className="text-sm font-light tracking-[0.3em] text-white">RAYCAST</span>
-            <span className="text-sm font-bold tracking-[0.3em] text-white">FRAMER</span>
+      {/* Main Centered Content */}
+      <motion.div
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+        className="w-full max-w-4xl mx-auto px-4 flex flex-col items-center justify-center space-y-[2.5vh] my-auto relative z-10"
+      >
+        {/* Scarcity / Announcement Badge */}
+        <motion.div variants={itemVariants} className="inline-flex max-w-full">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-neutral-900 bg-neutral-950/60 text-[10px] tracking-wider text-neutral-450 font-mono max-w-full">
+            <span className="relative flex h-1.5 w-1.5 shrink-0">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-green-500"></span>
+            </span>
+            <span className="text-neutral-400 uppercase tracking-widest truncate">HURRY! ONLY FEW SPOTS LEFT</span>
           </div>
         </motion.div>
+
+        {/* Large Centered Headline */}
+        <motion.h1
+          variants={itemVariants}
+          className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight text-white leading-[1.1] max-w-3xl w-full"
+        >
+          Experience Top-Tier Designs with <span className="font-light text-neutral-400 text-glow">StudioWebDigital</span>
+        </motion.h1>
+
+        {/* Subtitle */}
+        <motion.p
+          variants={itemVariants}
+          className="text-xs sm:text-sm md:text-base text-neutral-500 max-w-xl leading-relaxed w-full"
+        >
+          Get high-quality, customized designs whenever you need them. <br className="hidden sm:inline" />
+          Transforming ideas into stunning digital products with Italian elegance.
+        </motion.p>
+
+        {/* Animated Action Button */}
+        <motion.div variants={itemVariants} className="pt-2">
+          <motion.div
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.98 }}
+            className="relative p-[1px] inline-block rounded-xl overflow-hidden bg-neutral-900/60 hover:bg-neutral-850 transition-all duration-300 shadow-[0_0_20px_rgba(255,255,255,0.015)] hover:shadow-[0_0_25px_rgba(255,255,255,0.04)] group"
+          >
+            {/* Rotating Border Beam */}
+            <div className="absolute inset-[-200%] bg-[conic-gradient(from_0deg,transparent_50%,#ffffff_85%,#ffffff_100%)] animate-[spin_6s_linear_infinite] opacity-50" />
+
+            {/* Inside Interactive Button */}
+            <button
+              onClick={() => handleCtaClick("services")}
+              className="relative px-4 sm:px-6 py-2.5 sm:py-3 bg-[#050505] hover:bg-[#050505]/95 text-white font-medium text-xs uppercase tracking-widest rounded-[11px] flex items-center gap-2 transition-colors duration-300 z-10 cursor-pointer"
+            >
+              Explore Services
+              <span className="text-neutral-500 group-hover:text-white group-hover:translate-x-0.5 transition-all text-xs">
+                →
+              </span>
+            </button>
+          </motion.div>
+        </motion.div>
+
+        {/* Trusted Companies Logo Strip (Auto Marquee) */}
+        <motion.div
+          variants={itemVariants}
+          className="w-full pt-[3vh] overflow-hidden relative"
+        >
+          {/* Gradient masking for left/right borders */}
+          <div className="absolute inset-y-0 left-0 w-12 md:w-24 bg-gradient-to-r from-[#050505] to-transparent z-10 pointer-events-none" />
+          <div className="absolute inset-y-0 right-0 w-12 md:w-24 bg-gradient-to-l from-[#050505] to-transparent z-10 pointer-events-none" />
+
+          {/* Marquee Track */}
+          <div className="flex w-max animate-marquee whitespace-nowrap gap-0 opacity-25 hover:opacity-45 transition-opacity duration-300">
+            {/* First Set of Logos */}
+            <div className="flex items-center gap-12 md:gap-20 pr-12 md:pr-20">
+              <span className="text-xs font-bold tracking-[0.3em] text-white">VERCEL</span>
+              <span className="text-xs font-bold tracking-[0.3em] text-white">STRIPE</span>
+              <span className="text-xs font-semibold tracking-[0.3em] text-white">LINEAR</span>
+              <span className="text-xs font-light tracking-[0.3em] text-white">RAYCAST</span>
+              <span className="text-xs font-bold tracking-[0.3em] text-white">FRAMER</span>
+            </div>
+            {/* Duplicate Set for Infinite Loop */}
+            <div className="flex items-center gap-12 md:gap-20 pr-12 md:pr-20" aria-hidden="true">
+              <span className="text-xs font-bold tracking-[0.3em] text-white">VERCEL</span>
+              <span className="text-xs font-bold tracking-[0.3em] text-white">STRIPE</span>
+              <span className="text-xs font-semibold tracking-[0.3em] text-white">LINEAR</span>
+              <span className="text-xs font-light tracking-[0.3em] text-white">RAYCAST</span>
+              <span className="text-xs font-bold tracking-[0.3em] text-white">FRAMER</span>
+            </div>
+          </div>
+        </motion.div>
+      </motion.div>
+
+      {/* Bottom Layout Elements (Dashed Star Divider + Navigation Button) */}
+      <div className="w-full max-w-3xl mx-auto mt-auto space-y-[2.5vh] relative z-10">
+
+        {/* Dashed Line Star Divider */}
+        <div className="flex items-center justify-center gap-6 w-full max-w-xl mx-auto opacity-20">
+          <div className="flex-1 border-t border-dashed border-neutral-700" />
+          <div className="flex items-center gap-1.5 text-neutral-500">
+            <Star className="w-2.5 h-2.5" />
+            <Star className="w-3.5 h-3.5 fill-current" />
+            <Star className="w-2.5 h-2.5" />
+          </div>
+          <div className="flex-1 border-t border-dashed border-neutral-700" />
+        </div>
+
+        {/* Projects Trigger Button */}
+        <div className="flex justify-center pb-[2vh]">
+          <button
+            onClick={() => handleCtaClick("portfolio")}
+            className="group flex items-center gap-2 px-4 py-2 border border-neutral-900 bg-neutral-950/40 text-neutral-400 hover:text-white text-[10px] font-mono tracking-wider uppercase rounded-xl hover:bg-neutral-900/20 hover:border-neutral-850 transition-all duration-300"
+          >
+            <LayoutGrid className="w-3.5 h-3.5" />
+            Our Projects
+          </button>
+        </div>
       </div>
     </section>
   );
