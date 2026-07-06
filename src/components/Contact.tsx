@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence, Variants } from "framer-motion";
-import { MapPin, Mail, Phone, Clock, Send, Sparkles } from "lucide-react";
+import { MapPin, Mail, Phone, Clock, Send, Sparkles, Copy, Check } from "lucide-react";
 
 export default function Contact() {
   const [name, setName] = useState("");
@@ -13,18 +13,7 @@ export default function Contact() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [dots, setDots] = useState<{ id: number; size: number; x: number; y: number; duration: number }[]>([]);
-
-  useEffect(() => {
-    const generated = [...Array(14)].map((_, i) => ({
-      id: i,
-      size: Math.random() * 2 + 1,
-      x: Math.random() * 90 + 5,
-      y: Math.random() * 90 + 5,
-      duration: 12 + Math.random() * 10,
-    }));
-    setDots(generated);
-  }, []);
+  const [copiedIndex, setCopiedIndex] = useState<string | null>(null);
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
@@ -51,6 +40,13 @@ export default function Contact() {
     }, 1500);
   };
 
+  const handleCardClick = (copyValue?: string, label?: string) => {
+    if (!copyValue) return;
+    navigator.clipboard.writeText(copyValue);
+    setCopiedIndex(label || null);
+    setTimeout(() => setCopiedIndex(null), 1800);
+  };
+
   const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: { opacity: 1, transition: { staggerChildren: 0.12 } },
@@ -72,13 +68,15 @@ export default function Contact() {
       num: "02",
       icon: Mail,
       label: "Email",
-      content: <span className="font-mono">hello@studiowebdigital.it</span>,
+      content: <span className="font-mono select-all">hello@studiowebdigital.it</span>,
+      copyValue: "hello@studiowebdigital.it",
     },
     {
       num: "03",
       icon: Phone,
       label: "Phone",
-      content: <span className="font-mono">+39 351 225 5725</span>,
+      content: <span className="font-mono select-all">+39 351 225 5725</span>,
+      copyValue: "+39 351 225 5725",
     },
     {
       num: "04",
@@ -88,24 +86,13 @@ export default function Contact() {
     },
   ];
 
-  const inputClass = "w-full px-3 py-2.5 text-xs border border-neutral-900 rounded-xl bg-neutral-950/40 text-white placeholder:text-neutral-700 focus:outline-none focus:border-neutral-700 focus:ring-1 focus:ring-neutral-700 transition-colors duration-200";
-  const labelClass = "text-[10px] font-mono text-neutral-500 uppercase tracking-wider";
+  const inputClass = "w-full px-4 py-3.5 text-xs border border-neutral-900 rounded-xl bg-neutral-950/60 text-white placeholder:text-neutral-700 focus:outline-none focus:border-cyan-500/60 focus:ring-1 focus:ring-cyan-500/30 transition-all duration-300 z-10";
+  const labelClass = "text-[9px] font-mono text-neutral-500 uppercase tracking-[0.15em] flex items-center gap-1.5 select-none";
 
   return (
     <section
       className="relative px-6 md:px-12 py-28 z-10 w-full overflow-hidden border-t border-neutral-900 bg-[#050505]"
     >
-      {/* Drifting background dots */}
-      {dots.map((dot) => (
-        <motion.div
-          key={dot.id}
-          className="absolute rounded-full bg-white pointer-events-none z-0"
-          style={{ width: dot.size, height: dot.size, left: `${dot.x}%`, top: `${dot.y}%` }}
-          animate={{ y: [0, -50, 0], opacity: [0.1, 0.45, 0.1] }}
-          transition={{ duration: dot.duration, repeat: Infinity, ease: "easeInOut" }}
-        />
-      ))}
-
       {/* Breathing glow — top-right */}
       <motion.div
         animate={{ scale: [1, 1.15, 1], opacity: [0.1, 0.25, 0.1] }}
@@ -153,15 +140,33 @@ export default function Contact() {
 
           {/* Left: Info cards */}
           <motion.div variants={itemVariants} className="lg:col-span-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-4">
-            {infoCards.map(({ num, icon: Icon, label, content }) => (
-              <div key={num} className="group relative p-[1px] rounded-2xl overflow-hidden">
-                {/* Conic border beam on hover */}
-                <div className="absolute inset-[-200%] bg-[conic-gradient(from_0deg,transparent_60%,#ffffff_88%,#ffffff_100%)] animate-[spin_8s_linear_infinite] opacity-0 group-hover:opacity-20 transition-opacity duration-500" />
+            {infoCards.map(({ num, icon: Icon, label, content, copyValue }) => (
+              <div
+                key={num}
+                onClick={() => handleCardClick(copyValue, label)}
+                className={`group relative p-[1px] rounded-2xl overflow-hidden ${copyValue ? "cursor-pointer" : ""}`}
+              >
+                {/* Conic border beam on hover (static glow gradient instead of spinning animation) */}
+                {/* <div className="absolute inset-[-200%] bg-[conic-gradient(from_0deg,transparent_60%,#06b6d4_88%,#06b6d4_100%)] opacity-0 group-hover:opacity-20 transition-opacity duration-500" /> */}
                 <div className="relative rounded-[15px] bg-neutral-950/20 group-hover:bg-neutral-950/50 border border-neutral-900 group-hover:border-neutral-800 transition-all duration-300 flex flex-col overflow-hidden">
                   {/* Top bar */}
                   <div className="flex items-center justify-between px-5 pt-4 pb-3">
-                    <span className="text-[10px] font-mono font-bold tracking-[0.2em] text-neutral-700 group-hover:text-neutral-500 transition-colors duration-300">{num} /</span>
-                    <div className="w-7 h-7 rounded-full border border-neutral-800 bg-neutral-950 flex items-center justify-center text-neutral-600 group-hover:text-white group-hover:border-neutral-600 transition-all duration-300">
+                    <span className="text-[10px] font-mono font-bold tracking-[0.2em] text-neutral-700 group-hover:text-neutral-500 transition-colors duration-300">
+                      {copiedIndex === label ? (
+                        <span className="text-cyan-400 font-bold lowercase tracking-normal flex items-center gap-1">
+                          <Check className="w-3 h-3 text-cyan-400" />
+                          copied!
+                        </span>
+                      ) : copyValue ? (
+                        <span className="text-[8px] text-neutral-500 lowercase tracking-normal flex items-center gap-1 group-hover:text-cyan-400/80 transition-colors duration-300">
+                          <Copy className="w-2.5 h-2.5" />
+                          click to copy
+                        </span>
+                      ) : (
+                        <span>{num} /</span>
+                      )}
+                    </span>
+                    <div className="w-7 h-7 rounded-full border border-neutral-800 bg-neutral-950 fill-none flex items-center justify-center text-neutral-600 group-hover:text-cyan-400 group-hover:border-cyan-500/40 transition-all duration-300">
                       <Icon className="w-3.5 h-3.5" />
                     </div>
                   </div>
@@ -170,6 +175,8 @@ export default function Contact() {
                     <h4 className="text-xs font-semibold text-white tracking-tight mb-1">{label}</h4>
                     <p className="text-[11px] text-neutral-600 group-hover:text-neutral-400 leading-relaxed transition-colors duration-300">{content}</p>
                   </div>
+                  {/* Slide-in bottom accent line */}
+                  <div className="absolute bottom-0 left-0 h-[1.5px] w-0 group-hover:w-full bg-gradient-to-r from-transparent via-cyan-500 to-transparent transition-all duration-500 ease-out" />
                 </div>
               </div>
             ))}
@@ -177,10 +184,7 @@ export default function Contact() {
 
           {/* Right: Form panel */}
           <motion.div variants={itemVariants} className="lg:col-span-8 w-full">
-            <div className="relative p-[1px] rounded-2xl overflow-hidden">
-              {/* Subtle static conic gradient border */}
-              <div className="absolute inset-0 rounded-2xl bg-[conic-gradient(from_180deg_at_50%_50%,#1a1a1a_0%,#2a2a2a_50%,#1a1a1a_100%)]" />
-              <div className="relative rounded-[15px] bg-neutral-950/60 p-7 md:p-9">
+            <div className="relative rounded-2xl bg-neutral-950/65 p-7 md:p-9 border border-neutral-900 hover:border-neutral-800 transition-colors duration-300">
 
                 <AnimatePresence mode="wait">
                   {!submitSuccess ? (
@@ -193,26 +197,42 @@ export default function Contact() {
                       className="space-y-5"
                     >
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                        <div className="flex flex-col gap-1.5 text-left">
-                          <label htmlFor="name" className={labelClass}>Full Name *</label>
+                        {/* Name */}
+                        <div className="flex flex-col gap-2 text-left">
+                          <label htmlFor="name" className={labelClass}>
+                            <span className="w-1 h-1 rounded-full bg-cyan-500" />
+                            Full Name *
+                          </label>
                           <input id="name" type="text" required value={name} onChange={(e) => setName(e.target.value)} placeholder="Lucia Santoro" className={inputClass} />
-                          {errors.name && <span className="text-[9px] font-mono text-red-500">{errors.name}</span>}
+                          {errors.name && <span className="text-[9px] font-mono text-red-500 mt-1">{errors.name}</span>}
                         </div>
-                        <div className="flex flex-col gap-1.5 text-left">
-                          <label htmlFor="email" className={labelClass}>Email Address *</label>
+                        {/* Email */}
+                        <div className="flex flex-col gap-2 text-left">
+                          <label htmlFor="email" className={labelClass}>
+                            <span className="w-1 h-1 rounded-full bg-cyan-500" />
+                            Email Address *
+                          </label>
                           <input id="email" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder="lucia@fashionhouse.it" className={inputClass} />
-                          {errors.email && <span className="text-[9px] font-mono text-red-500">{errors.email}</span>}
+                          {errors.email && <span className="text-[9px] font-mono text-red-500 mt-1">{errors.email}</span>}
                         </div>
                       </div>
 
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                        <div className="flex flex-col gap-1.5 text-left">
-                          <label htmlFor="company" className={labelClass}>Company Name</label>
+                        {/* Company */}
+                        <div className="flex flex-col gap-2 text-left">
+                          <label htmlFor="company" className={labelClass}>
+                            <span className="w-1.5 h-1.5 border border-cyan-500/60 rounded-full" />
+                            Company Name
+                          </label>
                           <input id="company" type="text" value={company} onChange={(e) => setCompany(e.target.value)} placeholder="Fashion House Italia" className={inputClass} />
                         </div>
-                        <div className="flex flex-col gap-1.5 text-left">
-                          <label htmlFor="service" className={labelClass}>Service Interested In *</label>
-                          <select id="service" required value={service} onChange={(e) => setService(e.target.value)} className={inputClass + " bg-neutral-950"}>
+                        {/* Service select */}
+                        <div className="flex flex-col gap-2 text-left">
+                          <label htmlFor="service" className={labelClass}>
+                            <span className="w-1 h-1 rounded-full bg-cyan-500" />
+                            Service Interested In *
+                          </label>
+                          <select id="service" required value={service} onChange={(e) => setService(e.target.value)} className={inputClass + " bg-neutral-950/95 cursor-pointer appearance-none"}>
                             <option value="">Select a service category</option>
                             <option value="digital-marketing">Digital Marketing</option>
                             <option value="web-development">Web Development</option>
@@ -220,37 +240,38 @@ export default function Contact() {
                             <option value="social-media">Social Media Management</option>
                             <option value="other">Other / Custom Scope</option>
                           </select>
-                          {errors.service && <span className="text-[9px] font-mono text-red-500">{errors.service}</span>}
+                          {errors.service && <span className="text-[9px] font-mono text-red-500 mt-1">{errors.service}</span>}
                         </div>
                       </div>
 
-                      <div className="flex flex-col gap-1.5 text-left">
-                        <label htmlFor="message" className={labelClass}>Message Details *</label>
+                      {/* Message */}
+                      <div className="flex flex-col gap-2 text-left">
+                        <label htmlFor="message" className={labelClass}>
+                          <span className="w-1 h-1 rounded-full bg-cyan-500" />
+                          Message Details *
+                        </label>
                         <textarea id="message" required value={message} onChange={(e) => setMessage(e.target.value)} placeholder="Outline your project scope or objectives..." rows={5} className={inputClass + " resize-none"} />
-                        {errors.message && <span className="text-[9px] font-mono text-red-500">{errors.message}</span>}
+                        {errors.message && <span className="text-[9px] font-mono text-red-500 mt-1">{errors.message}</span>}
                       </div>
 
-                      {/* CTA — conic border beam button */}
-                      <div className="relative p-[1px] rounded-xl overflow-hidden mt-2">
-                        <div className="absolute inset-[-200%] bg-[conic-gradient(from_0deg,transparent_50%,#ffffff_80%,#ffffff_100%)] animate-[spin_6s_linear_infinite] opacity-40" />
-                        <button
-                          type="submit"
-                          disabled={isSubmitting}
-                          className="relative w-full py-3 rounded-[11px] bg-white hover:bg-neutral-200 disabled:bg-neutral-800 disabled:text-neutral-500 text-[#050505] text-xs font-semibold uppercase tracking-wider flex items-center justify-center gap-2 transition-all duration-300 cursor-pointer z-10"
-                        >
-                          {isSubmitting ? (
-                            <>
-                              <div className="w-3.5 h-3.5 rounded-full border border-neutral-600 border-t-neutral-200 animate-spin" />
-                              Sending...
-                            </>
-                          ) : (
-                            <>
-                              Send Inquiry
-                              <Send className="w-3.5 h-3.5" />
-                            </>
-                          )}
-                        </button>
-                      </div>
+                      {/* CTA button */}
+                      <button
+                        type="submit"
+                        disabled={isSubmitting}
+                        className="w-full py-3 rounded-xl bg-white hover:bg-neutral-200 disabled:bg-neutral-800 disabled:text-neutral-500 text-[#050505] text-xs font-semibold uppercase tracking-wider flex items-center justify-center gap-2 transition-all duration-300 cursor-pointer"
+                      >
+                        {isSubmitting ? (
+                          <>
+                            <div className="w-3.5 h-3.5 rounded-full border border-neutral-600 border-t-neutral-200 animate-spin" />
+                            Sending...
+                          </>
+                        ) : (
+                          <>
+                            Send Inquiry
+                            <Send className="w-3.5 h-3.5" />
+                          </>
+                        )}
+                      </button>
                     </motion.form>
                   ) : (
                     <motion.div
@@ -279,12 +300,11 @@ export default function Contact() {
                   )}
                 </AnimatePresence>
               </div>
-            </div>
-          </motion.div>
+            </motion.div>
 
-        </motion.div>
-      </div>
-    </section>
-  );
-}
+          </motion.div>
+        </div>
+      </section>
+    );
+  }
 
