@@ -58,14 +58,9 @@ export default function Home() {
         <Testimonials />
         <FAQ />
 
-        {/* Section 9: Unified Contact and Footer wrapper */}
-        <div
-          id="contact"
-          className="scroll-section min-h-screen h-screen flex flex-col justify-between overflow-y-auto no-scrollbar"
-        >
-          <div className="flex-1 flex items-center pt-20">
-            <Contact />
-          </div>
+        {/* Contact + Footer — single snap section so Footer is reachable */}
+        <div id="contact" className="scroll-section !h-auto !min-h-fit !overflow-visible">
+          <Contact />
           <Footer />
         </div>
       </div>
