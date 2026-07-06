@@ -405,7 +405,7 @@ export default function Portfolio() {
                   </p>
 
                   {/* Metrics Row */}
-                  <div className="mt-auto pt-4 border-t border-neutral-900 grid grid-cols-2 gap-4">
+                  {/* <div className="mt-auto pt-4 border-t border-neutral-900 grid grid-cols-2 gap-4">
                     {project.metrics.map((metric, idx) => (
                       <div key={idx} className="text-left">
                         <span className="text-sm font-bold text-white tracking-tight">
@@ -416,7 +416,7 @@ export default function Portfolio() {
                         </p>
                       </div>
                     ))}
-                  </div>
+                  </div> */}
                 </div>
 
                 {/* Bottom slide-in accent line */}
@@ -523,14 +523,14 @@ export default function Portfolio() {
               </div>
             </div>
 
-            <div className="border-t border-neutral-900 pt-5 text-left flex justify-end">
+            {/* <div className="border-t border-neutral-900 pt-5 text-left flex justify-end">
               <button
                 onClick={handleCloseProject}
                 className="px-5 py-2.5 border border-neutral-850 hover:bg-neutral-900 transition-colors text-xs font-semibold uppercase tracking-wider rounded-lg text-white cursor-pointer"
               >
                 Close Project Case
               </button>
-            </div>
+            </div> */}
           </div>
         )}
       </Modal>
