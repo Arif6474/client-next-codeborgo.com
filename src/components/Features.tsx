@@ -76,7 +76,7 @@ export default function Features() {
   return (
     <section
       id="features"
-      className="scroll-section relative px-6 md:px-12 py-28 z-10 w-full overflow-hidden border-t border-neutral-900 bg-[#050505]"
+      className="scroll-section relative px-6 md:px-12 py-28 z-10 w-full overflow-hidden border-t border-neutral-900 bg-[#050505] flex flex-col justify-center"
     >
       {/* Drifting background dots */}
       {dots.map((dot) => (
