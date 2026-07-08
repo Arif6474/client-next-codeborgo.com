@@ -539,7 +539,7 @@ export default function Pricing() {
                 <div className="space-y-1.5">
                   <h4 className="text-sm font-bold text-white tracking-tight">Payment Successful</h4>
                   <p className="text-xs text-neutral-400 max-w-sm leading-relaxed">
-                    Thank you for choosing StudioWebDigital. An confirmation invoice has been sent to <strong className="text-white">{cardEmail}</strong>. Our director will call you within 24 business hours to kick off your project.
+                    Thank you for choosing Aether Genio. A confirmation invoice has been sent to <strong className="text-white">{cardEmail}</strong>. Our director will call you within 24 business hours to kick off your project.
                   </p>
                 </div>
                 <button

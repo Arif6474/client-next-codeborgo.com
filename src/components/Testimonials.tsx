@@ -37,7 +37,7 @@ const testimonials: TestimonialItem[] = [
   },
   {
     quote:
-      "StudioWebDigital completely transformed our digital presence. Sales increased by 180% in the first quarter after launch!",
+      "Aether Genio completely transformed our digital presence. Sales increased by 180% in the first quarter after launch!",
     author: "Lucia Santoro",
     role: "CEO, Italian Fashion House",
     avatar: "LS",
@@ -77,7 +77,7 @@ const testimonials: TestimonialItem[] = [
   },
   {
     quote:
-      "Working with StudioWebDigital was a game-changer. Their social strategy grew our brand awareness exponentially.",
+      "Working with Aether Genio was a game-changer. Their social strategy grew our brand awareness exponentially.",
     author: "Giulia Bianchi",
     role: "Marketing Director, Beauty Brand",
     avatar: "GB",
