@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Aether Genio",
+  title: "Vantelli",
   description: "Premium Digital Excellence",
 };
 

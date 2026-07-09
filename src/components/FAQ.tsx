@@ -11,7 +11,7 @@ interface FAQItem {
 
 const faqList: FAQItem[] = [
   {
-    question: "What technologies does Aether Genio specialize in?",
+    question: "What technologies does Vantelli specialize in?",
     answer:
       "We specialize in modern frontend and full-stack solutions. Our primary stack includes Next.js (App Router), React, TypeScript, Tailwind CSS, Node.js, and serverless databases like PostgreSQL. For AI implementations, we work directly with Anthropic Claude and OpenAI API integration vectors.",
   },
@@ -74,7 +74,7 @@ export default function FAQ() {
           </h2>
 
           <p className="text-neutral-500 text-sm leading-relaxed max-w-xs">
-            Everything you need to know about working with Aether Genio. Can't find an answer?
+            Everything you need to know about working with Vantelli. Can't find an answer?
           </p>
 
           {/* CTA */}

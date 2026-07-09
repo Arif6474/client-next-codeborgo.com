@@ -88,9 +88,9 @@ export default function Navbar({ scrollContainerRef }: NavbarProps) {
             className="group flex flex-col cursor-pointer"
           >
             <span className="text-xl font-bold tracking-[0.2em] text-white flex items-center">
-              AETHER
+              VAN
               <span className="font-light text-neutral-400 group-hover:text-white transition-colors duration-300 mx-1.5">
-                GENIO
+                TELLI
               </span>
             </span>
             <span className="text-[9px] uppercase tracking-[0.4em] text-neutral-500 font-mono mt-0.5">
