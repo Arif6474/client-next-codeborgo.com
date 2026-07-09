@@ -16,6 +16,64 @@ interface BgDot {
   driftX: number;
 }
 
+const companyLogos = [
+  {
+    name: "Vercel",
+    svg: (
+      <div className="flex items-center gap-2.5 text-neutral-500 hover:text-white transition-colors duration-300">
+        <svg className="h-3 w-auto fill-current" viewBox="0 0 76 65" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M37.5273 0L75.0546 65H0L37.5273 0Z" fill="currentColor"/>
+        </svg>
+        <span className="text-[10px] font-bold tracking-[0.25em] font-sans">VERCEL</span>
+      </div>
+    )
+  },
+  {
+    name: "Stripe",
+    svg: (
+      <div className="flex items-center gap-2 text-neutral-500 hover:text-white transition-colors duration-300">
+        <svg className="h-4 w-auto fill-current" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M13.962 2c-1.895 0-3.13 1.03-3.13 2.87 0 2.84 3.93 2.14 3.93 3.16 0 .3-.29.47-.84.47-.69 0-1.63-.26-2.45-.73l-.42 2.13c.84.42 1.93.63 2.8.63 2.5 0 4.14-1.12 4.14-2.88 0-3.07-3.93-2.37-3.93-3.23 0-.3.33-.48.86-.48.65 0 1.48.2 2.15.54l.43-2.1C16.666 2.1 15.228 2 13.962 2z" fill="currentColor"/>
+        </svg>
+        <span className="text-[10px] font-bold tracking-[0.25em] font-sans">STRIPE</span>
+      </div>
+    )
+  },
+  {
+    name: "Linear",
+    svg: (
+      <div className="flex items-center gap-2 text-neutral-500 hover:text-white transition-colors duration-300">
+        <svg className="h-3.5 w-auto fill-current" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+          <path d="M18.8 9.3c.1-.4.2-.9.2-1.3 0-4.4-3.6-8-8-8C6.9.0 3.7 2.3 2.5 5.5l1.9.9C5.2 4.1 7.4 2 10 2c3.3 0 6 2.7 6 6 0 .4-.1.7-.1 1.1l2.9.2zM2 10c0-.4.1-.7.1-1.1L.2 8.7C.1 9.1 0 9.6 0 10c0 4.4 3.6 8 8 8 4.1 0 7.3-2.3 8.5-5.5l-1.9-.9c-.8 2.3-3 4.4-5.6 4.4-3.3 0-6-2.7-6-6z" fill="currentColor"/>
+        </svg>
+        <span className="text-[10px] font-bold tracking-[0.25em] font-sans">LINEAR</span>
+      </div>
+    )
+  },
+  {
+    name: "Raycast",
+    svg: (
+      <div className="flex items-center gap-2.5 text-neutral-500 hover:text-white transition-colors duration-300">
+        <svg className="h-4 w-auto fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M13.2 2.1c-.6-.4-1.3-.4-1.9 0L3.8 7.3c-.6.4-1 1.1-1 1.8v10.4c0 .7.4 1.4 1 1.8l7.5 5.2c.6.4 1.3.4 1.9 0l7.5-5.2c.6-.4 1-1.1 1-1.8V9.1c0-.7-.4-1.4-1-1.8L13.2 2.1zm-1.2 3.1l6.1 4.2-2.7 1.8-6.1-4.2 2.7-1.8zm-6.1 6L12 7.1l6.1 4.2-6.1 4.2-6.1-4.2zm6.1 6.3L6 13.3l2.7-1.8 6.1 4.2-2.7 1.8z" fill="currentColor"/>
+        </svg>
+        <span className="text-[10px] font-bold tracking-[0.25em] font-sans">RAYCAST</span>
+      </div>
+    )
+  },
+  {
+    name: "Framer",
+    svg: (
+      <div className="flex items-center gap-2 text-neutral-500 hover:text-white transition-colors duration-300">
+        <svg className="h-3.5 w-auto fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M4 0h16v8H12zM4 8h8l8 8H4zM12 16h8v8z" fill="currentColor"/>
+        </svg>
+        <span className="text-[10px] font-bold tracking-[0.25em] font-sans">FRAMER</span>
+      </div>
+    )
+  }
+];
+
 export default function Hero() {
   const [dots, setDots] = useState<BgDot[]>([]);
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -359,32 +417,40 @@ export default function Hero() {
           </motion.div>
         </motion.div>
 
-        {/* Trusted Companies Logo Strip (Auto Marquee) */}
+        {/* Trusted Companies Section */}
         <motion.div
           variants={itemVariants}
-          className="w-full pt-[3vh] overflow-hidden relative"
+          className="w-full pt-[3vh] flex flex-col items-center gap-4 relative z-10"
         >
-          {/* Gradient masking for left/right borders */}
-          <div className="absolute inset-y-0 left-0 w-12 md:w-24 bg-gradient-to-r from-[#050505] to-transparent z-10 pointer-events-none" />
-          <div className="absolute inset-y-0 right-0 w-12 md:w-24 bg-gradient-to-l from-[#050505] to-transparent z-10 pointer-events-none" />
+          {/* Subtle Label */}
+          <span className="text-[8px] font-mono tracking-[0.3em] text-neutral-600 uppercase select-none pointer-events-none">
+            Trusted by modern product teams
+          </span>
 
-          {/* Marquee Track */}
-          <div className="flex w-max animate-marquee whitespace-nowrap gap-0 opacity-25 hover:opacity-45 transition-opacity duration-300">
-            {/* First Set of Logos */}
-            <div className="flex items-center gap-12 md:gap-20 pr-12 md:pr-20">
-              <span className="text-xs font-bold tracking-[0.3em] text-white">VERCEL</span>
-              <span className="text-xs font-bold tracking-[0.3em] text-white">STRIPE</span>
-              <span className="text-xs font-semibold tracking-[0.3em] text-white">LINEAR</span>
-              <span className="text-xs font-light tracking-[0.3em] text-white">RAYCAST</span>
-              <span className="text-xs font-bold tracking-[0.3em] text-white">FRAMER</span>
-            </div>
-            {/* Duplicate Set for Infinite Loop */}
-            <div className="flex items-center gap-12 md:gap-20 pr-12 md:pr-20" aria-hidden="true">
-              <span className="text-xs font-bold tracking-[0.3em] text-white">VERCEL</span>
-              <span className="text-xs font-bold tracking-[0.3em] text-white">STRIPE</span>
-              <span className="text-xs font-semibold tracking-[0.3em] text-white">LINEAR</span>
-              <span className="text-xs font-light tracking-[0.3em] text-white">RAYCAST</span>
-              <span className="text-xs font-bold tracking-[0.3em] text-white">FRAMER</span>
+          {/* Logo Marquee Wrapper */}
+          <div className="w-full overflow-hidden relative py-3 border-y border-neutral-900/30">
+            {/* Gradient masking for left/right borders */}
+            <div className="absolute inset-y-0 left-0 w-16 md:w-32 bg-gradient-to-r from-[#050505] to-transparent z-10 pointer-events-none" />
+            <div className="absolute inset-y-0 right-0 w-16 md:w-32 bg-gradient-to-l from-[#050505] to-transparent z-10 pointer-events-none" />
+
+            {/* Marquee Track */}
+            <div className="flex w-max animate-marquee whitespace-nowrap gap-0">
+              {/* First Set of Logos */}
+              <div className="flex items-center gap-16 md:gap-24 pr-16 md:pr-24">
+                {companyLogos.map((logo, idx) => (
+                  <div key={`logo-1-${idx}`} className="group cursor-default flex items-center justify-center">
+                    {logo.svg}
+                  </div>
+                ))}
+              </div>
+              {/* Duplicate Set for Infinite Loop */}
+              <div className="flex items-center gap-16 md:gap-24 pr-16 md:pr-24" aria-hidden="true">
+                {companyLogos.map((logo, idx) => (
+                  <div key={`logo-2-${idx}`} className="group cursor-default flex items-center justify-center">
+                    {logo.svg}
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </motion.div>
