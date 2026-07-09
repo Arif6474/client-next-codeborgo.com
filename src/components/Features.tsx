@@ -15,6 +15,15 @@ interface BgDot {
 export default function Features() {
   const [dots, setDots] = useState<BgDot[]>([]);
 
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const { currentTarget, clientX, clientY } = e;
+    const rect = currentTarget.getBoundingClientRect();
+    const x = clientX - rect.left;
+    const y = clientY - rect.top;
+    currentTarget.style.setProperty("--mouse-x", `${x}px`);
+    currentTarget.style.setProperty("--mouse-y", `${y}px`);
+  };
+
   useEffect(() => {
     const generated = [...Array(12)].map((_, i) => ({
       id: i,
@@ -23,7 +32,12 @@ export default function Features() {
       y: Math.random() * 90 + 5,
       duration: 12 + Math.random() * 10,
     }));
-    setDots(generated);
+    
+    const handle = requestAnimationFrame(() => {
+      setDots(generated);
+    });
+
+    return () => cancelAnimationFrame(handle);
   }, []);
 
   const containerVariants: Variants = {
@@ -45,31 +59,49 @@ export default function Features() {
       title: "Ultra Performance",
       desc: "Server-side rendering, CDN edge caching, and optimized asset delivery yielding 98+ PageSpeed scores.",
       icon: Zap,
+      themeClass: "text-amber-400 border-amber-950/20 bg-amber-950/10 group-hover:border-amber-500/60 drop-shadow-[0_0_8px_rgba(251,191,36,0.35)]",
+      borderGlow: "group-hover:bg-[radial-gradient(250px_circle_at_var(--mouse-x,-400px)_var(--mouse-y,-400px),rgba(251,191,36,0.25),transparent_80%)]",
+      spotlightColor: "rgba(251,191,36,0.04)"
     },
     {
       title: "Bespoke Aesthetics",
       desc: "Fully tailored user interfaces crafted from scratch. High typography hierarchy and premium spacing rules.",
       icon: Flame,
+      themeClass: "text-rose-400 border-rose-950/20 bg-rose-950/10 group-hover:border-rose-500/60 drop-shadow-[0_0_8px_rgba(244,63,94,0.35)]",
+      borderGlow: "group-hover:bg-[radial-gradient(250px_circle_at_var(--mouse-x,-400px)_var(--mouse-y,-400px),rgba(244,63,94,0.25),transparent_80%)]",
+      spotlightColor: "rgba(244,63,94,0.04)"
     },
     {
       title: "Advanced AI Bots",
       desc: "Chatbots and background workflows engineered with OpenAI/Claude APIs to automate 80% of customer support.",
       icon: GraduationCap,
+      themeClass: "text-violet-400 border-violet-950/20 bg-violet-950/10 group-hover:border-violet-500/60 drop-shadow-[0_0_8px_rgba(139,92,246,0.35)]",
+      borderGlow: "group-hover:bg-[radial-gradient(250px_circle_at_var(--mouse-x,-400px)_var(--mouse-y,-400px),rgba(139,92,246,0.25),transparent_80%)]",
+      spotlightColor: "rgba(139,92,246,0.04)"
     },
     {
       title: "Security By Design",
       desc: "Enterprise-grade SSL compliance, PCI-compliant Stripe billing, and serverless route isolation.",
       icon: Shield,
+      themeClass: "text-emerald-400 border-emerald-950/20 bg-emerald-950/10 group-hover:border-emerald-500/60 drop-shadow-[0_0_8px_rgba(16,185,129,0.35)]",
+      borderGlow: "group-hover:bg-[radial-gradient(250px_circle_at_var(--mouse-x,-400px)_var(--mouse-y,-400px),rgba(16,185,129,0.25),transparent_80%)]",
+      spotlightColor: "rgba(16,185,129,0.04)"
     },
     {
       title: "ROI-Focused SEO",
       desc: "Targeted keyword planning and content architectures designed to capture organic pipelines and increase sales.",
       icon: Eye,
+      themeClass: "text-cyan-400 border-cyan-950/20 bg-cyan-950/10 group-hover:border-cyan-500/60 drop-shadow-[0_0_8px_rgba(6,182,212,0.35)]",
+      borderGlow: "group-hover:bg-[radial-gradient(250px_circle_at_var(--mouse-x,-400px)_var(--mouse-y,-400px),rgba(6,182,212,0.25),transparent_80%)]",
+      spotlightColor: "rgba(6,182,212,0.04)"
     },
     {
       title: "Bespoke Maintenance",
       desc: "Continuous post-launch audit reports, design upgrades, server patching, and responsive 24/7 client support.",
       icon: Clock,
+      themeClass: "text-sky-400 border-sky-950/20 bg-sky-950/10 group-hover:border-sky-500/60 drop-shadow-[0_0_8px_rgba(14,165,233,0.35)]",
+      borderGlow: "group-hover:bg-[radial-gradient(250px_circle_at_var(--mouse-x,-400px)_var(--mouse-y,-400px),rgba(14,165,233,0.25),transparent_80%)]",
+      spotlightColor: "rgba(14,165,233,0.04)"
     },
   ];
 
@@ -78,6 +110,23 @@ export default function Features() {
       id="features"
       className="scroll-section relative px-6 md:px-12 py-28 z-10 w-full overflow-hidden border-t border-neutral-900 bg-[#050505] flex flex-col justify-center"
     >
+      {/* Precision Grid Brackets & Viewport Borders */}
+      <div className="absolute top-6 left-6 w-5 h-5 border-t border-l border-neutral-900 pointer-events-none select-none opacity-50" />
+      <div className="absolute top-6 right-6 w-5 h-5 border-t border-r border-neutral-900 pointer-events-none select-none opacity-50" />
+      <div className="absolute bottom-6 left-6 w-5 h-5 border-b border-l border-neutral-900 pointer-events-none select-none opacity-50" />
+      <div className="absolute bottom-6 right-6 w-5 h-5 border-b border-r border-neutral-900 pointer-events-none select-none opacity-50" />
+
+      {/* Subtle Horizontal Layout Alignment Line */}
+      <div className="absolute top-[12vh] left-6 right-6 border-b border-dashed border-neutral-900/30 pointer-events-none z-0" />
+
+      {/* Monospace Editorial & Coordinate Info */}
+      <div className="absolute top-8 left-14 hidden md:flex items-center gap-1.5 pointer-events-none select-none opacity-20 font-mono text-[9px] uppercase tracking-[0.25em] text-neutral-500">
+        <span>Vantelli Capability System</span>
+      </div>
+      <div className="absolute top-8 right-14 hidden md:flex items-center gap-1.5 pointer-events-none select-none opacity-20 font-mono text-[9px] uppercase tracking-[0.25em] text-neutral-500">
+        <span>SYS CODE: V-METRIC.4</span>
+      </div>
+
       {/* Drifting background dots */}
       {dots.map((dot) => (
         <motion.div
@@ -130,7 +179,7 @@ export default function Features() {
             className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-white leading-[1.08]"
           >
             High Performance.{" "}
-            <span className="font-light text-neutral-400 text-glow">
+            <span className="font-semibold bg-gradient-to-r from-amber-200 via-yellow-100 to-rose-200 bg-clip-text text-transparent drop-shadow-[0_0_30px_rgba(251,191,36,0.06)]">
               Zero Compromise.
             </span>
           </motion.h2>
@@ -158,21 +207,27 @@ export default function Features() {
               <motion.div
                 key={feat.title}
                 variants={itemVariants}
-                className="group relative p-[1px] rounded-2xl overflow-hidden"
+                onMouseMove={handleMouseMove}
+                className="group relative rounded-2xl p-[1px] bg-neutral-900 transition-colors duration-300 overflow-hidden"
               >
-                {/* Rotating conic border beam */}
-                <div className="absolute inset-[-200%] bg-[conic-gradient(from_0deg,transparent_60%,#ffffff_88%,#ffffff_100%)] animate-[spin_8s_linear_infinite] opacity-0 group-hover:opacity-20 transition-opacity duration-500" />
+                {/* Border follow spotlight */}
+                <div className={`absolute inset-0 transition-opacity duration-500 opacity-0 group-hover:opacity-100 pointer-events-none z-0 ${feat.borderGlow}`} />
 
                 {/* Card body */}
-                <div className="relative rounded-[15px] bg-neutral-950/20 group-hover:bg-neutral-950/50 border border-neutral-900 group-hover:border-neutral-800 transition-all duration-300 flex flex-col text-left overflow-hidden z-10 h-full">
+                <div 
+                  className="relative rounded-[15px] bg-[#070707]/90 hover:bg-[#070707]/95 border border-neutral-900/40 group-hover:border-neutral-800/30 transition-all duration-300 flex flex-col text-left overflow-hidden z-10 h-full"
+                  style={{
+                    backgroundImage: `radial-gradient(350px circle at var(--mouse-x, -400px) var(--mouse-y, -400px), ${feat.spotlightColor}, transparent 80%)`
+                  }}
+                >
 
                   {/* Top bar: number + icon */}
                   <div className="flex items-center justify-between px-6 pt-6 pb-5">
                     <span className="text-[10px] font-mono font-bold tracking-[0.2em] text-neutral-700 group-hover:text-neutral-500 transition-colors duration-300">
                       {String(idx + 1).padStart(2, "0")}
                     </span>
-                    {/* Icon in circle */}
-                    <div className="w-9 h-9 rounded-full border border-neutral-800 bg-neutral-950 flex items-center justify-center text-neutral-600 group-hover:text-white group-hover:border-neutral-600 transition-all duration-300">
+                    {/* Icon in circle with custom neon color drop shadow on hover */}
+                    <div className={`w-9 h-9 rounded-full border flex items-center justify-center transition-all duration-500 ${feat.themeClass}`}>
                       <Icon className="w-4 h-4" />
                     </div>
                   </div>
@@ -197,7 +252,6 @@ export default function Features() {
             );
           })}
         </motion.div>
-
 
       </div>
     </section>
