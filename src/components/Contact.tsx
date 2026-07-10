@@ -29,15 +29,35 @@ export default function Contact() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validateForm()) return;
     setIsSubmitting(true);
-    setTimeout(() => {
-      setIsSubmitting(false);
+    setErrors({});
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ name, email, company, service, message }),
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to submit inquiry. Please try again.");
+      }
       setSubmitSuccess(true);
-      setName(""); setEmail(""); setCompany(""); setService(""); setMessage(""); setErrors({});
-    }, 1500);
+      setName("");
+      setEmail("");
+      setCompany("");
+      setService("");
+      setMessage("");
+      setErrors({});
+    } catch (error: any) {
+      setErrors({ submit: error.message || "An unexpected error occurred." });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleCardClick = (copyValue?: string, label?: string) => {
@@ -255,6 +275,12 @@ export default function Contact() {
                       <textarea id="message" required value={message} onChange={(e) => setMessage(e.target.value)} placeholder="Outline your project scope or objectives..." rows={5} className={inputClass + " resize-none"} />
                       {errors.message && <span className="text-[9px] font-mono text-red-500 mt-1">{errors.message}</span>}
                     </div>
+
+                    {errors.submit && (
+                      <div className="p-3 py-2.5 rounded-xl border border-red-950/50 bg-red-950/15 text-red-500 text-[10px] font-mono text-center tracking-wide leading-relaxed">
+                        {errors.submit}
+                      </div>
+                    )}
 
                     {/* CTA button */}
                     <button
