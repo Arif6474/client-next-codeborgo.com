@@ -288,7 +288,7 @@ export default function Pricing() {
             // Theme settings
             let borderGlow = "group-hover:bg-[radial-gradient(250px_circle_at_var(--mouse-x,-400px)_var(--mouse-y,-400px),rgba(255,255,255,0.15),transparent_80%)]";
             let spotlightColor = "rgba(255, 255, 255, 0.03)";
-            let checkIconClass = "text-neutral-600";
+            let checkIconClass = "text-neutral-500";
             let ctaClass = "border-neutral-800 hover:border-neutral-700 hover:bg-neutral-900/30 text-white bg-transparent";
 
             if (isPopular) {
@@ -349,7 +349,7 @@ export default function Pricing() {
                   {/* Top Header */}
                   <div>
                     <div className="flex items-center justify-between pb-4">
-                      <span className="text-[10px] font-mono font-bold tracking-[0.2em] text-neutral-700 group-hover:text-neutral-500 transition-colors duration-300">
+                      <span className="text-[10px] font-mono font-bold tracking-[0.2em] text-neutral-500 group-hover:text-neutral-300 transition-colors duration-300">
                         {String(idx + 1).padStart(2, "0")}
                       </span>
                       {isPopular && (
@@ -375,7 +375,7 @@ export default function Pricing() {
                         {typeof pack.price === "number" ? `€${pack.price.toLocaleString()}` : `€${pack.price}`}
                       </span>
                       {typeof pack.price === "number" && (
-                        <span className="text-[9px] font-mono text-neutral-600">/one-time</span>
+                        <span className="text-[9px] font-mono text-neutral-400">/one-time</span>
                       )}
                     </div>
 

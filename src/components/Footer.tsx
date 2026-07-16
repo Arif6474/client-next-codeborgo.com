@@ -38,7 +38,7 @@ export default function Footer() {
 
           {/* Social Links */}
           <div className="flex items-center gap-4">
-            <span className="text-neutral-600 font-sans tracking-wide">Follow us on</span>
+            <span className="text-neutral-500 font-sans tracking-wide">Follow us on</span>
             <div className="flex items-center gap-2">
               <a
                 href="#"

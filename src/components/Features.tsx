@@ -221,7 +221,7 @@ export default function Features() {
 
                   {/* Top bar: number + icon */}
                   <div className="flex items-center justify-between px-6 pt-6 pb-5">
-                    <span className="text-[10px] font-mono font-bold tracking-[0.2em] text-neutral-700 group-hover:text-neutral-500 transition-colors duration-300">
+                    <span className="text-[10px] font-mono font-bold tracking-[0.2em] text-neutral-500 group-hover:text-neutral-300 transition-colors duration-300">
                       {String(idx + 1).padStart(2, "0")}
                     </span>
                     {/* Icon in circle with custom neon color drop shadow on hover */}
@@ -238,7 +238,7 @@ export default function Features() {
                     <h3 className="text-base font-semibold text-white tracking-tight leading-snug">
                       {feat.title}
                     </h3>
-                    <p className="text-xs text-neutral-600 group-hover:text-neutral-400 leading-relaxed transition-colors duration-300">
+                    <p className="text-xs text-neutral-400 group-hover:text-neutral-200 leading-relaxed transition-colors duration-300">
                       {feat.desc}
                     </p>
                   </div>

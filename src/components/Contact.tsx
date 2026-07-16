@@ -106,8 +106,8 @@ export default function Contact() {
     },
   ];
 
-  const inputClass = "w-full px-4 py-3.5 text-xs border border-neutral-900 rounded-xl bg-neutral-950/60 text-white placeholder:text-neutral-700 focus:outline-none focus:border-cyan-500/60 focus:ring-1 focus:ring-cyan-500/30 transition-all duration-300 z-10";
-  const labelClass = "text-[9px] font-mono text-neutral-500 uppercase tracking-[0.15em] flex items-center gap-1.5 select-none";
+  const inputClass = "w-full px-4 py-3.5 text-xs border border-neutral-900 rounded-xl bg-neutral-950/60 text-white placeholder:text-neutral-500 focus:outline-none focus:border-cyan-500/60 focus:ring-1 focus:ring-cyan-500/30 transition-all duration-300 z-10";
+  const labelClass = "text-[9px] font-mono font-semibold text-neutral-300 uppercase tracking-[0.15em] flex items-center gap-1.5 select-none";
 
   return (
     <section
@@ -141,11 +141,11 @@ export default function Contact() {
             Start a Conversation
           </motion.p>
           <motion.h2 variants={itemVariants} className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-white leading-[1.08]">
-            Let's Build{" "}
+            {"Let's Build "}
             <span className="font-light text-neutral-400 text-glow">Together.</span>
           </motion.h2>
-          <motion.p variants={itemVariants} className="text-neutral-500 text-sm leading-relaxed max-w-lg">
-            Have an upcoming project, system implementation, or strategy overhaul? Leave a brief description and we'll get back to you.
+          <motion.p variants={itemVariants} className="text-neutral-400 text-sm leading-relaxed max-w-lg">
+            {"Have an upcoming project, system implementation, or strategy overhaul? Leave a brief description and we'll get back to you."}
           </motion.p>
         </motion.div>
 
@@ -171,14 +171,14 @@ export default function Contact() {
                 <div className="relative h-full rounded-[15px] bg-neutral-950/20 group-hover:bg-neutral-950/50 border border-neutral-900 group-hover:border-neutral-800 transition-all duration-300 flex flex-col overflow-hidden">
                   {/* Top bar */}
                   <div className="flex items-center justify-between px-5 pt-4 pb-3">
-                    <span className="text-[10px] font-mono font-bold tracking-[0.2em] text-neutral-700 group-hover:text-neutral-500 transition-colors duration-300">
+                    <span className="text-[10px] font-mono font-bold tracking-[0.2em] text-neutral-500 group-hover:text-neutral-300 transition-colors duration-300">
                       {copiedIndex === label ? (
                         <span className="text-cyan-400 font-bold lowercase tracking-normal flex items-center gap-1">
                           <Check className="w-3 h-3 text-cyan-400" />
                           copied!
                         </span>
                       ) : copyValue ? (
-                        <span className="text-[8px] text-neutral-500 lowercase tracking-normal flex items-center gap-1 group-hover:text-cyan-400/80 transition-colors duration-300">
+                        <span className="text-[8px] text-neutral-400 lowercase tracking-normal flex items-center gap-1 group-hover:text-cyan-400/80 transition-colors duration-300">
                           <Copy className="w-2.5 h-2.5" />
                           click to copy
                         </span>
@@ -186,7 +186,7 @@ export default function Contact() {
                         <span>{num} /</span>
                       )}
                     </span>
-                    <div className="w-7 h-7 rounded-full border border-neutral-800 bg-neutral-950 fill-none flex items-center justify-center text-neutral-600 group-hover:text-cyan-400 group-hover:border-cyan-500/40 transition-all duration-300">
+                    <div className="w-7 h-7 rounded-full border border-neutral-800 bg-neutral-950 fill-none flex items-center justify-center text-neutral-500 group-hover:text-cyan-400 group-hover:border-cyan-500/40 transition-all duration-300">
                       <Icon className="w-3.5 h-3.5" />
                     </div>
                   </div>
@@ -194,7 +194,7 @@ export default function Contact() {
                   <div className="px-5 pt-3 pb-4 flex-grow flex flex-col justify-between">
                     <div>
                       <h4 className="text-xs font-semibold text-white tracking-tight mb-1">{label}</h4>
-                      <p className="text-[11px] text-neutral-600 group-hover:text-neutral-400 leading-relaxed transition-colors duration-300">{content}</p>
+                      <p className="text-[11px] text-neutral-400 group-hover:text-neutral-200 leading-relaxed transition-colors duration-300">{content}</p>
                     </div>
                   </div>
                   {/* Slide-in bottom accent line */}
@@ -254,8 +254,16 @@ export default function Contact() {
                           <span className="w-1 h-1 rounded-full bg-cyan-500" />
                           Service Interested In *
                         </label>
-                        <select id="service" required value={service} onChange={(e) => setService(e.target.value)} className={inputClass + " bg-neutral-950/95 cursor-pointer appearance-none"}>
-                          <option value="">Select a service category</option>
+                        <select
+                          id="service"
+                          required
+                          value={service}
+                          onChange={(e) => setService(e.target.value)}
+                          className={`${inputClass} bg-neutral-950/95 cursor-pointer appearance-none ${
+                            service === "" ? "!text-neutral-500" : "!text-white"
+                          }`}
+                        >
+                          <option value="" className="text-neutral-500 bg-neutral-950">Select a service category</option>
                           <option value="digital-marketing">Digital Marketing</option>
                           <option value="web-development">Web Development</option>
                           <option value="ai-services">AI Bot & Agent</option>

@@ -173,13 +173,13 @@ export default function Navbar({ scrollContainerRef }: NavbarProps) {
                     className="text-3xl font-bold tracking-wider uppercase text-left relative flex items-center"
                   >
                     <span
-                      className={`mr-4 text-xs font-mono ${isActive ? "text-white" : "text-neutral-600"
+                      className={`mr-4 text-xs font-mono ${isActive ? "text-white" : "text-neutral-500"
                         }`}
                     >
                       0{index + 1}.
                     </span>
                     <span
-                      className={isActive ? "text-white text-glow" : "text-neutral-500"}
+                      className={isActive ? "text-white text-glow" : "text-neutral-400"}
                     >
                       {item.name}
                     </span>

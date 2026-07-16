@@ -407,7 +407,7 @@ export default function Services() {
                 >
                   {/* Top: number + icon circle */}
                   <div className="flex items-center justify-between px-6 pt-6 pb-5">
-                    <span className="text-[10px] font-mono font-bold tracking-[0.2em] text-neutral-700 group-hover:text-neutral-500 transition-colors duration-300">
+                    <span className="text-[10px] font-mono font-bold tracking-[0.2em] text-neutral-500 group-hover:text-neutral-300 transition-colors duration-300">
                       {String(idx + 1).padStart(2, "0")}
                     </span>
                     <div className={`w-9 h-9 rounded-full border flex items-center justify-center transition-all duration-500 ${theme.iconGlowClass}`}>
@@ -426,7 +426,7 @@ export default function Services() {
                       </h3>
                       <ArrowUpRight className={`w-4 h-4 shrink-0 mt-0.5 ${svc.iconColor} opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-200`} />
                     </div>
-                    <p className="text-xs text-neutral-600 group-hover:text-neutral-400 leading-relaxed transition-colors duration-300">
+                    <p className="text-xs text-neutral-400 group-hover:text-neutral-200 leading-relaxed transition-colors duration-300">
                       {svc.desc}
                     </p>
                   </div>
@@ -436,7 +436,7 @@ export default function Services() {
                     <span className={`text-[10px] font-mono font-bold tracking-wider ${svc.iconColor} opacity-60 group-hover:opacity-100 transition-opacity duration-300`}>
                       {svc.price}
                     </span>
-                    <span className="text-[10px] font-mono text-neutral-700 group-hover:text-neutral-400 transition-colors tracking-wider uppercase">
+                    <span className="text-[10px] font-mono text-neutral-500 group-hover:text-neutral-300 transition-colors tracking-wider uppercase">
                       View details →
                     </span>
                   </div>
@@ -488,7 +488,7 @@ export default function Services() {
                       <div className="relative rounded-[15px] bg-[#070707] border border-neutral-900/60 flex flex-col justify-between h-full p-6 text-left">
                         {/* Top: number + icon circle */}
                         <div className="flex items-center justify-between">
-                          <span className="text-[10px] font-mono font-bold tracking-[0.2em] text-neutral-700">
+                          <span className="text-[10px] font-mono font-bold tracking-[0.2em] text-neutral-500">
                             {String(idx + 1).padStart(2, "0")}
                           </span>
                           <div className={`w-9 h-9 rounded-full border flex items-center justify-center ${theme.iconGlowClass}`}>

@@ -101,7 +101,7 @@ function TestimonialCard({ item }: { item: TestimonialItem }) {
   return (
     <div className="flex-shrink-0 w-[300px] sm:w-[340px] md:w-[380px] mr-5 p-5 sm:p-6 rounded-2xl border border-neutral-800/70 bg-neutral-950/70 hover:bg-neutral-900/70 hover:border-neutral-700 transition-all duration-300 text-left flex flex-col gap-4 cursor-default group">
       {/* Quote mark */}
-      <span className="text-4xl sm:text-5xl font-serif text-neutral-600 leading-none select-none group-hover:text-neutral-500 transition-colors">
+      <span className="text-4xl sm:text-5xl font-serif text-neutral-500 leading-none select-none group-hover:text-neutral-400 transition-colors">
         &#8220;&#8220;
       </span>
 

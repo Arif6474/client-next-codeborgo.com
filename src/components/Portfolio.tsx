@@ -400,7 +400,7 @@ export default function Portfolio() {
                   <h3 className="text-base font-semibold text-white tracking-tight mb-2 leading-snug group-hover:text-glow transition-all duration-300">
                     {project.title}
                   </h3>
-                  <p className="text-xs text-neutral-600 group-hover:text-neutral-400 leading-relaxed line-clamp-3 mb-6 transition-colors duration-300">
+                  <p className="text-xs text-neutral-400 group-hover:text-neutral-200 leading-relaxed line-clamp-3 mb-6 transition-colors duration-300">
                     {project.description}
                   </p>
 
@@ -411,7 +411,7 @@ export default function Portfolio() {
                         <span className="text-sm font-bold text-white tracking-tight">
                           {metric.value}
                         </span>
-                        <p className="text-[9px] font-mono text-neutral-600 uppercase tracking-wider mt-0.5">
+                        <p className="text-[9px] font-mono text-neutral-400 uppercase tracking-wider mt-0.5">
                           {metric.label}
                         </p>
                       </div>

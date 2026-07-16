@@ -250,7 +250,7 @@ export default function About() {
               <span className="text-3xl md:text-6xl font-bold text-white tracking-tight group-hover:text-glow transition-all duration-300">
                 <CountUp target={s.target} suffix={s.suffix} />
               </span>
-              <span className="text-[11px] font-mono text-neutral-600 uppercase tracking-[0.15em]">
+              <span className="text-[11px] font-mono text-neutral-400 uppercase tracking-[0.15em]">
                 {s.label}
               </span>
             </motion.div>

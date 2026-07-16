@@ -74,7 +74,7 @@ export default function FAQ() {
           </h2>
 
           <p className="text-neutral-500 text-sm leading-relaxed max-w-xs">
-            Everything you need to know about working with CodeBorgo. Can't find an answer?
+            {"Everything you need to know about working with CodeBorgo. Can't find an answer?"}
           </p>
 
           {/* CTA */}
@@ -111,7 +111,7 @@ export default function FAQ() {
                   className="w-full py-4 sm:py-5 flex items-start gap-3 sm:gap-4 text-left focus:outline-none cursor-pointer"
                 >
                   {/* Number */}
-                  <span className={`shrink-0 text-[11px] font-mono tabular-nums mt-0.5 transition-colors duration-300 ${isOpen ? "text-white" : "text-neutral-600"}`}>
+                  <span className={`shrink-0 text-[11px] font-mono tabular-nums mt-0.5 transition-colors duration-300 ${isOpen ? "text-white" : "text-neutral-500 group-hover:text-neutral-300"}`}>
                     {String(idx + 1).padStart(2, "0")}
                   </span>
 
