@@ -43,7 +43,7 @@ export default function Modal({ isOpen, onClose, title, subtitle, children }: Mo
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 15 }}
             transition={{ type: "spring", duration: 0.5, bounce: 0.15 }}
-            className="relative w-full max-w-2xl max-h-[85vh] overflow-y-auto rounded-2xl border border-neutral-800 bg-[#0c0c0c] p-6 md:p-8 text-left shadow-2xl glow-md no-scrollbar"
+            className="relative w-full max-w-2xl max-h-[80dvh] overflow-y-auto rounded-2xl border border-neutral-800 bg-[#0c0c0c] p-6 md:p-8 text-left shadow-2xl glow-md no-scrollbar"
           >
             {/* Background elements */}
             <div className="absolute inset-0 noise-bg opacity-30 pointer-events-none" />
