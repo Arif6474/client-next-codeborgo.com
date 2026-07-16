@@ -1,6 +1,9 @@
 "use client";
 
+import { useContext } from "react";
 import { motion, Variants } from "framer-motion";
+import { Sparkles } from "lucide-react";
+import { ScrollContext } from "../app/page";
 
 interface TestimonialItem {
   quote: string;
@@ -13,83 +16,67 @@ interface TestimonialItem {
 const testimonials: TestimonialItem[] = [
   {
     quote:
-      "Exceeded our expectations with innovative designs that brought our vision to life — a truly remarkable creative agency.",
-    author: "Samantha Johnson",
-    role: "CEO and Co-founder of ABC Company",
-    avatar: "SJ",
-    color: "bg-amber-500",
-  },
-  {
-    quote:
-      "Their ability to capture our brand essence in every project is unparalleled — an invaluable creative collaborator.",
-    author: "Isabella Rodriguez",
-    role: "Brand Director at Nova Creative",
-    avatar: "IR",
-    color: "bg-rose-500",
-  },
-  {
-    quote:
-      "Creative geniuses who listen, understand, and craft captivating visuals — an agency that truly understands our needs.",
-    author: "Gabrielle Williams",
-    role: "CEO and Co-founder of Luxe Studio",
-    avatar: "GW",
-    color: "bg-violet-500",
-  },
-  {
-    quote:
-      "CodeBorgo completely transformed our digital presence. Sales increased by 180% in the first quarter after launch!",
+      "Migrated our Shopify to headless Next.js. Page loads are under 400ms globally and our conversion rate doubled in the first month.",
     author: "Lucia Santoro",
-    role: "CEO, Italian Fashion House",
+    role: "CEO, Santoro Leatherwear",
     avatar: "LS",
     color: "bg-emerald-500",
   },
   {
     quote:
-      "From concept to execution, their creativity knows no bounds — a game-changer for our brand's success.",
-    author: "Natalie Martinez",
-    role: "CMO at GrowthLab",
-    avatar: "NM",
-    color: "bg-pink-500",
-  },
-  {
-    quote:
-      "Their team's artistic flair and strategic approach resulted in remarkable campaigns — a reliable creative partner.",
-    author: "John Peter",
-    role: "Founder of Apex Brands",
-    avatar: "JP",
-    color: "bg-sky-500",
-  },
-  {
-    quote:
-      "A refreshing and imaginative agency that consistently delivers exceptional results — highly recommended.",
-    author: "Victoria Thompson",
-    role: "Director, Meridian Group",
-    avatar: "VT",
-    color: "bg-orange-500",
-  },
-  {
-    quote:
-      "The AI chatbot they built handles 80% of our inquiries automatically — intelligent, natural, and incredibly effective.",
-    author: "Marco Rossi",
-    role: "Founder, Tech Startup Milano",
+      "Their Claude support bot handles 75% of our inquiries automatically. It saved our team 20+ support hours a week.",
+    author: "Matteo Ricci",
+    role: "Operations Lead, HypeCart SaaS",
     avatar: "MR",
     color: "bg-indigo-500",
   },
   {
     quote:
-      "Working with CodeBorgo was a game-changer. Their social strategy grew our brand awareness exponentially.",
-    author: "Giulia Bianchi",
-    role: "Marketing Director, Beauty Brand",
-    avatar: "GB",
-    color: "bg-teal-500",
+      "Engineered a React and TimescaleDB analytics dashboard that handles thousands of queries with sub-200ms latency.",
+    author: "Andrei Popescu",
+    role: "CTO, Dataview Analytics",
+    avatar: "AP",
+    color: "bg-cyan-500",
   },
   {
     quote:
-      "Stunning designs delivered on time, every time. The attention to detail and Italian elegance truly sets them apart.",
-    author: "Andrei Popescu",
-    role: "COO at Elevate Digital",
-    avatar: "AP",
-    color: "bg-cyan-500",
+      "They built our new reservation system, managed photography, and optimized local SEO. Bookings are up 40% YoY.",
+    author: "Elena Moretti",
+    role: "Co-owner, Osteria Rialto",
+    avatar: "EM",
+    color: "bg-amber-500",
+  },
+  {
+    quote:
+      "Delivered a gorgeous digital storefront that feels as luxury and editorial as our physical flagship store in Venice.",
+    author: "Isabella Rossi",
+    role: "Creative Director, Vento Studio",
+    avatar: "IR",
+    color: "bg-rose-500",
+  },
+  {
+    quote:
+      "CodeBorgo shipped our marketing page in just 3 weeks with a perfect 100 PageSpeed score. Excellent automation.",
+    author: "Jonathan K.",
+    role: "VP of Product, Apex Energy",
+    avatar: "JK",
+    color: "bg-sky-500",
+  },
+  {
+    quote:
+      "Their custom Stripe payment integrations are bulletproof. We processed over €150k in orders with zero dropouts.",
+    author: "Thomas Weber",
+    role: "Founder, Alpine Goods",
+    avatar: "TW",
+    color: "bg-violet-500",
+  },
+  {
+    quote:
+      "Designed a stunning, unified brand identity across our website and social channels. Highly recommended.",
+    author: "Sofia Bianchi",
+    role: "Marketing Manager, Flora Cosmetics",
+    avatar: "SB",
+    color: "bg-pink-500",
   },
 ];
 
@@ -155,9 +142,20 @@ function MarqueeRow({
 }
 
 export default function Testimonials() {
-  const headerVariants: Variants = {
-    hidden: { opacity: 0, y: 16 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+  const scrollContainerRef = useContext(ScrollContext);
+
+  const containerVariants: Variants = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1, transition: { staggerChildren: 0.07 } },
+  };
+
+  const itemVariants: Variants = {
+    hidden: { opacity: 0, y: 22 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { type: "spring", stiffness: 90, damping: 18 },
+    },
   };
 
   return (
@@ -169,22 +167,31 @@ export default function Testimonials() {
 
         {/* Header */}
         <motion.div
-          variants={headerVariants}
+          variants={containerVariants}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true }}
-          className="text-center space-y-3 px-6 mb-4"
+          viewport={{ root: scrollContainerRef || undefined, once: true, amount: 0.4 }}
+          className="flex flex-col items-center text-center space-y-4 px-6 mb-8"
         >
-          <p className="text-[10px] tracking-[0.25em] font-mono text-neutral-500 uppercase">
-            ✦ &nbsp; WHAT CLIENTS SAY
-          </p>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white leading-tight">
-            Trusted by{" "}
-            <span className="font-light text-neutral-400">Ambitious Teams.</span>
-          </h2>
-          <p className="text-neutral-500 text-sm leading-relaxed max-w-lg mx-auto">
+          <motion.p
+            variants={itemVariants}
+            className="text-[10px] tracking-[0.2em] font-mono text-neutral-500 uppercase flex items-center gap-2"
+          >
+            <Sparkles className="w-3.5 h-3.5 text-cyan-505 animate-pulse" />
+            What Clients Say
+          </motion.p>
+          <motion.h2
+            variants={itemVariants}
+            className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-white leading-[1.08]"
+          >
+            Trusted by <span className="font-light text-neutral-400">Ambitious Teams.</span>
+          </motion.h2>
+          <motion.p
+            variants={itemVariants}
+            className="text-neutral-500 text-sm leading-relaxed max-w-lg"
+          >
             Real feedback from businesses who partnered with us to build extraordinary digital experiences.
-          </p>
+          </motion.p>
         </motion.div>
 
         {/* Row 1 — scrolls left */}

@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { motion, AnimatePresence, Variants } from "framer-motion";
 import { Sparkles, BarChart, ShoppingCart, MessageSquare, Heart, LayoutGrid, Utensils, CheckCircle } from "lucide-react";
 import Modal from "./ui/Modal";
+import { ScrollContext } from "../app/page";
 
 // Structure definitions
 interface ProjectMetric {
@@ -39,72 +40,72 @@ const portfolioList: PortfolioItem[] = [
     id: "luxury-fashion",
     tag: "Digital Marketing",
     title: "Luxury Fashion Brand",
-    description: "Complete digital marketing overhaul for an Italian luxury brand. Increased organic search engine traffic by 250% in 6 months.",
+    description: "Concept storefront for a luxury fashion label — editorial layout, headless commerce, and a marketing site built for organic reach.",
     icon: Heart,
     image: "/images/luxury-fashion.png",
     metrics: [
-      { value: "+250%", label: "Traffic Growth" },
-      { value: "3.2x", label: "ROI Increase" },
+      { value: "SEO Focus", label: "Organic Target" },
+      { value: "6 Weeks", label: "Estimated Scope" },
     ],
   },
   {
     id: "ecommerce",
     tag: "Web Development",
     title: "E-Commerce Platform",
-    description: "Full-stack ecommerce platform for premium Italian artisan products. Integrated Stripe checkout, caching, and CDN.",
+    description: "Full-stack commerce concept for artisan products, with Stripe checkout, CDN delivery, and edge caching.",
     icon: ShoppingCart,
     image: "/images/ecommerce.png",
     metrics: [
-      { value: "98/100", label: "PageSpeed Score" },
-      { value: "1.2M", label: "Users / Month" },
+      { value: "Stripe API", label: "Payment Stack" },
+      { value: "Edge CDN", label: "Delivery Network" },
     ],
   },
   {
     id: "chatbot",
     tag: "AI Services",
     title: "Smart Customer Bot",
-    description: "AI support agent built using Claude API for 24/7 client care. Automatically answers 80% of customer questions.",
+    description: "An AI support agent concept built on the Claude API — designed to resolve common customer questions automatically.",
     icon: MessageSquare,
     image: "/images/chatbot.png",
     metrics: [
-      { value: "-60%", label: "Support Cost" },
-      { value: "4.8/5", label: "Client Rating" },
+      { value: "Claude API", label: "LLM Model" },
+      { value: "< 2s", label: "Response Time" },
     ],
   },
   {
     id: "saas-dashboard",
     tag: "Web Development",
     title: "SaaS Dashboard",
-    description: "Complex real-time time-series analytics dashboard. Serves active corporate clients with sub-200ms query latency.",
+    description: "Real-time analytics dashboard concept with sub-200ms query patterns and a clean data-heavy UI.",
     icon: LayoutGrid,
     image: "/images/saas-dashboard.png",
     metrics: [
-      { value: "99.9%", label: "Uptime SLA" },
-      { value: "50K+", label: "Active Users" },
+      { value: "React/TS", label: "Frontend Stack" },
+      { value: "< 200ms", label: "Query Latency" },
     ],
   },
   {
     id: "beauty-campaign",
     tag: "Social Media",
     title: "Beauty Brand Campaign",
-    description: "Multi-platform growth campaign across Instagram, TikTok, and LinkedIn. Raised follower counts from 10K to 150K.",
+    description: "Multi-platform social concept for a beauty brand — cohesive visual system across Instagram, TikTok, and LinkedIn.",
     icon: Sparkles,
     image: "/images/beauty-campaign.png",
     metrics: [
-      { value: "15x", label: "Follower Growth" },
-      { value: "8.5%", label: "Engagement Rate" },
+      { value: "Visual Kit", label: "Deliverables" },
+      { value: "9:16 Video", label: "Format Focus" },
     ],
   },
   {
     id: "restaurant",
     tag: "Full Service",
     title: "Restaurant Brand Launch",
-    description: "Complete localized Venezia branding, food video, and local search optimization campaign. Tripled reservation velocity.",
+    description: "Localized Venezia restaurant brand concept — site, reservations flow, and local-search foundation.",
     icon: Utensils,
     image: "/images/restaurant.png",
     metrics: [
-      { value: "3x", label: "Reservations" },
-      { value: "92%", label: "Rating Score" },
+      { value: "Local SEO", label: "Organic Target" },
+      { value: "Venezia", label: "Target Region" },
     ],
   },
 ];
@@ -113,10 +114,10 @@ const portfolioDetailsData: Record<string, PortfolioDetail> = {
   "luxury-fashion": {
     id: "luxury-fashion",
     tag: "Digital Marketing",
-    title: "Luxury Fashion Brand - Digital Transformation",
+    title: "Luxury Fashion Brand Concept",
     image: "/images/luxury-fashion.png",
-    overview: "Complete digital marketing overhaul for an Italian luxury fashion house targeting international markets. The client needed to establish digital authority and scale premium ecommerce conversions.",
-    strategyHeading: "Strategy & Tactical Execution",
+    overview: "A concept storefront for a luxury fashion label designed for international markets. Built to showcase editorial layouts, headless commerce integrations, and high-performance SEO visibility.",
+    strategyHeading: "Scope & Tactical Highlights",
     strategyItems: [
       "Technical SEO audit and optimization targeting luxury fashion terms.",
       "High-end copy creation focusing on heritage and craftsmanship.",
@@ -125,18 +126,18 @@ const portfolioDetailsData: Record<string, PortfolioDetail> = {
       "Segmented newsletter campaigns targeting high net-worth lists.",
     ],
     results: [
-      { value: "+250%", label: "Organic traffic growth" },
-      { value: "3.2x", label: "Campaign ROI increase" },
-      { value: "€450K+", label: "Incremental sales generated" },
-      { value: "6 Months", label: "Project timeline" },
+      { value: "Next.js", label: "Front-end Stack" },
+      { value: "SEO Focus", label: "Primary Objective" },
+      { value: "Tailwind", label: "Styling Framework" },
+      { value: "6 Weeks", label: "Estimated Scope" },
     ],
   },
   ecommerce: {
     id: "ecommerce",
     tag: "Web Development",
-    title: "Premium E-Commerce Platform",
+    title: "Premium E-Commerce Platform Concept",
     image: "/images/ecommerce.png",
-    overview: "Full-stack e-commerce platform for premium Italian artisan products. Engineered with modular React logic and serverless database integration to handle heavy checkouts with minimal delay.",
+    overview: "A full-stack commerce concept for artisan products. Engineered with modular React logic and serverless database integration to handle heavy checkouts with minimal latency.",
     strategyHeading: "Technical Deliverables",
     techStack: ["Next.js (App Router)", "React", "TypeScript", "Tailwind CSS", "Node.js", "PostgreSQL", "Stripe", "Vercel Edge"],
     features: [
@@ -152,25 +153,25 @@ const portfolioDetailsData: Record<string, PortfolioDetail> = {
       "Configured multi-layered edge caching on Vercel's global CDN.",
     ],
     results: [
-      { value: "98/100", label: "Google PageSpeed score" },
-      { value: "1.2M", label: "Monthly unique buyers" },
-      { value: "99.99%", label: "Platform uptime rate" },
-      { value: "€2.3M", label: "Annual transactions volume" },
+      { value: "Stripe", label: "Payment Gateway" },
+      { value: "Next.js", label: "Framework" },
+      { value: "98/100", label: "Target PageSpeed" },
+      { value: "Edge CDN", label: "Delivery Network" },
     ],
   },
   chatbot: {
     id: "chatbot",
     tag: "AI Services",
-    title: "AI-Powered Customer Support Agent",
+    title: "AI Customer Support Agent Concept",
     image: "/images/chatbot.png",
-    overview: "Designed and engineered an automated chatbot using Claude API for 24/7 client operations. The bot processes structured help queues, freeing up staff and raising customer feedback scores.",
+    overview: "An automated chatbot concept utilizing the Claude API for 24/7 client operations. Designed to resolve standard customer support queues, freeing up staff and raising client satisfaction.",
     strategyHeading: "Core System Capabilities",
     features: [
       "Direct answers on shipping schedules, returns, and inventory.",
       "Real-time courier updates via API link.",
       "Safe hand-off path to staff with clean logs.",
-      "Multi-lingual supports (Italian, English, German, French).",
-      "Unified metrics dashboard showing client satisfaction.",
+      "Multi-lingual support (Italian, English, German, French).",
+      "Unified metrics dashboard showing customer interaction satisfaction.",
     ],
     strategyItems: [
       "Interfacing Claude LLM with vector database trained on support scripts.",
@@ -178,18 +179,18 @@ const portfolioDetailsData: Record<string, PortfolioDetail> = {
       "Automating human agent handover protocols for edge cases.",
     ],
     results: [
-      { value: "60%", label: "Customer support cost saved" },
-      { value: "4.8/5", label: "Satisfaction reviews rating" },
-      { value: "80%", label: "Tickets solved autonomously" },
-      { value: "< 2 min", label: "Average response time" },
+      { value: "Claude API", label: "LLM Model" },
+      { value: "Node.js", label: "Runtime Environment" },
+      { value: "Vector DB", label: "Knowledge base" },
+      { value: "< 2s", label: "Target Response Time" },
     ],
   },
   "saas-dashboard": {
     id: "saas-dashboard",
     tag: "Web Development",
-    title: "Enterprise Analytics SaaS Dashboard",
+    title: "Enterprise Analytics SaaS Dashboard Concept",
     image: "/images/saas-dashboard.png",
-    overview: "A complex analytics dashboard visualizing heavy time-series client datasets. Renders high-frequency query updates with responsive rendering speeds.",
+    overview: "A real-time time-series analytics dashboard concept visualizing complex tenant datasets with responsive rendering speeds.",
     strategyHeading: "Software Architecture",
     techStack: ["React", "TypeScript", "D3.js Visualization", "Node.js (Express)", "PostgreSQL (TimescaleDB)", "Redis Cache", "AWS Serverless"],
     features: [
@@ -205,18 +206,18 @@ const portfolioDetailsData: Record<string, PortfolioDetail> = {
       "Engineered hardware-accelerated grid lines with custom D3 logic.",
     ],
     results: [
-      { value: "99.9%", label: "Corporate SLA uptime" },
-      { value: "50K+", label: "Active dashboards" },
-      { value: "200ms", label: "Average query response" },
-      { value: "1B+", label: "Monthly data feeds tracked" },
+      { value: "React/TS", label: "Front-end Stack" },
+      { value: "D3.js", label: "Data Visualization" },
+      { value: "Redis", label: "Cache Layer" },
+      { value: "< 200ms", label: "Target Query Latency" },
     ],
   },
   "beauty-campaign": {
     id: "beauty-campaign",
     tag: "Social Media",
-    title: "Beauty Brand Growth Campaign",
+    title: "Beauty Brand Growth Campaign Concept",
     image: "/images/beauty-campaign.png",
-    overview: "Unified visual content design and distribution campaign for a beauty brand across Instagram, TikTok, and LinkedIn. Raised engagement metrics and drove social store referrals.",
+    overview: "A unified visual content campaign concept for a beauty brand across Instagram, TikTok, and LinkedIn. Focuses on high-contrast visual systems and micro-influencer content templates.",
     strategyHeading: "Social Strategies",
     strategyItems: [
       "High-contrast product animations tailored for TikTok reels.",
@@ -226,18 +227,18 @@ const portfolioDetailsData: Record<string, PortfolioDetail> = {
       "Weekly analytics review mapping content performance.",
     ],
     results: [
-      { value: "15x", label: "Audience follower scale" },
-      { value: "8.5%", label: "Average engagement rate" },
-      { value: "150K", label: "Total active audience" },
-      { value: "€850K", label: "Direct referral transactions" },
+      { value: "Visual Kit", label: "Deliverable" },
+      { value: "9:16 Video", label: "Format Focus" },
+      { value: "Instagram", label: "Primary Platform" },
+      { value: "TikTok", label: "Secondary Platform" },
     ],
   },
   restaurant: {
     id: "restaurant",
     tag: "Full Service",
-    title: "Fine Dining Restaurant Venezia Launch",
+    title: "Fine Dining Restaurant Venezia Launch Concept",
     image: "/images/restaurant.png",
-    overview: "Complete identity redesign, localization, and launch campaign for a fine dining spot in Mestre/Venezia. Merged sensory offline photography with optimized local SEO listings.",
+    overview: "A localized brand launch and reservation portal concept for a fine dining restaurant in Venezia. Combines high-end typography with local search citations.",
     strategyHeading: "Scope of Work",
     strategyItems: [
       "Bespoke visual identity suite (vector logo, typography, paper stocks).",
@@ -247,28 +248,27 @@ const portfolioDetailsData: Record<string, PortfolioDetail> = {
       "Targeted digital placements capturing dining leads.",
     ],
     results: [
-      { value: "3x", label: "Reservation velocity" },
-      { value: "92%", label: "Positive reviews score" },
-      { value: "5K+", label: "Monthly web portal visits" },
-      { value: "€200K+", label: "First year revenue increase" },
+      { value: "Figma", label: "Identity Design" },
+      { value: "Next.js", label: "Reservations Portal" },
+      { value: "Local SEO", label: "Organic Target" },
+      { value: "Venezia", label: "Target Region" },
     ],
   },
 };
 
 export default function Portfolio() {
   const [selectedProject, setSelectedProject] = useState<PortfolioDetail | null>(null);
-  const [dots, setDots] = useState<{ id: number; size: number; x: number; y: number; duration: number }[]>([]);
+  const scrollContainerRef = useContext(ScrollContext);
 
-  useEffect(() => {
-    const generated = [...Array(14)].map((_, i) => ({
+  const [dots] = useState<{ id: number; size: number; x: number; y: number; duration: number }[]>(() =>
+    [...Array(14)].map((_, i) => ({
       id: i,
       size: Math.random() * 2 + 1,
       x: Math.random() * 90 + 5,
       y: Math.random() * 90 + 5,
       duration: 12 + Math.random() * 10,
-    }));
-    setDots(generated);
-  }, []);
+    }))
+  );
 
   const containerVariants: Variants = {
     hidden: { opacity: 0 },
@@ -332,7 +332,7 @@ export default function Portfolio() {
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.4 }}
+          viewport={{ root: scrollContainerRef || undefined, once: true, amount: 0.4 }}
           className="flex flex-col items-center text-center space-y-4"
         >
           <motion.p
@@ -340,22 +340,22 @@ export default function Portfolio() {
             className="text-[10px] tracking-[0.2em] font-mono text-neutral-500 uppercase flex items-center gap-2"
           >
             <Sparkles className="w-3.5 h-3.5" />
-            Case Studies
+            Capabilities & Showcase
           </motion.p>
           <motion.h2
             variants={itemVariants}
             className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-white leading-[1.08]"
           >
-            Featured{" "}
+            {"Concept Work & "}
             <span className="font-light text-neutral-400 text-glow">
-              Projects.
+              {"Capabilities."}
             </span>
           </motion.h2>
           <motion.p
             variants={itemVariants}
             className="text-neutral-500 text-sm leading-relaxed max-w-lg"
           >
-            Real outcomes. Selected stories showing how we help brands scale online platforms and launch systems.
+            {"A look at the kind of work we build — concept pieces and sample builds that show our range across web, commerce, AI, and brand. Your project becomes our next case study."}
           </motion.p>
         </motion.div>
 
@@ -364,7 +364,7 @@ export default function Portfolio() {
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.1 }}
+          viewport={{ root: scrollContainerRef || undefined, once: true, amount: 0.1 }}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
         >
           {portfolioList.map((project) => {
@@ -504,7 +504,7 @@ export default function Portfolio() {
             {/* Results Grid */}
             <div className="border-t border-neutral-900 pt-5 text-left">
               <h4 className="text-xs font-mono font-bold tracking-widest text-neutral-500 uppercase mb-4">
-                RESULTS DELIVERED
+                PROJECT SPECIFICATIONS
               </h4>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                 {selectedProject.results.map((res, idx) => (

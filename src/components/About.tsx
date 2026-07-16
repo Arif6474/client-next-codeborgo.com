@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useContext } from "react";
 import { motion, Variants, useInView } from "framer-motion";
 import { Sparkles, Hammer, Layers, TrendingUp, Cpu } from "lucide-react";
+import { ScrollContext } from "../app/page";
 
 interface BgDot {
   id: number;
@@ -17,12 +18,13 @@ interface CountUpProps {
   duration?: number;
   suffix?: string;
   prefix?: string;
+  scrollContainerRef?: React.RefObject<HTMLDivElement | null> | null;
 }
 
-function CountUp({ target, duration = 1.8, suffix = "", prefix = "" }: CountUpProps) {
+function CountUp({ target, duration = 1.8, suffix = "", prefix = "", scrollContainerRef }: CountUpProps) {
   const [count, setCount] = useState(0);
   const ref = useRef<HTMLSpanElement>(null);
-  const isInView = useInView(ref, { once: true, amount: 0.5 });
+  const isInView = useInView(ref, { root: scrollContainerRef || undefined, once: true, amount: 0.5 });
 
   useEffect(() => {
     if (!isInView) return;
@@ -59,23 +61,17 @@ function CountUp({ target, duration = 1.8, suffix = "", prefix = "" }: CountUpPr
 }
 
 export default function About() {
-  const [dots, setDots] = useState<BgDot[]>([]);
+  const scrollContainerRef = useContext(ScrollContext);
 
-  useEffect(() => {
-    const generated = [...Array(14)].map((_, i) => ({
+  const [dots] = useState<BgDot[]>(() =>
+    [...Array(14)].map((_, i) => ({
       id: i,
       size: Math.random() * 2 + 1,
       x: Math.random() * 90 + 5,
       y: Math.random() * 90 + 5,
       duration: 12 + Math.random() * 10,
-    }));
-
-    const handle = requestAnimationFrame(() => {
-      setDots(generated);
-    });
-
-    return () => cancelAnimationFrame(handle);
-  }, []);
+    }))
+  );
 
   const containerVariants: Variants = {
     hidden: { opacity: 0 },
@@ -122,10 +118,10 @@ export default function About() {
   ];
 
   const stats = [
-    { target: 120, suffix: "+", label: "Projects Delivered" },
-    { target: 98, suffix: "%", label: "Client Satisfaction" },
-    { target: 60, suffix: "%", label: "Support Overhead Cut" },
-    { target: 4, suffix: "+", label: "Years in Venezia" },
+    { target: 100, suffix: "%", label: "Senior-Built", prefix: "" },
+    { target: 24, prefix: "<", suffix: "h", label: "Response Time" },
+    { target: 98, suffix: "+", label: "Target PageSpeed", prefix: "" },
+    { target: 100, suffix: "%", label: "Venezia & EU-Based", prefix: "" },
   ];
 
   return (
@@ -182,7 +178,7 @@ export default function About() {
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.25 }}
+          viewport={{ root: scrollContainerRef || undefined, once: true, amount: 0.25 }}
           className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-20 items-end"
         >
           {/* Left: Headline block */}
@@ -214,21 +210,21 @@ export default function About() {
           >
             <motion.p
               variants={itemVariants}
-              className="text-neutral-400 text-sm md:text-base leading-relaxed"
+              className="text-neutral-450 text-sm md:text-base leading-relaxed"
             >
-              Located in Venezia, Italy, CodeBorgo was founded on a simple
-              principle: digital products should be as functional as they are
-              beautiful. We do not design generic web pages — we craft bespoke
-              digital flagship stores and automation structures.
+              {"CodeBorgo is a new studio built on an old idea: that digital products should be as functional as they are beautiful. We're based in Venezia, and we bring the same standard of craft to a landing page as a Venetian workshop brings to anything it makes."}
+            </motion.p>
+            <motion.p
+              variants={itemVariants}
+              className="text-neutral-455 text-sm leading-relaxed"
+            >
+              {"We're small on purpose. That means you work directly with the people building your product — not an account manager and a queue. We don't ship generic templates; we design and engineer bespoke sites, stores, and automations around your actual business goals."}
             </motion.p>
             <motion.p
               variants={itemVariants}
               className="text-neutral-500 text-sm leading-relaxed"
             >
-              By bridging the gap between luxury design and high-end computer
-              science, we provide premium brands and ambitious tech startups with
-              an unforgettable online presence that delivers measurable compound
-              growth.
+              {"If you're an ambitious brand or an early-stage startup that wants a partner who cares about the details, that's exactly who we built this for."}
             </motion.p>
           </motion.div>
         </motion.div>
@@ -238,7 +234,7 @@ export default function About() {
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.4 }}
+          viewport={{ root: scrollContainerRef || undefined, once: true, amount: 0.4 }}
           className="grid grid-cols-2 md:grid-cols-4 gap-px bg-neutral-900 rounded-2xl overflow-hidden border border-neutral-900"
         >
           {stats.map((s) => (
@@ -248,7 +244,7 @@ export default function About() {
               className="group flex flex-col items-center justify-center gap-1 py-8 px-4 bg-[#050505] hover:bg-neutral-950/80 transition-colors duration-300 text-center"
             >
               <span className="text-3xl md:text-6xl font-bold text-white tracking-tight group-hover:text-glow transition-all duration-300">
-                <CountUp target={s.target} suffix={s.suffix} />
+                <CountUp target={s.target} suffix={s.suffix} prefix={s.prefix} scrollContainerRef={scrollContainerRef} />
               </span>
               <span className="text-[11px] font-mono text-neutral-400 uppercase tracking-[0.15em]">
                 {s.label}

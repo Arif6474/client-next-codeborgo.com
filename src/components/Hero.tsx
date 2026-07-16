@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { motion, AnimatePresence, Variants } from "framer-motion";
 import { Star, LayoutGrid } from "lucide-react";
 import Globe from "./ui/Globe";
+import { ScrollContext } from "../app/page";
 
 interface BgDot {
   id: number;
@@ -21,30 +22,24 @@ const SERVICES = [
 ];
 
 export default function Hero() {
-  const [dots, setDots] = useState<BgDot[]>([]);
   const [serviceIndex, setServiceIndex] = useState(0);
+  const scrollContainerRef = useContext(ScrollContext);
+
+  const [dots] = useState<BgDot[]>(() =>
+    [...Array(40)].map((_, i) => ({
+      id: i,
+      size: Math.random() * 2 + 1,
+      x: Math.random() * 90 + 5,
+      y: Math.random() * 90 + 5,
+      duration: 15 + Math.random() * 15,
+    }))
+  );
 
   useEffect(() => {
     const interval = setInterval(() => {
       setServiceIndex((prev) => (prev + 1) % SERVICES.length);
     }, 3000);
     return () => clearInterval(interval);
-  }, []);
-
-  useEffect(() => {
-    const generated = [...Array(40)].map((_, i) => ({
-      id: i,
-      size: Math.random() * 2 + 1,
-      x: Math.random() * 90 + 5,
-      y: Math.random() * 90 + 5,
-      duration: 15 + Math.random() * 15,
-    }));
-    
-    const handle = requestAnimationFrame(() => {
-      setDots(generated);
-    });
-
-    return () => cancelAnimationFrame(handle);
   }, []);
   const containerVariants: Variants = {
     hidden: { opacity: 0 },
@@ -58,7 +53,7 @@ export default function Hero() {
   };
 
   const itemVariants: Variants = {
-    hidden: { opacity: 0, y: 15 },
+    hidden: { opacity: 0.4, y: 15 },
     visible: {
       opacity: 1,
       y: 0,
@@ -86,15 +81,6 @@ export default function Hero() {
 
       {/* Subtle Horizontal Layout Alignment Line */}
       <div className="absolute top-[12vh] left-6 right-6 border-b border-dashed border-neutral-900/30 pointer-events-none z-0" />
-
-      {/* Monospace Editorial & Coordinate Info
-      <div className="absolute top-8 left-14 hidden md:flex items-center gap-1.5 pointer-events-none select-none opacity-30 font-mono text-[9px] uppercase tracking-[0.25em] text-neutral-500">
-        <span>HQ: VENEZIA, IT</span>
-        <span className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-pulse" />
-      </div>
-      <div className="absolute top-8 right-14 hidden md:flex items-center gap-1.5 pointer-events-none select-none opacity-30 font-mono text-[9px] uppercase tracking-[0.25em] text-neutral-500">
-        <span>COORD: 45.4408° N, 12.3155° E</span>
-      </div> */}
 
       {/* Drifting background dots */}
       {dots.map((dot) => (
@@ -152,7 +138,7 @@ export default function Hero() {
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-green-500"></span>
               </span>
-              <span className="text-neutral-400 uppercase tracking-widest truncate">Currently selecting startup cohorts</span>
+              <span className="text-neutral-400 uppercase tracking-widest truncate">Now accepting new projects for Q3 2026</span>
             </div>
           </motion.div>
 
@@ -181,14 +167,13 @@ export default function Hero() {
           {/* Subtitle */}
           <motion.p
             variants={itemVariants}
-            className="text-xs sm:text-sm md:text-base text-neutral-500 max-w-2xl leading-relaxed w-full"
+            className="text-xs sm:text-sm md:text-base text-neutral-400 max-w-2xl leading-relaxed w-full font-normal"
           >
-            Crafting high-performance digital products, smart interfaces, and ROI-driven marketing systems 
-            with Venetian precision and Italian craftsmanship.
+            {"We're a Venice-based studio building high-performance websites, custom AI agents, and marketing systems that actually move numbers. Founder-led, senior-only, and obsessive about detail — no outsourcing, no templates."}
           </motion.p>
 
-          {/* Animated Action Button */}
-          <motion.div variants={itemVariants} className="pt-2">
+          {/* Action Buttons */}
+          <motion.div variants={itemVariants} className="pt-2 flex flex-wrap items-center justify-center lg:justify-start gap-4">
             <motion.div
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.98 }}
@@ -199,15 +184,22 @@ export default function Hero() {
 
               {/* Inside Interactive Button */}
               <button
-                onClick={() => handleCtaClick("services")}
-                className="relative px-4 sm:px-6 py-2.5 sm:py-3 bg-[#050505] hover:bg-[#050505]/95 text-white font-medium text-xs uppercase tracking-widest rounded-[11px] flex items-center gap-2 transition-colors duration-300 z-10 cursor-pointer"
+                onClick={() => handleCtaClick("contact")}
+                className="relative px-5 py-3 bg-[#050505] hover:bg-[#050505]/95 text-white font-semibold text-xs uppercase tracking-widest rounded-[11px] flex items-center gap-2 transition-colors duration-300 z-10 cursor-pointer"
               >
-                Explore Services
-                <span className="text-neutral-500 group-hover:text-white group-hover:translate-x-0.5 transition-all text-xs">
+                Book a Free Consultation
+                <span className="text-neutral-550 group-hover:text-white group-hover:translate-x-0.5 transition-all text-xs">
                   →
                 </span>
               </button>
             </motion.div>
+
+            <button
+              onClick={() => handleCtaClick("services")}
+              className="px-5 py-3 border border-neutral-900 bg-neutral-950/40 text-neutral-400 hover:text-white font-semibold text-xs uppercase tracking-widest rounded-xl hover:bg-neutral-900/20 hover:border-neutral-850 transition-all duration-300 cursor-pointer"
+            >
+              Services
+            </button>
           </motion.div>
         </motion.div>
 
@@ -228,7 +220,7 @@ export default function Hero() {
         variants={itemVariants}
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: true }}
+        viewport={{ root: scrollContainerRef || undefined, once: true }}
         className="w-full max-w-7xl mx-auto px-4 md:px-8 mt-[4vh] overflow-hidden relative z-10"
       >
         {/* Gradient masking for left/right borders */}

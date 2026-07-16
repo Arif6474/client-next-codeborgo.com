@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { motion, Variants } from "framer-motion";
 import { Zap, Shield, Eye, Flame, GraduationCap, Clock, Sparkles } from "lucide-react";
+import { ScrollContext } from "../app/page";
 
 interface BgDot {
   id: number;
@@ -13,7 +14,17 @@ interface BgDot {
 }
 
 export default function Features() {
-  const [dots, setDots] = useState<BgDot[]>([]);
+  const scrollContainerRef = useContext(ScrollContext);
+
+  const [dots] = useState<BgDot[]>(() =>
+    [...Array(12)].map((_, i) => ({
+      id: i,
+      size: Math.random() * 2 + 1,
+      x: Math.random() * 90 + 5,
+      y: Math.random() * 90 + 5,
+      duration: 12 + Math.random() * 10,
+    }))
+  );
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const { currentTarget, clientX, clientY } = e;
@@ -23,22 +34,6 @@ export default function Features() {
     currentTarget.style.setProperty("--mouse-x", `${x}px`);
     currentTarget.style.setProperty("--mouse-y", `${y}px`);
   };
-
-  useEffect(() => {
-    const generated = [...Array(12)].map((_, i) => ({
-      id: i,
-      size: Math.random() * 2 + 1,
-      x: Math.random() * 90 + 5,
-      y: Math.random() * 90 + 5,
-      duration: 12 + Math.random() * 10,
-    }));
-    
-    const handle = requestAnimationFrame(() => {
-      setDots(generated);
-    });
-
-    return () => cancelAnimationFrame(handle);
-  }, []);
 
   const containerVariants: Variants = {
     hidden: { opacity: 0 },
@@ -163,7 +158,7 @@ export default function Features() {
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.4 }}
+          viewport={{ root: scrollContainerRef || undefined, once: true, amount: 0.4 }}
           className="flex flex-col items-center text-center space-y-4"
         >
           <motion.p
@@ -196,7 +191,7 @@ export default function Features() {
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.15 }}
+          viewport={{ root: scrollContainerRef || undefined, once: true, amount: 0.15 }}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
         >
           {featuresList.map((feat, idx) => {

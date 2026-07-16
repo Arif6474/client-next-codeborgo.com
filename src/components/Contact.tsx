@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { motion, AnimatePresence, Variants } from "framer-motion";
 import { MapPin, Mail, Phone, Clock, Send, Sparkles, Copy, Check } from "lucide-react";
+import { ScrollContext } from "../app/page";
 
 export default function Contact() {
   const [name, setName] = useState("");
@@ -14,6 +15,8 @@ export default function Contact() {
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [copiedIndex, setCopiedIndex] = useState<string | null>(null);
+  const [consent, setConsent] = useState(false);
+  const scrollContainerRef = useContext(ScrollContext);
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
@@ -25,6 +28,7 @@ export default function Contact() {
     }
     if (!service) newErrors.service = "Please select a service";
     if (!message.trim()) newErrors.message = "Message is required";
+    if (!consent) newErrors.consent = "You must agree to the privacy policy";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -52,6 +56,7 @@ export default function Contact() {
       setCompany("");
       setService("");
       setMessage("");
+      setConsent(false);
       setErrors({});
     } catch (error: any) {
       setErrors({ submit: error.message || "An unexpected error occurred." });
@@ -88,8 +93,8 @@ export default function Contact() {
       num: "02",
       icon: Mail,
       label: "Email",
-      content: <span className="font-mono select-all">hello@codeborgo.it</span>,
-      copyValue: "hello@codeborgo.it",
+      content: <span className="font-mono select-all">info@codeborgo.com</span>,
+      copyValue: "info@codeborgo.com",
     },
     {
       num: "03",
@@ -133,7 +138,7 @@ export default function Contact() {
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.4 }}
+          viewport={{ root: scrollContainerRef || undefined, once: true, amount: 0.4 }}
           className="flex flex-col items-center text-center space-y-4"
         >
           <motion.p variants={itemVariants} className="text-[10px] tracking-[0.2em] font-mono text-neutral-500 uppercase flex items-center gap-2">
@@ -154,7 +159,7 @@ export default function Contact() {
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.15 }}
+          viewport={{ root: scrollContainerRef || undefined, once: true, amount: 0.15 }}
           className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start"
         >
 
@@ -259,9 +264,8 @@ export default function Contact() {
                           required
                           value={service}
                           onChange={(e) => setService(e.target.value)}
-                          className={`${inputClass} bg-neutral-950/95 cursor-pointer appearance-none ${
-                            service === "" ? "!text-neutral-500" : "!text-white"
-                          }`}
+                          className={`${inputClass} bg-neutral-950/95 cursor-pointer appearance-none ${service === "" ? "!text-neutral-500" : "!text-white"
+                            }`}
                         >
                           <option value="" className="text-neutral-500 bg-neutral-950">Select a service category</option>
                           <option value="digital-marketing">Digital Marketing</option>
@@ -283,6 +287,8 @@ export default function Contact() {
                       <textarea id="message" required value={message} onChange={(e) => setMessage(e.target.value)} placeholder="Outline your project scope or objectives..." rows={5} className={inputClass + " resize-none"} />
                       {errors.message && <span className="text-[9px] font-mono text-red-500 mt-1">{errors.message}</span>}
                     </div>
+
+
 
                     {errors.submit && (
                       <div className="p-3 py-2.5 rounded-xl border border-red-950/50 bg-red-950/15 text-red-500 text-[10px] font-mono text-center tracking-wide leading-relaxed">

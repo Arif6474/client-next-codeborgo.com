@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Plus, Minus, MessageCircle } from "lucide-react";
+import { ScrollContext } from "../app/page";
 
 interface FAQItem {
   question: string;
@@ -44,6 +45,7 @@ const faqList: FAQItem[] = [
 
 export default function FAQ() {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
+  const scrollContainerRef = useContext(ScrollContext);
 
   const toggle = (idx: number) => {
     setOpenIndex(openIndex === idx ? null : idx);
@@ -60,7 +62,7 @@ export default function FAQ() {
         <motion.div
           initial={{ opacity: 0, x: -20 }}
           whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true }}
+          viewport={{ root: scrollContainerRef || undefined, once: true }}
           transition={{ duration: 0.5 }}
           className="flex flex-col gap-4 lg:gap-6"
         >
@@ -97,7 +99,7 @@ export default function FAQ() {
         <motion.div
           initial={{ opacity: 0, x: 20 }}
           whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true }}
+          viewport={{ root: scrollContainerRef || undefined, once: true }}
           transition={{ duration: 0.5, delay: 0.1 }}
           className="flex flex-col divide-y divide-neutral-900"
         >
