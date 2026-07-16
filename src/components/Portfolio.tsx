@@ -365,7 +365,7 @@ export default function Portfolio() {
           initial="hidden"
           whileInView="visible"
           viewport={{ root: scrollContainerRef || undefined, once: true, amount: 0.1 }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+          className="flex overflow-x-auto md:grid md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 items-stretch max-w-7xl mx-auto w-full px-6 md:px-0 snap-x snap-mandatory no-scrollbar pb-6 md:pb-0"
         >
           {portfolioList.map((project) => {
             const Icon = project.icon;
@@ -374,7 +374,7 @@ export default function Portfolio() {
                 key={project.id}
                 variants={itemVariants}
                 onClick={() => handleOpenProject(project.id)}
-                className="group relative rounded-2xl border border-neutral-900 bg-neutral-950/20 hover:bg-neutral-950/50 hover:border-neutral-800 transition-all duration-300 flex flex-col overflow-hidden cursor-pointer"
+                className="group relative rounded-2xl border border-neutral-900 bg-neutral-950/20 hover:bg-neutral-950/50 hover:border-neutral-800 transition-all duration-300 flex flex-col overflow-hidden cursor-pointer snap-start shrink-0 w-[80vw] sm:w-[350px] md:w-auto"
               >
                 {/* Image Preview Area */}
                 <div className="relative w-full aspect-[16/10] overflow-hidden border-b border-neutral-900">

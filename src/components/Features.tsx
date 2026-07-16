@@ -192,7 +192,7 @@ export default function Features() {
           initial="hidden"
           whileInView="visible"
           viewport={{ root: scrollContainerRef || undefined, once: true, amount: 0.15 }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+          className="flex overflow-x-auto md:grid md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 items-stretch max-w-7xl mx-auto w-full px-6 md:px-0 snap-x snap-mandatory no-scrollbar pb-6 md:pb-0"
         >
           {featuresList.map((feat, idx) => {
             const Icon = feat.icon;
@@ -201,7 +201,7 @@ export default function Features() {
                 key={feat.title}
                 variants={itemVariants}
                 onMouseMove={handleMouseMove}
-                className="group relative rounded-2xl p-[1px] bg-neutral-900 transition-colors duration-300 overflow-hidden"
+                className="group relative rounded-2xl p-[1px] bg-neutral-900 transition-colors duration-300 overflow-hidden snap-start shrink-0 w-[80vw] sm:w-[350px] md:w-auto"
               >
                 {/* Border follow spotlight */}
                 <div className={`absolute inset-0 transition-opacity duration-500 opacity-0 group-hover:opacity-100 pointer-events-none z-0 ${feat.borderGlow}`} />
