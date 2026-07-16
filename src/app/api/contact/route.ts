@@ -96,7 +96,7 @@ ${message}
           </div>
           
           <div style="margin-top: 32px; border-top: 1px solid #1a1a1a; padding-top: 16px; text-align: center;">
-            <p style="margin: 0; font-size: 11px; color: #404040;">This inquiry was sent automatically from the Vantelli website contact form.</p>
+            <p style="margin: 0; font-size: 11px; color: #404040;">This inquiry was sent automatically from the CodeBorgo website contact form.</p>
           </div>
         </div>
       `,

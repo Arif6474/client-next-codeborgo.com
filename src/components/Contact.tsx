@@ -88,8 +88,8 @@ export default function Contact() {
       num: "02",
       icon: Mail,
       label: "Email",
-      content: <span className="font-mono select-all">hello@vantelli.it</span>,
-      copyValue: "hello@vantelli.it",
+      content: <span className="font-mono select-all">hello@codeborgo.it</span>,
+      copyValue: "hello@codeborgo.it",
     },
     {
       num: "03",
@@ -315,7 +315,7 @@ export default function Contact() {
                     <div className="space-y-1.5">
                       <h3 className="text-base font-bold text-white tracking-tight">Message Received</h3>
                       <p className="text-xs text-neutral-400 max-w-sm mx-auto leading-relaxed">
-                        Thank you for contacting Vantelli. Your query has been logged. Our Venezia team will reply via email within 12 business hours.
+                        Thank you for contacting CodeBorgo. Your query has been logged. Our Venezia team will reply via email within 12 business hours.
                       </p>
                     </div>
                     <button

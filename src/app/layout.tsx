@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Vantelli",
+  title: "CodeBorgo",
   description: "Premium Digital Excellence",
 };
 

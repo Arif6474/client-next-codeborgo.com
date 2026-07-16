@@ -235,7 +235,7 @@ export default function Pricing() {
 
         {/* Monospace Editorial & Coordinate Info */}
         <div className="absolute top-8 left-14 hidden md:flex items-center gap-1.5 pointer-events-none select-none opacity-20 font-mono text-[9px] uppercase tracking-[0.25em] text-neutral-500">
-          <span>Vantelli Investment Config</span>
+          <span>CodeBorgo Investment Config</span>
         </div>
         <div className="absolute top-8 right-14 hidden md:flex items-center gap-1.5 pointer-events-none select-none opacity-20 font-mono text-[9px] uppercase tracking-[0.25em] text-neutral-500">
           <span>SYS CODE: V-PRICE.3</span>
@@ -545,7 +545,7 @@ export default function Pricing() {
                 <div className="space-y-1.5">
                   <h4 className="text-sm font-bold text-white tracking-tight">Payment Successful</h4>
                   <p className="text-xs text-neutral-400 max-w-sm leading-relaxed">
-                    Thank you for choosing Vantelli. A confirmation invoice has been sent to <strong className="text-white">{cardEmail}</strong>. Our director will call you within 24 business hours to kick off your project.
+                    Thank you for choosing CodeBorgo. A confirmation invoice has been sent to <strong className="text-white">{cardEmail}</strong>. Our director will call you within 24 business hours to kick off your project.
                   </p>
                 </div>
                 <button

@@ -216,7 +216,7 @@ export default function About() {
               variants={itemVariants}
               className="text-neutral-400 text-sm md:text-base leading-relaxed"
             >
-              Located in Venezia, Italy, Vantelli was founded on a simple
+              Located in Venezia, Italy, CodeBorgo was founded on a simple
               principle: digital products should be as functional as they are
               beautiful. We do not design generic web pages — we craft bespoke
               digital flagship stores and automation structures.

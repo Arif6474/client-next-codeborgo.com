@@ -29,7 +29,7 @@ export default function Footer() {
           className="w-full flex items-center justify-center py-6 select-none"
         >
           <span className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black uppercase tracking-[0.12em] text-outline-cyan cursor-default text-center">
-            VANTELLI
+            CodeBorgo
           </span>
         </motion.div>
 
@@ -83,7 +83,7 @@ export default function Footer() {
 
           {/* Copyright */}
           <div>
-            <span>© {new Date().getFullYear()} Vantelli. All Rights Reserved.</span>
+            <span>© {new Date().getFullYear()} CodeBorgo. All Rights Reserved.</span>
           </div>
 
         </div>

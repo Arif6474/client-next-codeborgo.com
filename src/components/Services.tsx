@@ -305,7 +305,7 @@ export default function Services() {
 
       {/* Monospace Editorial & Coordinate Info */}
       <div className="absolute top-8 left-14 hidden md:flex items-center gap-1.5 pointer-events-none select-none opacity-20 font-mono text-[9px] uppercase tracking-[0.25em] text-neutral-500">
-        <span>Vantelli Services Matrix</span>
+        <span>CodeBorgo Services Matrix</span>
       </div>
       <div className="absolute top-8 right-14 hidden md:flex items-center gap-1.5 pointer-events-none select-none opacity-20 font-mono text-[9px] uppercase tracking-[0.25em] text-neutral-500">
         <span>SYS CODE: V-SERVICE.9</span>
