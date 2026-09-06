@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useContext } from "react";
 import { motion, AnimatePresence, Variants } from "framer-motion";
-import { Sparkles, BarChart, ShoppingCart, MessageSquare, Heart, LayoutGrid, Utensils, CheckCircle } from "lucide-react";
+import { Sparkles, BarChart, ShoppingCart, MessageSquare, Heart, LayoutGrid, Utensils, CheckCircle, Ticket, ExternalLink, Building } from "lucide-react";
 import Modal from "./ui/Modal";
 import { ScrollContext } from "../app/page";
 
@@ -33,9 +33,46 @@ interface PortfolioDetail {
   techStack?: string[];
   features?: string[];
   image: string;
+  liveLink?: string;
 }
 
 const portfolioList: PortfolioItem[] = [
+  {
+    id: "grandmela",
+    tag: "Event Ticketing",
+    title: "GrandMela",
+    description: "An event ticketing platform for discovering and booking local concerts and matches, featuring secure checkout and instant guest ticketing.",
+    icon: Ticket,
+    image: "/projects/grandmela/grandmela1.png",
+    metrics: [
+      { value: "Stripe", label: "Payment Stack" },
+      { value: "QR Code", label: "Gate Check-In" },
+    ],
+  },
+  {
+    id: "staynova",
+    tag: "Staffing Solutions",
+    title: "StayNova",
+    description: "Premium hospitality staffing platform providing trained personnel for hotels, events, and corporate clients across the UAE.",
+    icon: CheckCircle,
+    image: "/projects/staynova/staynova1.png",
+    metrics: [
+      { value: "Dubai, UAE", label: "Target Region" },
+      { value: "B2B", label: "Business Model" },
+    ],
+  },
+  {
+    id: "ennconsultancy",
+    tag: "Business Setup",
+    title: "ENN Consultancy",
+    description: "A leading business setup and visa consultancy in the UAE, providing innovative solutions for mainland, freezone, and offshore company formation.",
+    icon: Building,
+    image: "/projects/enn/enn1.png",
+    metrics: [
+      { value: "UAE", label: "Target Region" },
+      { value: "B2B & B2C", label: "Clientele Focus" },
+    ],
+  },
   {
     id: "luxury-fashion",
     tag: "Digital Marketing",
@@ -111,6 +148,72 @@ const portfolioList: PortfolioItem[] = [
 ];
 
 const portfolioDetailsData: Record<string, PortfolioDetail> = {
+  "grandmela": {
+    id: "grandmela",
+    tag: "Event Ticketing",
+    title: "GrandMela Ticketing Platform",
+    image: "/projects/grandmela/grandmela1.png",
+    liveLink: "https://grandmela.it/",
+    overview: "A comprehensive event ticketing platform that allows users to discover and book local music concerts, stage dramas, workshops, and sports matches. Features seamless guest checkout and instant gate check-ins.",
+    strategyHeading: "Platform Highlights",
+    strategyItems: [
+      "Secure credit card processing powered by Stripe with instant 3D-Secure fraud protection.",
+      "Instant automatic email delivery with high-resolution printable PDF event passes.",
+      "Cryptographically signed QR codes scanned live at gate entrances for seamless check-in.",
+      "Multi-lingual support (English and Bengali).",
+      "Live broadcast integration and media coverage tracking for events.",
+    ],
+    results: [
+      { value: "Stripe", label: "Payment Gateway" },
+      { value: "Next.js", label: "Front-end Stack" },
+      { value: "Instant", label: "Check-in Speed" },
+      { value: "PDF & QR", label: "Ticket Formats" },
+    ],
+  },
+  "staynova": {
+    id: "staynova",
+    tag: "Staffing Solutions",
+    title: "StayNova Hospitality Services",
+    image: "/projects/staynova/staynova1.png",
+    liveLink: "https://staynova.ae/",
+    overview: "A Dubai-based premium hospitality staffing and outsourcing company. StayNova delivers reliable, professional, and well-trained manpower solutions for hotels, resorts, restaurants, and events across the UAE.",
+    strategyHeading: "Service Verticals",
+    strategyItems: [
+      "Hospitality Staffing: Professional stewarding, kitchen assistants, and service crew.",
+      "Housekeeping Staffing: Experienced room attendants for immaculate standards.",
+      "Event Staffing: Reliable banquet staff and event support crews.",
+      "Rapid deployment workflows allowing quick mobilization without operational delays.",
+      "Professional training ensuring adherence to international luxury hotel standards.",
+    ],
+    results: [
+      { value: "B2B", label: "Business Model" },
+      { value: "Next.js", label: "Web Platform" },
+      { value: "UAE", label: "Target Market" },
+      { value: "Trained", label: "Staffing Quality" },
+    ],
+  },
+  "ennconsultancy": {
+    id: "ennconsultancy",
+    tag: "Consultancy",
+    title: "ENN Consultancy Services",
+    image: "/projects/enn/enn1.png",
+    liveLink: "https://ennconsultancy.ae/",
+    overview: "ENN Consultancy is a premier provider of business setup and visa solutions in the UAE. They facilitate the seamless launch of businesses by offering mainland, freezone, and offshore licensing, alongside comprehensive corporate services and Golden Visa processing.",
+    strategyHeading: "Core Services",
+    strategyItems: [
+      "Business Setup: Complete company formation for mainland, free zone, and offshore entities.",
+      "Visa Services: Processing for Golden Visas, Employment, Remote, Investor, and Tourist visas.",
+      "Corporate Services: PRO services, license renewals, and company amendments.",
+      "Document Attestation: Professional legalization services for official documentation.",
+      "Government Collaboration: Close partnerships with UAE government agencies to ensure compliance.",
+    ],
+    results: [
+      { value: "UAE", label: "Primary Market" },
+      { value: "Next.js", label: "Web Platform" },
+      { value: "B2B / B2C", label: "Target Audience" },
+      { value: "Corporate", label: "Service Focus" },
+    ],
+  },
   "luxury-fashion": {
     id: "luxury-fashion",
     tag: "Digital Marketing",
@@ -522,6 +625,20 @@ export default function Portfolio() {
                 ))}
               </div>
             </div>
+
+            {selectedProject.liveLink && (
+              <div className="border-t border-neutral-900 pt-5 text-left flex justify-start">
+                <a
+                  href={selectedProject.liveLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 bg-rose-600 hover:bg-rose-500 transition-colors text-xs font-bold uppercase tracking-wider rounded-lg text-white cursor-pointer shadow-lg shadow-rose-900/20"
+                >
+                  <ExternalLink className="w-4 h-4" />
+                  View Live Project
+                </a>
+              </div>
+            )}
 
             {/* <div className="border-t border-neutral-900 pt-5 text-left flex justify-end">
               <button
