@@ -19,7 +19,7 @@ const packages: Package[] = [
   {
     id: "studio-standard",
     name: "Studio Standard",
-    price: 2500,
+    price: 1250,
     desc: "Complete aesthetic storefronts & custom web architectures.",
     features: [
       "Custom Next.js & React Frontend",
@@ -32,7 +32,7 @@ const packages: Package[] = [
   {
     id: "Venezia-premium",
     name: "Venezia Premium",
-    price: 5000,
+    price: 2500,
     desc: "Bespoke digital architectures & custom AI agent automations.",
     features: [
       "Everything in Studio Standard",
@@ -47,7 +47,7 @@ const packages: Package[] = [
   {
     id: "enterprise-suite",
     name: "Enterprise Suite",
-    price: "10,000+",
+    price: "5,000+",
     desc: "Full digital engineering partner for global products.",
     features: [
       "Unlimited Multi-Tenant SaaS Codebase",
