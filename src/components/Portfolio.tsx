@@ -51,6 +51,19 @@ const portfolioList: PortfolioItem[] = [
     ],
   },
   {
+    id: "casabella",
+    tag: "Fine Dining",
+    title: "Casa Bella",
+    description: "A multicultural fine dining restaurant platform featuring multi-cuisine menus, online ordering, and table reservations.",
+    icon: Utensils,
+    image: "/projects/casabella/casaa-bella.png",
+    liveLink: "https://casabella.codeborgo.com/",
+    metrics: [
+      { value: "Restaurant", label: "Industry" },
+      { value: "Venice", label: "Location" },
+    ],
+  },
+  {
     id: "staynova",
     tag: "Staffing Solutions",
     title: "StayNova",
@@ -76,6 +89,7 @@ const portfolioList: PortfolioItem[] = [
       { value: "B2B & B2C", label: "Clientele Focus" },
     ],
   },
+
   {
     id: "luxury-fashion",
     tag: "Digital Marketing",
@@ -291,7 +305,7 @@ export default function Portfolio() {
                     />
                     {/* Dark gradient overlay at the bottom of the image to blend into the card body */}
                     <div className="absolute inset-0 bg-gradient-to-t from-[#070707] via-black/20 to-transparent opacity-90" />
-                    
+
                     {/* Glass Overlay Tag */}
                     <div className="absolute top-5 left-5 px-3 py-1.5 rounded-full bg-black/50 border border-white/10 backdrop-blur-md">
                       <span className="text-[9px] font-mono font-bold tracking-[0.2em] text-white/90 uppercase">
@@ -329,7 +343,7 @@ export default function Portfolio() {
                         </a>
                       ) : (
                         <div className="h-[46px] w-full border border-dashed border-white/5 rounded-xl flex items-center justify-center">
-                           <span className="text-[10px] font-mono text-neutral-600 uppercase tracking-widest">In Development</span>
+                          <span className="text-[10px] font-mono text-neutral-600 uppercase tracking-widest">In Development</span>
                         </div>
                       )}
                     </div>

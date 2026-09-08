@@ -123,7 +123,7 @@ export default function Hero() {
 
       {/* Main Split Grid Layout */}
       <div className="max-w-7xl mx-auto w-full px-4 md:px-8 flex flex-col lg:grid lg:grid-cols-12 gap-12 lg:gap-8 items-center my-auto relative z-10">
-        
+
         {/* Left Column: Editorial Info */}
         <motion.div
           variants={containerVariants}
