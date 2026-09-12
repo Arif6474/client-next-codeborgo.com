@@ -2,6 +2,7 @@
 
 import { useRef, useState, createContext } from "react";
 import Navbar from "../components/Navbar";
+import CustomCursor from "../components/ui/CustomCursor";
 
 export const ScrollContext = createContext<React.RefObject<HTMLDivElement | null> | null>(null);
 import NoiseBg from "../components/ui/NoiseBg";
@@ -9,6 +10,7 @@ import Hero from "../components/Hero";
 import About from "../components/About";
 import Features from "../components/Features";
 import Services from "../components/Services";
+import DesignEngineering from "../components/DesignEngineering";
 import HowWeWork from "../components/HowWeWork";
 import Portfolio from "../components/Portfolio";
 import Pricing from "../components/Pricing";
@@ -36,9 +38,12 @@ export default function Home() {
   return (
     <ScrollContext.Provider value={scrollContainerRef}>
       <main className="relative w-full h-screen overflow-hidden bg-[#050505] text-white">
+        {/* Contextual Custom Cursor */}
+        <CustomCursor />
+
         {/* Scroll Progress Bar */}
         <div
-          className="fixed top-0 left-0 h-[2px] bg-white z-50 transition-all duration-100 ease-out"
+          className="fixed top-0 left-0 h-[2px] bg-gradient-to-r from-amber-300 via-white to-cyan-400 z-50 transition-all duration-100 ease-out"
           style={{ width: `${scrollProgress}%` }}
         />
 
@@ -57,6 +62,7 @@ export default function Home() {
           <Hero />
           <About />
           <Services />
+          <DesignEngineering />
           <HowWeWork />
           <Features />
           <Portfolio />

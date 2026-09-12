@@ -385,6 +385,7 @@ export default function Services() {
               <motion.div
                 key={svc.id}
                 variants={itemVariants}
+                data-cursor-text="EXPLORE"
                 onClick={() => setSelectedService(serviceDetailsData[svc.id] || null)}
                 onMouseMove={handleMouseMove}
                 whileHover={{ y: -3 }}

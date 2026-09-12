@@ -1,13 +1,14 @@
 "use client";
 
-import { useState, useEffect, useContext } from "react";
+import { useState, useContext } from "react";
 import { motion, Variants } from "framer-motion";
-import { Sparkles, Check } from "lucide-react";
+import { Sparkles, Check, ArrowRight } from "lucide-react";
 import Modal from "./ui/Modal";
 import { ScrollContext } from "../app/page";
 
 interface Package {
   id: string;
+  badge: string;
   name: string;
   price: number | string;
   desc: string;
@@ -18,7 +19,8 @@ interface Package {
 const packages: Package[] = [
   {
     id: "studio-standard",
-    name: "Studio Standard",
+    badge: "ESSENTIAL MVP",
+    name: "Studio MVP Launch",
     price: 1250,
     desc: "Complete aesthetic storefronts & custom web architectures.",
     features: [
@@ -26,34 +28,36 @@ const packages: Package[] = [
       "Figma Design & Wireframing",
       "SEO Infrastructure & Web Vitals Audit",
       "Full Mobile & Tablet Responsive",
-      "1 Month Post-Launch SLA Support"
+      "30-Day Post-Launch Support SLA"
     ],
   },
   {
     id: "Venezia-premium",
-    name: "Venezia Premium",
+    badge: "SCALE & GROWTH",
+    name: "Venezia Signature",
     price: 2500,
     desc: "Bespoke digital architectures & custom AI agent automations.",
     features: [
-      "Everything in Studio Standard",
+      "Everything in Studio MVP",
       "Custom AI Agent & Chatbot Setup",
-      "Interactive Animations & Spotlight Layouts",
+      "Interactive Animations & Kinetic Layouts",
       "Headless E-Commerce & CMS Setup",
       "CI/CD Pipeline & Cloud Deployment",
-      "3 Months Post-Launch SLA Support"
+      "90-Day Post-Launch Support SLA"
     ],
     isPopular: true,
   },
   {
     id: "enterprise-suite",
-    name: "Enterprise Suite",
+    badge: "ENTERPRISE ECOSYSTEM",
+    name: "Enterprise Architecture",
     price: "5,000+",
-    desc: "Full digital engineering partner for global products.",
+    desc: "Full digital engineering partner for ambitious global products.",
     features: [
       "Unlimited Multi-Tenant SaaS Codebase",
       "Custom LLM Fine-Tuning Workflows",
       "Advanced BI & Visual Dashboards",
-      "Dedicated DevOps Infrastructure",
+      "Dedicated DevOps Cloud Infrastructure",
       "Regular Security & Vulnerability Audits",
       "12 Months Dedicated SLA Support"
     ],
@@ -62,6 +66,7 @@ const packages: Package[] = [
 
 export default function Pricing() {
   const [selectedPack, setSelectedPack] = useState<Package | null>(null);
+  const [hoveredId, setHoveredId] = useState<string | null>("Venezia-premium");
   const [paymentState, setPaymentState] = useState<"idle" | "processing" | "success">("idle");
   const scrollContainerRef = useContext(ScrollContext);
 
@@ -75,16 +80,6 @@ export default function Pricing() {
     }))
   );
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const { currentTarget, clientX, clientY } = e;
-    const rect = currentTarget.getBoundingClientRect();
-    const x = clientX - rect.left;
-    const y = clientY - rect.top;
-    currentTarget.style.setProperty("--mouse-x", `${x}px`);
-    currentTarget.style.setProperty("--mouse-y", `${y}px`);
-  };
-
-  // Payment Form States
   const [cardName, setCardName] = useState("");
   const [cardEmail, setCardEmail] = useState("");
   const [cardNumber, setCardNumber] = useState("");
@@ -93,8 +88,7 @@ export default function Pricing() {
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   const handleCtaClick = (pack: Package) => {
-    if (pack.id === "enterprise") {
-      // Direct scroll to contact
+    if (pack.id === "enterprise-suite") {
       const contactSection = document.getElementById("contact");
       if (contactSection) {
         contactSection.scrollIntoView({ behavior: "smooth" });
@@ -102,7 +96,6 @@ export default function Pricing() {
     } else {
       setSelectedPack(pack);
       setPaymentState("idle");
-      // Reset fields
       setCardName("");
       setCardEmail("");
       setCardNumber("");
@@ -116,11 +109,10 @@ export default function Pricing() {
     setSelectedPack(null);
   };
 
-  // Card formatting helpers
   const handleCardNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.replace(/\s/g, "").replace(/\D/g, "");
     const formatted = value.match(/.{1,4}/g)?.join(" ") || value;
-    setCardNumber(formatted.slice(0, 19)); // 16 digits + 3 spaces
+    setCardNumber(formatted.slice(0, 19));
   };
 
   const handleExpiryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -166,29 +158,26 @@ export default function Pricing() {
   const handlePaymentSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!validateForm()) return;
-
     setPaymentState("processing");
-
-    // Simulate Stripe payment gateway latency
     setTimeout(() => {
       setPaymentState("success");
-    }, 2000);
+    }, 1800);
   };
 
   const containerVariants: Variants = {
-    hidden: { opacity: 0 },
+    hidden: { opacity: 0.8 },
     visible: { opacity: 1, transition: { staggerChildren: 0.1 } },
   };
 
   const itemVariants: Variants = {
-    hidden: { opacity: 0, y: 22 },
-    visible: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 90, damping: 18 } },
+    hidden: { opacity: 0.5, y: 15 },
+    visible: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 100, damping: 18 } },
   };
 
   return (
     <section
       id="pricing"
-      className="scroll-section relative px-6 md:px-12 py-28 z-10 w-full overflow-hidden border-t border-neutral-900 bg-[#050505]"
+      className="scroll-section relative px-6 md:px-12 py-24 z-10 w-full overflow-hidden border-t border-neutral-900 bg-[#050505]"
     >
       {/* Drifting background dots */}
       {dots.map((dot) => (
@@ -201,222 +190,133 @@ export default function Pricing() {
         />
       ))}
 
-      {/* Breathing ambient glow — top-left */}
-      <motion.div
-        animate={{ scale: [1, 1.15, 1], opacity: [0.1, 0.24, 0.1] }}
-        transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute top-[-10%] left-[-5%] w-[440px] h-[440px] rounded-full bg-white/10 blur-[120px] pointer-events-none z-0"
-      />
-      {/* Secondary glow — bottom-right */}
-      <motion.div
-        animate={{ scale: [1, 1.1, 1], opacity: [0.06, 0.16, 0.06] }}
-        transition={{ duration: 22, repeat: Infinity, ease: "easeInOut", delay: 6 }}
-        className="absolute bottom-[-10%] right-[-5%] w-[360px] h-[360px] rounded-full bg-white/8 blur-[100px] pointer-events-none z-0"
-      />
-
       <div className="max-w-7xl mx-auto w-full flex flex-col gap-16 relative z-10">
 
-        {/* ── Section Header (centered) ── */}
-
-
-        {/* Precision Grid Brackets & Viewport Borders */}
-        <div className="absolute top-6 left-6 w-5 h-5 border-t border-l border-neutral-900 pointer-events-none select-none opacity-50" />
-        <div className="absolute top-6 right-6 w-5 h-5 border-t border-r border-neutral-900 pointer-events-none select-none opacity-50" />
-        <div className="absolute bottom-6 left-6 w-5 h-5 border-b border-l border-neutral-900 pointer-events-none select-none opacity-50" />
-        <div className="absolute bottom-6 right-6 w-5 h-5 border-b border-r border-neutral-900 pointer-events-none select-none opacity-50" />
-
-        {/* Subtle Horizontal Layout Alignment Line */}
-        <div className="absolute top-[12vh] left-6 right-6 border-b border-dashed border-neutral-900/30 pointer-events-none z-0" />
-
-        {/* Monospace Editorial & Coordinate Info */}
-        <div className="absolute top-8 left-14 hidden md:flex items-center gap-1.5 pointer-events-none select-none opacity-20 font-mono text-[9px] uppercase tracking-[0.25em] text-neutral-500">
-          <span>CodeBorgo Investment Config</span>
-        </div>
-        <div className="absolute top-8 right-14 hidden md:flex items-center gap-1.5 pointer-events-none select-none opacity-20 font-mono text-[9px] uppercase tracking-[0.25em] text-neutral-500">
-          <span>SYS CODE: V-PRICE.3</span>
-        </div>
-
-        {/* ── Section Header (centered) ── */}
+        {/* Section Header */}
         <motion.div
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{ root: scrollContainerRef || undefined, once: true, amount: 0.4 }}
-          className="flex flex-col items-center text-center space-y-4"
+          className="flex flex-col items-center text-center space-y-4 max-w-3xl mx-auto"
         >
-          <motion.p
-            variants={itemVariants}
-            className="text-[10px] tracking-[0.2em] font-mono text-neutral-500 uppercase flex items-center gap-2"
-          >
-            <Sparkles className="w-3.5 h-3.5" />
-            Clear Investment
-          </motion.p>
+          <motion.div variants={itemVariants} className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-neutral-800 bg-neutral-950/80 text-xs font-mono tracking-widest text-neutral-400 uppercase">
+            <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+            Interactive Pricing Panels
+          </motion.div>
 
           <motion.h2
             variants={itemVariants}
-            className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-white leading-[1.08]"
+            className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight text-white leading-tight uppercase"
           >
-            Service{" "}
-            <span className="font-light text-neutral-400">Packages</span>
+            TRANSPARENT <br />
+            <span className="bg-gradient-to-r from-cyan-200 via-white to-amber-200 bg-clip-text text-transparent">
+              INVESTMENT SCOPE.
+            </span>
           </motion.h2>
 
           <motion.p
             variants={itemVariants}
-            className="text-neutral-500 text-sm leading-relaxed max-w-lg"
+            className="text-sm md:text-base text-neutral-400 leading-relaxed font-normal"
           >
-            Choose a structured scope to elevate your brand. All rates represent transparent standard prices.
+            Fixed pricing with zero surprise invoices. Select or hover a package panel to view deliverables.
           </motion.p>
         </motion.div>
 
-        {/* ── Pricing Cards (3-column layout) ── */}
+        {/* Interactive Expandable Panels */}
         <motion.div
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{ root: scrollContainerRef || undefined, once: true, amount: 0.1 }}
-          className="flex overflow-x-auto md:grid md:grid-cols-3 gap-4 md:gap-8 items-stretch max-w-6xl mx-auto w-full px-6 md:px-0 snap-x snap-mandatory no-scrollbar pb-6 md:pb-0"
+          className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 items-stretch max-w-6xl mx-auto w-full"
         >
-          {packages.map((pack, idx) => {
+          {packages.map((pack) => {
+            const isHovered = hoveredId === pack.id;
             const isPopular = pack.isPopular;
-            const isEnterprise = pack.id === "enterprise-suite";
-
-            // Theme settings
-            let borderGlow = "group-hover:bg-[radial-gradient(250px_circle_at_var(--mouse-x,-400px)_var(--mouse-y,-400px),rgba(255,255,255,0.15),transparent_80%)]";
-            let spotlightColor = "rgba(255, 255, 255, 0.03)";
-            let checkIconClass = "text-neutral-500";
-            let ctaClass = "border-neutral-800 hover:border-neutral-700 hover:bg-neutral-900/30 text-white bg-transparent";
-            let orderClass = "order-2 md:order-1";
-
-            if (isPopular) {
-              borderGlow = "group-hover:bg-[radial-gradient(250px_circle_at_var(--mouse-x,-400px)_var(--mouse-y,-400px),rgba(251,191,36,0.3),transparent_80%)]";
-              spotlightColor = "rgba(251, 191, 36, 0.04)";
-              checkIconClass = "text-amber-500";
-              ctaClass = "bg-white text-black hover:bg-neutral-200";
-              orderClass = "order-1 md:order-2";
-            } else if (isEnterprise) {
-              borderGlow = "group-hover:bg-[radial-gradient(250px_circle_at_var(--mouse-x,-400px)_var(--mouse-y,-400px),rgba(139,92,246,0.25),transparent_80%)]";
-              spotlightColor = "rgba(139, 92, 246, 0.04)";
-              checkIconClass = "text-violet-500";
-              ctaClass = "border-violet-900/40 hover:border-violet-600 hover:bg-violet-950/20 text-white bg-transparent";
-              orderClass = "order-3 md:order-3";
-            }
 
             return (
               <motion.div
                 key={pack.id}
                 variants={itemVariants}
-                onMouseMove={handleMouseMove}
-                whileHover={{ y: -5 }}
-                transition={{ type: "spring", stiffness: 300, damping: 22 }}
-                className={`group relative rounded-2xl p-[1px] bg-neutral-900 transition-all duration-300 overflow-hidden cursor-pointer flex flex-col snap-start shrink-0 w-[80vw] sm:w-[350px] md:w-auto ${orderClass}`}
+                data-cursor-text="SELECT"
+                onMouseEnter={() => setHoveredId(pack.id)}
+                animate={{
+                  scale: isHovered ? 1.03 : 0.98,
+                  opacity: isHovered ? 1 : 0.8,
+                }}
+                transition={{ type: "spring", stiffness: 260, damping: 22 }}
+                className={`relative rounded-3xl p-6 md:p-8 border backdrop-blur-md flex flex-col justify-between transition-colors duration-300 cursor-pointer ${
+                  isHovered
+                    ? "border-amber-300/60 bg-neutral-900/90 shadow-[0_0_40px_rgba(251,191,36,0.15)] z-20"
+                    : "border-neutral-800 bg-neutral-950/70 z-10"
+                }`}
               >
-                {/* Border follow spotlight */}
-                <div className={`absolute inset-0 transition-opacity duration-500 opacity-0 group-hover:opacity-100 pointer-events-none z-0 ${borderGlow}`} />
-
-                {/* Popular card halo pulse */}
                 {isPopular && (
-                  <motion.div
-                    animate={{ scale: [1, 1.05, 1], opacity: [0.15, 0.35, 0.15] }}
-                    transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}
-                    className="absolute inset-[-4px] rounded-[20px] bg-amber-500/10 blur-[15px] pointer-events-none z-0"
-                  />
-                )}
-
-                {/* Popular Badge tab */}
-                {isPopular && (
-                  <div className="absolute -top-px left-1/2 -translate-x-1/2 z-20">
-                    <div className="flex items-center gap-1.5 px-3 py-1 bg-[#050505] border border-amber-500/30 rounded-b-xl shadow-lg">
-                      <span className="relative flex h-1.5 w-1.5 shrink-0">
-                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75" />
-                        <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-amber-500" />
-                      </span>
-                      <span className="text-[8px] font-bold tracking-widest text-amber-400 uppercase">
-                        Most Popular
-                      </span>
-                    </div>
+                  <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-3.5 py-1 rounded-full border border-amber-300/40 bg-amber-400/10 backdrop-blur-md text-[10px] font-mono font-bold tracking-widest text-amber-300 uppercase">
+                    ★ Recommended
                   </div>
                 )}
 
-                {/* Card body */}
-                <div
-                  className="relative rounded-[15px] bg-[#070707]/90 hover:bg-[#070707]/95 border border-neutral-900/40 group-hover:border-neutral-800/30 transition-all duration-300 flex flex-col justify-between overflow-hidden z-10 h-full p-6 text-left flex-1"
-                  style={{
-                    backgroundImage: `radial-gradient(350px circle at var(--mouse-x, -400px) var(--mouse-y, -400px), ${spotlightColor}, transparent 80%)`
-                  }}
-                >
-                  {/* Top Header */}
+                <div className="space-y-6">
+                  <div className="flex justify-between items-start">
+                    <span className="text-[10px] font-mono tracking-widest text-neutral-400 uppercase border border-neutral-800 px-2.5 py-1 rounded">
+                      {pack.badge}
+                    </span>
+                  </div>
+
                   <div>
-                    <div className="flex items-center justify-between pb-4">
-                      <span className="text-[10px] font-mono font-bold tracking-[0.2em] text-neutral-500 group-hover:text-neutral-300 transition-colors duration-300">
-                        {String(idx + 1).padStart(2, "0")}
-                      </span>
-                      {isPopular && (
-                        <span className="text-[8px] font-mono text-amber-500/80 tracking-wider uppercase font-semibold">
-                          Recommended
-                        </span>
-                      )}
-                    </div>
-
-                    <div className="border-t border-neutral-900/60 group-hover:border-neutral-800/50 transition-colors duration-300 w-full mb-5" />
-
-                    <div>
-                      <h3 className="text-base font-semibold text-white tracking-tight leading-snug">
-                        {pack.name}
-                      </h3>
-                      <p className="text-[11px] text-neutral-500 mt-1 leading-normal">
-                        {pack.desc}
-                      </p>
-                    </div>
-
-                    <div className="flex items-baseline gap-1 my-5">
-                      <span className="text-3xl font-black text-white tracking-tight">
-                        {typeof pack.price === "number" ? `€${pack.price.toLocaleString()}` : `€${pack.price}`}
-                      </span>
-                      {typeof pack.price === "number" && (
-                        <span className="text-[9px] font-mono text-neutral-400">/one-time</span>
-                      )}
-                    </div>
-
-                    <ul className="space-y-2.5 border-t border-neutral-900 pt-4 mb-8">
-                      {pack.features.map((feat) => (
-                        <li key={feat} className="flex items-start gap-2 text-[11px] text-neutral-400 leading-snug">
-                          <Check className={`w-3.5 h-3.5 flex-shrink-0 mt-0.5 ${checkIconClass}`} />
-                          <span>{feat}</span>
-                        </li>
-                      ))}
-                    </ul>
+                    <h3 className="text-2xl font-bold text-white tracking-tight">{pack.name}</h3>
+                    <p className="text-xs text-neutral-400 mt-2 leading-relaxed">{pack.desc}</p>
                   </div>
 
-                  {/* CTA Button */}
-                  <button
-                    onClick={() => handleCtaClick(pack)}
-                    className={`w-full py-2.5 rounded-xl border text-xs font-semibold uppercase tracking-wider transition-all duration-300 cursor-pointer ${ctaClass}`}
-                  >
-                    {isEnterprise ? "Contact Sales" : "Get Started"}
-                  </button>
+                  <div className="flex items-baseline gap-1">
+                    <span className="text-4xl font-black font-mono text-white">
+                      {typeof pack.price === "number" ? `€${pack.price.toLocaleString()}` : `€${pack.price}`}
+                    </span>
+                    {typeof pack.price === "number" && (
+                      <span className="text-[10px] font-mono text-neutral-400">/ fixed scope</span>
+                    )}
+                  </div>
 
+                  <ul className="space-y-3 pt-4 border-t border-neutral-800">
+                    {pack.features.map((feat) => (
+                      <li key={feat} className="flex items-start gap-2.5 text-xs text-neutral-300 leading-snug">
+                        <Check className="w-4 h-4 text-amber-300 shrink-0 mt-0.5" />
+                        <span>{feat}</span>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
 
-                {/* Bottom accent line */}
-                <div className="absolute bottom-0 left-0 h-[1.5px] w-0 group-hover:w-full bg-gradient-to-r from-transparent via-neutral-500 to-transparent transition-all duration-500 ease-out z-20" />
+                <div className="pt-8">
+                  <button
+                    onClick={() => handleCtaClick(pack)}
+                    className={`w-full py-3.5 px-4 rounded-xl font-mono text-xs uppercase tracking-wider font-semibold transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer ${
+                      isHovered
+                        ? "bg-white text-black hover:bg-neutral-200"
+                        : "border border-neutral-800 bg-neutral-900 text-neutral-300 hover:text-white"
+                    }`}
+                  >
+                    <span>{pack.id === "enterprise-suite" ? "Book Enterprise Consultation" : "Choose Package"}</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </button>
+                </div>
               </motion.div>
             );
           })}
         </motion.div>
-
       </div>
 
       {/* Stripe Payment Portal Modal */}
       <Modal
         isOpen={selectedPack !== null}
         onClose={handleClosePayment}
-        title={selectedPack ? `Billing - ${selectedPack.name}` : ""}
+        title={selectedPack ? `Checkout - ${selectedPack.name}` : ""}
         subtitle="Stripe Secure Gateway"
       >
         {selectedPack && (
           <div className="space-y-6">
-
-            {/* Amount details */}
             <div className="p-4 rounded-xl border border-neutral-900 bg-neutral-950/40 flex justify-between items-center text-left">
               <div>
                 <p className="text-xs font-bold text-white">{selectedPack.name} Package</p>
@@ -427,11 +327,8 @@ export default function Pricing() {
               </span>
             </div>
 
-            {/* Payment States Handler */}
             {paymentState === "idle" && (
               <form onSubmit={handlePaymentSubmit} className="space-y-4">
-
-                {/* Full name */}
                 <div className="flex flex-col gap-1.5 text-left">
                   <label htmlFor="cardName" className="text-[10px] font-mono text-neutral-500 uppercase">
                     CARDHOLDER NAME *
@@ -443,12 +340,11 @@ export default function Pricing() {
                     value={cardName}
                     onChange={(e) => setCardName(e.target.value)}
                     placeholder="Lucia Santoro"
-                    className="w-full px-3 py-2 text-xs border border-neutral-900 rounded-lg bg-neutral-950/50 text-white focus:outline-none focus:border-neutral-750 focus:ring-1 focus:ring-neutral-750"
+                    className="w-full px-3 py-2 text-xs border border-neutral-900 rounded-lg bg-neutral-950/50 text-white focus:outline-none focus:border-neutral-700"
                   />
                   {errors.cardName && <span className="text-[9px] font-mono text-red-500">{errors.cardName}</span>}
                 </div>
 
-                {/* Email Address */}
                 <div className="flex flex-col gap-1.5 text-left">
                   <label htmlFor="cardEmail" className="text-[10px] font-mono text-neutral-500 uppercase">
                     EMAIL ADDRESS *
@@ -460,12 +356,11 @@ export default function Pricing() {
                     value={cardEmail}
                     onChange={(e) => setCardEmail(e.target.value)}
                     placeholder="lucia@fashionhouse.it"
-                    className="w-full px-3 py-2 text-xs border border-neutral-900 rounded-lg bg-neutral-950/50 text-white focus:outline-none focus:border-neutral-750 focus:ring-1 focus:ring-neutral-750"
+                    className="w-full px-3 py-2 text-xs border border-neutral-900 rounded-lg bg-neutral-950/50 text-white focus:outline-none focus:border-neutral-700"
                   />
                   {errors.cardEmail && <span className="text-[9px] font-mono text-red-500">{errors.cardEmail}</span>}
                 </div>
 
-                {/* Card Number */}
                 <div className="flex flex-col gap-1.5 text-left">
                   <label htmlFor="cardNumber" className="text-[10px] font-mono text-neutral-500 uppercase">
                     CARD NUMBER *
@@ -477,12 +372,11 @@ export default function Pricing() {
                     value={cardNumber}
                     onChange={handleCardNumberChange}
                     placeholder="4242 4242 4242 4242"
-                    className="w-full px-3 py-2 text-xs border border-neutral-900 rounded-lg bg-neutral-950/50 text-white font-mono focus:outline-none focus:border-neutral-750 focus:ring-1 focus:ring-neutral-750"
+                    className="w-full px-3 py-2 text-xs border border-neutral-900 rounded-lg bg-neutral-950/50 text-white font-mono focus:outline-none focus:border-neutral-700"
                   />
                   {errors.cardNumber && <span className="text-[9px] font-mono text-red-500">{errors.cardNumber}</span>}
                 </div>
 
-                {/* Expiry and CVC grid */}
                 <div className="grid grid-cols-2 gap-4">
                   <div className="flex flex-col gap-1.5 text-left">
                     <label htmlFor="cardExpiry" className="text-[10px] font-mono text-neutral-500 uppercase">
@@ -495,7 +389,7 @@ export default function Pricing() {
                       value={cardExpiry}
                       onChange={handleExpiryChange}
                       placeholder="MM/YY"
-                      className="w-full px-3 py-2 text-xs border border-neutral-900 rounded-lg bg-neutral-950/50 text-white font-mono focus:outline-none focus:border-neutral-750 focus:ring-1 focus:ring-neutral-750"
+                      className="w-full px-3 py-2 text-xs border border-neutral-900 rounded-lg bg-neutral-950/50 text-white font-mono focus:outline-none focus:border-neutral-700"
                     />
                     {errors.cardExpiry && <span className="text-[9px] font-mono text-red-500">{errors.cardExpiry}</span>}
                   </div>
@@ -511,7 +405,7 @@ export default function Pricing() {
                       value={cardCvc}
                       onChange={handleCvcChange}
                       placeholder="123"
-                      className="w-full px-3 py-2 text-xs border border-neutral-900 rounded-lg bg-neutral-950/50 text-white font-mono focus:outline-none focus:border-neutral-750 focus:ring-1 focus:ring-neutral-750"
+                      className="w-full px-3 py-2 text-xs border border-neutral-900 rounded-lg bg-neutral-950/50 text-white font-mono focus:outline-none focus:border-neutral-700"
                     />
                     {errors.cardCvc && <span className="text-[9px] font-mono text-red-500">{errors.cardCvc}</span>}
                   </div>
@@ -519,7 +413,7 @@ export default function Pricing() {
 
                 <button
                   type="submit"
-                  className="w-full py-3 bg-white text-[#050505] hover:bg-neutral-200 transition-colors text-xs font-semibold uppercase tracking-wider rounded-lg shadow-md mt-6"
+                  className="w-full py-3 bg-white text-[#050505] hover:bg-neutral-200 transition-colors text-xs font-semibold uppercase tracking-wider rounded-lg shadow-md mt-6 cursor-pointer"
                 >
                   Pay €{typeof selectedPack.price === "number" ? selectedPack.price.toLocaleString() : selectedPack.price}
                 </button>
@@ -543,22 +437,17 @@ export default function Pricing() {
                 <div className="space-y-1.5">
                   <h4 className="text-sm font-bold text-white tracking-tight">Payment Successful</h4>
                   <p className="text-xs text-neutral-400 max-w-sm leading-relaxed">
-                    Thank you for choosing CodeBorgo. A confirmation invoice has been sent to <strong className="text-white">{cardEmail}</strong>. Our director will call you within 24 business hours to kick off your project.
+                    Thank you for choosing CodeBorgo. A confirmation invoice has been sent to <strong className="text-white">{cardEmail}</strong>.
                   </p>
                 </div>
                 <button
                   onClick={handleClosePayment}
-                  className="px-5 py-2 border border-neutral-800 hover:bg-neutral-900 text-white text-xs font-mono rounded-lg transition-colors mt-4"
+                  className="px-5 py-2 border border-neutral-800 hover:bg-neutral-900 text-white text-xs font-mono rounded-lg transition-colors mt-4 cursor-pointer"
                 >
                   Close Receipt
                 </button>
               </div>
             )}
-
-            <div className="text-center text-[10px] text-neutral-500 font-mono flex items-center justify-center gap-1.5 pt-2 border-t border-neutral-900/60">
-              <span>🔒 SSL Encrypted Checkout</span>
-            </div>
-
           </div>
         )}
       </Modal>
