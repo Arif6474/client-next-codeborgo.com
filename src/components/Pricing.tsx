@@ -87,8 +87,8 @@ export default function Pricing() {
   const [cardCvc, setCardCvc] = useState("");
   const [errors, setErrors] = useState<Record<string, string>>({});
 
-  const handleCtaClick = (pack: Package) => {
-    if (pack.id === "enterprise-suite") {
+  const handleCtaClick = (pack: Package | 'enterprise-suite') => {
+    if (pack === "enterprise-suite") {
       const contactSection = document.getElementById("contact");
       if (contactSection) {
         contactSection.scrollIntoView({ behavior: "smooth" });
@@ -291,7 +291,7 @@ export default function Pricing() {
 
                 <div className="pt-8">
                   <button
-                    onClick={() => handleCtaClick(pack)}
+                    onClick={() => handleCtaClick('enterprise-suite')}
                     className={`w-full py-3.5 px-4 rounded-xl font-mono text-xs uppercase tracking-wider font-semibold transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer ${
                       isHovered
                         ? "bg-white text-black hover:bg-neutral-200"

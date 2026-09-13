@@ -187,7 +187,7 @@ export default function Hero() {
                 onClick={() => handleCtaClick("contact")}
                 className="relative px-5 py-3 bg-[#050505] hover:bg-[#050505]/95 text-white font-semibold text-xs uppercase tracking-widest rounded-[11px] flex items-center gap-2 transition-colors duration-300 z-10 cursor-pointer"
               >
-                Book a Free Consultation
+                Free Consultation
                 <span className="text-neutral-550 group-hover:text-white group-hover:translate-x-0.5 transition-all text-xs">
                   →
                 </span>

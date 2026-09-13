@@ -3,16 +3,17 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, ArrowUpRight } from "lucide-react";
+import { useRouter, usePathname } from "next/navigation";
 
 interface NavbarProps {
-  scrollContainerRef: React.RefObject<HTMLDivElement | null>;
+  scrollContainerRef?: React.RefObject<HTMLDivElement | null>;
 }
 
 const navItems = [
   { name: "Home", href: "#home" },
   { name: "About", href: "#about" },
   { name: "Services", href: "#services" },
-  { name: "Portfolio", href: "#portfolio" },
+  { name: "Portfolio", href: "#portfolio", isPage: true },
   { name: "Pricing", href: "#pricing" },
 ];
 
@@ -20,27 +21,38 @@ export default function Navbar({ scrollContainerRef }: NavbarProps) {
   const [activeSection, setActiveSection] = useState("home");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
-    const container = scrollContainerRef.current;
-    if (!container) return;
+    const container = scrollContainerRef?.current;
 
-    // 1. Detect if page is scrolled down to add a border/background density
+    if (pathname === "/portfolio") {
+      setActiveSection("portfolio");
+    }
+
+    if (!container) {
+      const handleWindowScroll = () => {
+        setIsScrolled(window.scrollY > 50);
+      };
+      window.addEventListener("scroll", handleWindowScroll);
+      return () => window.removeEventListener("scroll", handleWindowScroll);
+    }
+
     const handleScroll = () => {
       setIsScrolled(container.scrollTop > 50);
     };
     container.addEventListener("scroll", handleScroll);
 
-    // 2. Track which section is active using IntersectionObserver
     const observerOptions = {
       root: container,
-      rootMargin: "-20% 0px -60% 0px", // Trigger when section is in the main viewport area
+      rootMargin: "-20% 0px -60% 0px",
       threshold: 0.1,
     };
 
     const observerCallback = (entries: IntersectionObserverEntry[]) => {
       entries.forEach((entry) => {
-        if (entry.isIntersecting) {
+        if (entry.isIntersecting && pathname === "/") {
           setActiveSection(entry.target.id);
         }
       });
@@ -58,15 +70,29 @@ export default function Navbar({ scrollContainerRef }: NavbarProps) {
       container.removeEventListener("scroll", handleScroll);
       observer.disconnect();
     };
-  }, [scrollContainerRef]);
+  }, [scrollContainerRef, pathname]);
 
-  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, item: { name: string; href: string; isPage?: boolean }) => {
     e.preventDefault();
-    const id = href.substring(1);
+    const id = item.href.substring(1);
+    
+    if (pathname !== "/") {
+      if (item.href === "#portfolio") {
+        router.push("/portfolio");
+      } else {
+        router.push(`/${item.href}`);
+      }
+      setIsMobileMenuOpen(false);
+      return;
+    }
+
     const element = document.getElementById(id);
     if (element) {
       element.scrollIntoView({ behavior: "smooth" });
       setActiveSection(id);
+      setIsMobileMenuOpen(false);
+    } else {
+      router.push(`/${item.href}`);
       setIsMobileMenuOpen(false);
     }
   };
@@ -74,16 +100,17 @@ export default function Navbar({ scrollContainerRef }: NavbarProps) {
   return (
     <>
       <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled
-            ? "bg-[#050505]/75  border-neutral-900/60 backdrop-blur-md py-4"
-            : "bg-transparent py-6"
-          }`}
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+          isScrolled
+            ? "bg-[#050505]/85 border-b border-neutral-900/80 backdrop-blur-md py-4"
+            : "bg-[#050505]/40 backdrop-blur-sm py-5 border-b border-neutral-900/40"
+        }`}
       >
         <div className="max-w-7xl mx-auto px-6 md:px-12 flex justify-between items-center">
           {/* Logo */}
           <a
-            href="#home"
-            onClick={(e) => handleNavClick(e, "#home")}
+            href="/#home"
+            onClick={(e) => handleNavClick(e, { name: "Home", href: "#home" })}
             className="group flex flex-col cursor-pointer"
           >
             <span className="text-xl font-bold tracking-[0.2em] text-white flex items-center">
@@ -98,16 +125,17 @@ export default function Navbar({ scrollContainerRef }: NavbarProps) {
           </a>
 
           {/* Desktop Navigation Links */}
-          <nav className="hidden lg:flex items-center space-x-1 border border-neutral-900 bg-neutral-950/40 rounded-full px-2 py-1.5 backdrop-blur-sm">
+          <nav className="hidden lg:flex items-center space-x-1 border border-white/10 bg-neutral-950/60 rounded-full px-2 py-1.5 backdrop-blur-md">
             {navItems.map((item) => {
               const isActive = activeSection === item.href.substring(1);
               return (
                 <a
                   key={item.name}
                   href={item.href}
-                  onClick={(e) => handleNavClick(e, item.href)}
-                  className={`relative px-4 py-1.5 text-xs tracking-wider uppercase font-medium transition-colors duration-300 rounded-full ${isActive ? "text-white" : "text-neutral-400 hover:text-neutral-200"
-                    }`}
+                  onClick={(e) => handleNavClick(e, item)}
+                  className={`relative px-4 py-1.5 text-xs tracking-wider uppercase font-medium transition-colors duration-300 rounded-full ${
+                    isActive ? "text-white" : "text-neutral-400 hover:text-neutral-200"
+                  }`}
                 >
                   {item.name}
                   {isActive && (
@@ -125,8 +153,8 @@ export default function Navbar({ scrollContainerRef }: NavbarProps) {
           {/* Action CTA Button */}
           <div className="hidden lg:flex items-center">
             <a
-              href="#contact"
-              onClick={(e) => handleNavClick(e, "#contact")}
+              href="/#contact"
+              onClick={(e) => handleNavClick(e, { name: "Contact", href: "#contact" })}
               className="group flex items-center gap-1 px-4 py-2 border border-neutral-800 rounded-full bg-transparent text-white text-xs font-semibold uppercase tracking-wider hover:bg-white hover:text-[#050505] transition-all duration-300"
             >
               Contact Us
@@ -155,7 +183,6 @@ export default function Navbar({ scrollContainerRef }: NavbarProps) {
             transition={{ duration: 0.2 }}
             className="fixed inset-0 z-40 bg-[#050505] flex flex-col justify-center px-8 md:px-16 lg:hidden"
           >
-            {/* Background elements */}
             <div className="absolute inset-0 noise-bg opacity-40 -z-10" />
             <div className="absolute top-[20%] left-[20%] w-[300px] h-[300px] rounded-full bg-white/2 blur-[100px] pointer-events-none" />
 
@@ -169,12 +196,13 @@ export default function Navbar({ scrollContainerRef }: NavbarProps) {
                     transition={{ delay: index * 0.05 }}
                     key={item.name}
                     href={item.href}
-                    onClick={(e) => handleNavClick(e, item.href)}
+                    onClick={(e) => handleNavClick(e, item)}
                     className="text-3xl font-bold tracking-wider uppercase text-left relative flex items-center"
                   >
                     <span
-                      className={`mr-4 text-xs font-mono ${isActive ? "text-white" : "text-neutral-500"
-                        }`}
+                      className={`mr-4 text-xs font-mono ${
+                        isActive ? "text-white" : "text-neutral-500"
+                      }`}
                     >
                       0{index + 1}.
                     </span>
@@ -194,8 +222,8 @@ export default function Navbar({ scrollContainerRef }: NavbarProps) {
                 className="pt-8 border-t border-neutral-900 flex flex-col space-y-4"
               >
                 <a
-                  href="#contact"
-                  onClick={(e) => handleNavClick(e, "#contact")}
+                  href="/#contact"
+                  onClick={(e) => handleNavClick(e, { name: "Contact", href: "#contact" })}
                   className="w-full text-center py-4 rounded-xl border border-neutral-800 text-white font-semibold uppercase tracking-wider text-sm hover:bg-neutral-900 transition-colors"
                 >
                   Contact Us

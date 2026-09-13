@@ -62,7 +62,7 @@ export default function Home() {
           <Hero />
           <About />
           <Services />
-          <DesignEngineering />
+          {/* <DesignEngineering /> */}
           <HowWeWork />
           <Features />
           <Portfolio />

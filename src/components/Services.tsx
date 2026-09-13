@@ -21,37 +21,88 @@ import {
 } from "lucide-react";
 import Modal from "./ui/Modal";
 
-const colorThemes: Record<string, { borderGlow: string; spotlightColor: string; iconGlowClass: string }> = {
-  "text-blue-400": {
-    borderGlow: "group-hover:bg-[radial-gradient(250px_circle_at_var(--mouse-x,-400px)_var(--mouse-y,-400px),rgba(96,165,250,0.25),transparent_80%)]",
-    spotlightColor: "rgba(96, 165, 250, 0.04)",
-    iconGlowClass: "text-blue-400 border-blue-950/20 bg-blue-950/10 group-hover:border-blue-500/60 drop-shadow-[0_0_8px_rgba(96,165,250,0.35)]"
+interface ServiceTheme {
+  bgClass: string;
+  borderClass: string;
+  iconBgClass: string;
+  iconColorClass: string;
+  glowShadow: string;
+  spotlightColor: string;
+}
+
+const serviceThemes: Record<string, ServiceTheme> = {
+  "digital-marketing": {
+    bgClass: "bg-[#091020]/95 hover:bg-[#0c152a]",
+    borderClass: "border border-blue-500/35 hover:border-blue-400/80",
+    iconBgClass: "bg-blue-500/15 border border-blue-400/25",
+    iconColorClass: "text-blue-400",
+    glowShadow: "group-hover:shadow-[0_0_35px_rgba(59,130,246,0.22)]",
+    spotlightColor: "rgba(59, 130, 246, 0.08)",
   },
-  "text-violet-400": {
-    borderGlow: "group-hover:bg-[radial-gradient(250px_circle_at_var(--mouse-x,-400px)_var(--mouse-y,-400px),rgba(167,139,250,0.25),transparent_80%)]",
-    spotlightColor: "rgba(167, 139, 250, 0.04)",
-    iconGlowClass: "text-violet-400 border-violet-950/20 bg-violet-950/10 group-hover:border-violet-500/60 drop-shadow-[0_0_8px_rgba(167,139,250,0.35)]"
+  "web-development": {
+    bgClass: "bg-[#100920]/95 hover:bg-[#150c2a]",
+    borderClass: "border border-purple-500/35 hover:border-purple-400/80",
+    iconBgClass: "bg-purple-500/15 border border-purple-400/25",
+    iconColorClass: "text-purple-400",
+    glowShadow: "group-hover:shadow-[0_0_35px_rgba(168,85,247,0.22)]",
+    spotlightColor: "rgba(168, 85, 247, 0.08)",
   },
-  "text-emerald-400": {
-    borderGlow: "group-hover:bg-[radial-gradient(250px_circle_at_var(--mouse-x,-400px)_var(--mouse-y,-400px),rgba(52,211,153,0.25),transparent_80%)]",
-    spotlightColor: "rgba(52, 211, 153, 0.04)",
-    iconGlowClass: "text-emerald-400 border-emerald-950/20 bg-emerald-950/10 group-hover:border-emerald-500/60 drop-shadow-[0_0_8px_rgba(52,211,153,0.35)]"
+  "ai-services": {
+    bgClass: "bg-[#092013]/95 hover:bg-[#0c2a1a]",
+    borderClass: "border border-emerald-500/35 hover:border-emerald-400/80",
+    iconBgClass: "bg-emerald-500/15 border border-emerald-400/25",
+    iconColorClass: "text-emerald-400",
+    glowShadow: "group-hover:shadow-[0_0_35px_rgba(16,185,129,0.22)]",
+    spotlightColor: "rgba(16, 185, 129, 0.08)",
   },
-  "text-pink-400": {
-    borderGlow: "group-hover:bg-[radial-gradient(250px_circle_at_var(--mouse-x,-400px)_var(--mouse-y,-400px),rgba(244,114,182,0.25),transparent_80%)]",
-    spotlightColor: "rgba(244, 114, 182, 0.04)",
-    iconGlowClass: "text-pink-400 border-pink-950/20 bg-pink-950/10 group-hover:border-pink-500/60 drop-shadow-[0_0_8px_rgba(244,114,182,0.35)]"
+  "social-media": {
+    bgClass: "bg-[#201209]/95 hover:bg-[#2a180c]",
+    borderClass: "border border-amber-500/35 hover:border-amber-400/80",
+    iconBgClass: "bg-amber-500/15 border border-amber-400/25",
+    iconColorClass: "text-amber-400",
+    glowShadow: "group-hover:shadow-[0_0_35px_rgba(245,158,11,0.22)]",
+    spotlightColor: "rgba(245, 158, 11, 0.08)",
   },
-  "text-rose-400": {
-    borderGlow: "group-hover:bg-[radial-gradient(250px_circle_at_var(--mouse-x,-400px)_var(--mouse-y,-400px),rgba(251,113,133,0.25),transparent_80%)]",
-    spotlightColor: "rgba(251, 113, 133, 0.04)",
-    iconGlowClass: "text-rose-400 border-rose-950/20 bg-rose-950/10 group-hover:border-rose-500/60 drop-shadow-[0_0_8px_rgba(251,113,133,0.35)]"
+  "cloud-devops": {
+    bgClass: "bg-[#20090f]/95 hover:bg-[#2a0c14]",
+    borderClass: "border border-rose-500/35 hover:border-rose-400/80",
+    iconBgClass: "bg-rose-500/15 border border-rose-400/25",
+    iconColorClass: "text-rose-400",
+    glowShadow: "group-hover:shadow-[0_0_35px_rgba(244,63,94,0.22)]",
+    spotlightColor: "rgba(244, 63, 94, 0.08)",
   },
-  "text-cyan-400": {
-    borderGlow: "group-hover:bg-[radial-gradient(250px_circle_at_var(--mouse-x,-400px)_var(--mouse-y,-400px),rgba(34,211,238,0.25),transparent_80%)]",
-    spotlightColor: "rgba(34, 211, 238, 0.04)",
-    iconGlowClass: "text-cyan-400 border-cyan-950/20 bg-cyan-950/10 group-hover:border-cyan-500/60 drop-shadow-[0_0_8px_rgba(34,211,238,0.35)]"
-  }
+  "saas-development": {
+    bgClass: "bg-[#091f20]/95 hover:bg-[#0c292a]",
+    borderClass: "border border-cyan-500/35 hover:border-cyan-400/80",
+    iconBgClass: "bg-cyan-500/15 border border-cyan-400/25",
+    iconColorClass: "text-cyan-400",
+    glowShadow: "group-hover:shadow-[0_0_35px_rgba(6,182,212,0.22)]",
+    spotlightColor: "rgba(6, 182, 212, 0.08)",
+  },
+  "ux-strategy": {
+    bgClass: "bg-[#201e09]/95 hover:bg-[#2a280c]",
+    borderClass: "border border-yellow-500/35 hover:border-yellow-400/80",
+    iconBgClass: "bg-yellow-500/15 border border-yellow-400/25",
+    iconColorClass: "text-yellow-400",
+    glowShadow: "group-hover:shadow-[0_0_35px_rgba(234,179,8,0.22)]",
+    spotlightColor: "rgba(234, 179, 8, 0.08)",
+  },
+  "data-analytics": {
+    bgClass: "bg-[#091620]/95 hover:bg-[#0c1d2a]",
+    borderClass: "border border-sky-500/35 hover:border-sky-400/80",
+    iconBgClass: "bg-sky-500/15 border border-sky-400/25",
+    iconColorClass: "text-sky-400",
+    glowShadow: "group-hover:shadow-[0_0_35px_rgba(14,165,233,0.22)]",
+    spotlightColor: "rgba(14, 165, 233, 0.08)",
+  },
+  "headless-ecommerce": {
+    bgClass: "bg-[#20091b]/95 hover:bg-[#2a0c24]",
+    borderClass: "border border-pink-500/35 hover:border-pink-400/80",
+    iconBgClass: "bg-pink-500/15 border border-pink-400/25",
+    iconColorClass: "text-pink-400",
+    glowShadow: "group-hover:shadow-[0_0_35px_rgba(236,72,153,0.22)]",
+    spotlightColor: "rgba(236, 72, 153, 0.08)",
+  },
 };
 
 const slideVariants = {
@@ -227,17 +278,16 @@ const serviceDetailsData: Record<string, ServiceDetail> = {
 };
 
 const servicesList = [
-  { id: "digital-marketing", name: "Digital Marketing", price: "Custom", icon: LineChart, desc: "Strategic SEO, PPC ads, and campaign planning to drive qualified organic conversions.", accent: "from-blue-500/10 to-indigo-500/5", iconColor: "text-blue-400" },
-  { id: "web-development", name: "Web Development", price: "Custom", icon: Laptop, desc: "Bespoke high-performance websites and Next.js applications engineered with speed.", accent: "from-violet-500/10 to-purple-500/5", iconColor: "text-violet-400" },
-  { id: "ai-services", name: "AI Bot & Agent", price: "Custom", icon: Bot, desc: "Autonomous AI agents and chatbots trained on your data to handle support 24/7.", accent: "from-emerald-500/10 to-teal-500/5", iconColor: "text-emerald-400" },
-  { id: "social-media", name: "Social Media", price: "Custom", icon: Share2, desc: "Amplifying your brand voice through tactical growth strategies and visual calendars.", accent: "from-pink-500/10 to-rose-500/5", iconColor: "text-pink-400" },
-  { id: "cloud-devops", name: "Cloud & DevOps", price: "Custom", icon: Cloud, desc: "Automated deployment, high-availability clouds, and secure infrastructure pipelines.", accent: "from-blue-500/10 to-indigo-500/5", iconColor: "text-blue-400" },
-  { id: "saas-development", name: "SaaS Development", price: "Custom", icon: Cpu, desc: "Custom web applications, robust multi-tenant architectures, and scalable cloud databases.", accent: "from-violet-500/10 to-purple-500/5", iconColor: "text-violet-400" },
-  { id: "ux-strategy", name: "UX/UI Strategy", price: "Custom", icon: Layers, desc: "User research, high-fidelity prototypes, and design systems for enterprise products.", accent: "from-rose-500/10 to-pink-500/5", iconColor: "text-rose-400" },
-  { id: "data-analytics", name: "Data & Analytics", price: "Custom", icon: BarChart, desc: "Interactive dashboards, telemetry pipelines, and predictive business intelligence.", accent: "from-cyan-500/10 to-sky-500/5", iconColor: "text-cyan-400" },
-  { id: "headless-ecommerce", name: "Headless E-Commerce", price: "Custom", icon: ShoppingBag, desc: "Lightning-fast decoupled storefronts built on Shopify, BigCommerce, or custom APIs.", accent: "from-emerald-500/10 to-teal-500/5", iconColor: "text-emerald-400" },
+  { id: "digital-marketing", name: "Digital Marketing", icon: LineChart, desc: "Open the Digital Marketing module" },
+  { id: "web-development", name: "Web Development", icon: Laptop, desc: "Open the Web Development module" },
+  { id: "ai-services", name: "AI Bot & Agent", icon: Bot, desc: "Open the AI Bot & Agent module" },
+  { id: "social-media", name: "Social Media", icon: Share2, desc: "Open the Social Media module" },
+  { id: "cloud-devops", name: "Cloud & DevOps", icon: Cloud, desc: "Open the Cloud & DevOps module" },
+  { id: "saas-development", name: "SaaS Development", icon: Cpu, desc: "Open the SaaS Development module" },
+  { id: "ux-strategy", name: "UX/UI Strategy", icon: Layers, desc: "Open the UX/UI Strategy module" },
+  { id: "data-analytics", name: "Data & Analytics", icon: BarChart, desc: "Open the Data & Analytics module" },
+  { id: "headless-ecommerce", name: "Headless E-Commerce", icon: ShoppingBag, desc: "Open the Headless E-Commerce module" },
 ];
-
 
 export default function Services() {
   const [selectedService, setSelectedService] = useState<ServiceDetail | null>(null);
@@ -296,17 +346,6 @@ export default function Services() {
       <div className="absolute bottom-6 left-6 w-5 h-5 border-b border-l border-neutral-900 pointer-events-none select-none opacity-50" />
       <div className="absolute bottom-6 right-6 w-5 h-5 border-b border-r border-neutral-900 pointer-events-none select-none opacity-50" />
 
-      {/* Subtle Horizontal Layout Alignment Line */}
-      <div className="absolute top-[12vh] left-6 right-6 border-b border-dashed border-neutral-900/30 pointer-events-none z-0" />
-
-      {/* Monospace Editorial & Coordinate Info */}
-      <div className="absolute top-8 left-14 hidden md:flex items-center gap-1.5 pointer-events-none select-none opacity-20 font-mono text-[9px] uppercase tracking-[0.25em] text-neutral-500">
-        <span>CodeBorgo Services Matrix</span>
-      </div>
-      <div className="absolute top-8 right-14 hidden md:flex items-center gap-1.5 pointer-events-none select-none opacity-20 font-mono text-[9px] uppercase tracking-[0.25em] text-neutral-500">
-        <span>SYS CODE: V-SERVICE.9</span>
-      </div>
-
       {/* Drifting background dots */}
       {dots.map((dot) => (
         <motion.div
@@ -323,22 +362,9 @@ export default function Services() {
         />
       ))}
 
-      {/* Breathing ambient glow — top-right */}
-      <motion.div
-        animate={{ scale: [1, 1.15, 1], opacity: [0.1, 0.24, 0.1] }}
-        transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute top-[-10%] right-[-5%] w-[440px] h-[440px] rounded-full bg-white/10 blur-[120px] pointer-events-none z-0"
-      />
-      {/* Secondary glow — bottom-left */}
-      <motion.div
-        animate={{ scale: [1, 1.1, 1], opacity: [0.06, 0.16, 0.06] }}
-        transition={{ duration: 22, repeat: Infinity, ease: "easeInOut", delay: 6 }}
-        className="absolute bottom-[-10%] left-[-5%] w-[360px] h-[360px] rounded-full bg-white/8 blur-[100px] pointer-events-none z-0"
-      />
-
       <div className="max-w-7xl mx-auto w-full py-28 flex flex-col gap-16 relative z-10">
 
-        {/* ── Section Header (centered) ── */}
+        {/* ── Section Header ── */}
         <motion.div
           variants={containerVariants}
           initial="hidden"
@@ -366,7 +392,7 @@ export default function Services() {
             variants={itemVariants}
             className="text-neutral-500 text-sm leading-relaxed max-w-lg"
           >
-            Tailored digital craftsmanship — click any card to explore deliverables and rates.
+            Tailored digital craftsmanship — click any card to explore deliverables and specs.
           </motion.p>
         </motion.div>
 
@@ -376,11 +402,11 @@ export default function Services() {
           initial="hidden"
           whileInView="visible"
           viewport={{ root: scrollContainerRef || undefined, once: true, amount: 0.1 }}
-          className="hidden md:grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+          className="hidden md:grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 md:gap-5 lg:gap-6"
         >
-          {servicesList.map((svc, idx) => {
+          {servicesList.map((svc) => {
             const Icon = svc.icon;
-            const theme = colorThemes[svc.iconColor];
+            const theme = serviceThemes[svc.id] || serviceThemes["digital-marketing"];
             return (
               <motion.div
                 key={svc.id}
@@ -388,72 +414,51 @@ export default function Services() {
                 data-cursor-text="EXPLORE"
                 onClick={() => setSelectedService(serviceDetailsData[svc.id] || null)}
                 onMouseMove={handleMouseMove}
-                whileHover={{ y: -3 }}
+                whileHover={{ y: -4 }}
                 transition={{ type: "spring", stiffness: 300, damping: 22 }}
-                className="group relative rounded-2xl p-[1px] bg-neutral-900 transition-colors duration-300 overflow-hidden cursor-pointer"
+                className={`group relative rounded-[22px] p-6 sm:p-7 flex flex-col justify-between overflow-hidden cursor-pointer transition-all duration-300 min-h-[210px] ${theme.bgClass} ${theme.borderClass} ${theme.glowShadow}`}
               >
-                {/* Border follow spotlight */}
-                <div className={`absolute inset-0 transition-opacity duration-500 opacity-0 group-hover:opacity-100 pointer-events-none z-0 ${theme.borderGlow}`} />
-
-                {/* Card body */}
-                <div 
-                  className="relative rounded-[15px] bg-[#070707]/90 hover:bg-[#070707]/95 border border-neutral-900/40 group-hover:border-neutral-800/30 transition-all duration-300 flex flex-col justify-between overflow-hidden z-10 h-full min-h-[220px]"
+                {/* Border Spotlight Radial Effect */}
+                <div
+                  className="absolute inset-0 transition-opacity duration-500 opacity-0 group-hover:opacity-100 pointer-events-none z-0"
                   style={{
-                    backgroundImage: `radial-gradient(350px circle at var(--mouse-x, -400px) var(--mouse-y, -400px), ${theme.spotlightColor}, transparent 80%)`
+                    backgroundImage: `radial-gradient(350px circle at var(--mouse-x, -400px) var(--mouse-y, -400px), ${theme.spotlightColor}, transparent 80%)`,
                   }}
-                >
-                  {/* Top: number + icon circle */}
-                  <div className="flex items-center justify-between px-6 pt-6 pb-5">
-                    <span className="text-[10px] font-mono font-bold tracking-[0.2em] text-neutral-500 group-hover:text-neutral-300 transition-colors duration-300">
-                      {String(idx + 1).padStart(2, "0")}
-                    </span>
-                    <div className={`w-9 h-9 rounded-full border flex items-center justify-center transition-all duration-500 ${theme.iconGlowClass}`}>
-                      <Icon className="w-4 h-4" />
-                    </div>
+                />
+
+                {/* Top Row: Squircle Icon Badge + Top-Right Arrow */}
+                <div className="flex items-start justify-between relative z-10 w-full mb-8">
+                  {/* Icon Container (Squircle) */}
+                  <div className={`w-13 h-13 rounded-2xl flex items-center justify-center transition-transform duration-300 group-hover:scale-105 ${theme.iconBgClass}`}>
+                    <Icon className={`w-6 h-6 ${theme.iconColorClass}`} />
                   </div>
 
-                  {/* Divider */}
-                  <div className="mx-6 border-t border-neutral-900 group-hover:border-neutral-800 transition-colors duration-300" />
+                  {/* Top-Right Arrow */}
+                  <ArrowUpRight className="w-5 h-5 text-neutral-400 group-hover:text-white group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-300 shrink-0" />
+                </div>
 
-                  {/* Content */}
-                  <div className="px-6 pt-5 pb-5 flex flex-col gap-2 flex-1">
-                    <div className="flex items-start justify-between gap-2">
-                      <h3 className="text-base font-semibold text-white tracking-tight leading-snug">
-                        {svc.name}
-                      </h3>
-                      <ArrowUpRight className={`w-4 h-4 shrink-0 mt-0.5 ${svc.iconColor} opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-200`} />
-                    </div>
-                    <p className="text-xs text-neutral-400 group-hover:text-neutral-200 leading-relaxed transition-colors duration-300">
-                      {svc.desc}
-                    </p>
-                  </div>
-
-                  {/* Footer: price + cta */}
-                  <div className="px-6 pb-6 flex items-center justify-between mt-auto">
-                    <span className={`text-[10px] font-mono font-bold tracking-wider ${svc.iconColor} opacity-60 group-hover:opacity-100 transition-opacity duration-300`}>
-                      {svc.price}
-                    </span>
-                    <span className="text-[10px] font-mono text-neutral-500 group-hover:text-neutral-300 transition-colors tracking-wider uppercase">
-                      View details →
-                    </span>
-                  </div>
-
-                  {/* Bottom accent line — slides in on hover */}
-                  <div className="absolute bottom-0 left-0 h-[1.5px] w-0 group-hover:w-full bg-gradient-to-r from-transparent via-neutral-500 to-transparent transition-all duration-500 ease-out" />
+                {/* Bottom Row: Title + Subtitle */}
+                <div className="relative z-10 mt-auto">
+                  <h3 className="text-xl font-bold font-mono tracking-tight text-white mb-1.5 group-hover:text-glow transition-colors">
+                    {svc.name}
+                  </h3>
+                  <p className="text-xs text-[#8a99ad] font-mono leading-relaxed group-hover:text-neutral-300 transition-colors">
+                    {svc.desc}
+                  </p>
                 </div>
               </motion.div>
             );
           })}
         </motion.div>
 
-        {/* ── Mobile: Swipe Carousel (Shown one by one on small screens) ── */}
+        {/* ── Mobile: Swipe Carousel ── */}
         <div className="block md:hidden w-full relative px-2">
-          <div className="relative w-full h-[280px] overflow-visible flex items-center justify-center">
+          <div className="relative w-full h-[240px] overflow-visible flex items-center justify-center">
             <AnimatePresence initial={false} custom={direction}>
               {servicesList.map((svc, idx) => {
                 if (idx !== activeMobileIdx) return null;
                 const Icon = svc.icon;
-                const theme = colorThemes[svc.iconColor];
+                const theme = serviceThemes[svc.id] || serviceThemes["digital-marketing"];
                 return (
                   <motion.div
                     key={svc.id}
@@ -480,44 +485,23 @@ export default function Services() {
                     onClick={() => setSelectedService(serviceDetailsData[svc.id] || null)}
                     className="absolute w-full h-full cursor-pointer select-none touch-pan-y"
                   >
-                    <div className="relative rounded-2xl p-[1px] bg-neutral-900 overflow-hidden h-full">
-                      {/* Inner card body */}
-                      <div className="relative rounded-[15px] bg-[#070707] border border-neutral-900/60 flex flex-col justify-between h-full p-6 text-left">
-                        {/* Top: number + icon circle */}
-                        <div className="flex items-center justify-between">
-                          <span className="text-[10px] font-mono font-bold tracking-[0.2em] text-neutral-500">
-                            {String(idx + 1).padStart(2, "0")}
-                          </span>
-                          <div className={`w-9 h-9 rounded-full border flex items-center justify-center ${theme.iconGlowClass}`}>
-                            <Icon className="w-4 h-4" />
-                          </div>
+                    <div className={`relative rounded-[22px] p-6 flex flex-col justify-between h-full text-left ${theme.bgClass} ${theme.borderClass}`}>
+                      {/* Top Row */}
+                      <div className="flex items-start justify-between">
+                        <div className={`w-12 h-12 rounded-2xl flex items-center justify-center ${theme.iconBgClass}`}>
+                          <Icon className={`w-5 h-5 ${theme.iconColorClass}`} />
                         </div>
+                        <ArrowUpRight className="w-5 h-5 text-neutral-400" />
+                      </div>
 
-                        {/* Divider */}
-                        <div className="border-t border-neutral-900 w-full my-4" />
-
-                        {/* Content */}
-                        <div className="flex-1 flex flex-col gap-2 justify-center">
-                          <div className="flex items-center justify-between gap-2">
-                            <h3 className="text-base font-semibold text-white tracking-tight leading-snug">
-                              {svc.name}
-                            </h3>
-                            <ArrowUpRight className={`w-4 h-4 shrink-0 ${svc.iconColor}`} />
-                          </div>
-                          <p className="text-xs text-neutral-400 leading-relaxed">
-                            {svc.desc}
-                          </p>
-                        </div>
-
-                        {/* Footer: price + cta */}
-                        <div className="flex items-center justify-between mt-auto">
-                          <span className={`text-[10px] font-mono font-bold tracking-wider ${svc.iconColor}`}>
-                            {svc.price}
-                          </span>
-                          <span className="text-[10px] font-mono text-neutral-400 tracking-wider uppercase">
-                            View details →
-                          </span>
-                        </div>
+                      {/* Bottom Row */}
+                      <div className="mt-auto">
+                        <h3 className="text-lg font-bold font-mono tracking-tight text-white mb-1">
+                          {svc.name}
+                        </h3>
+                        <p className="text-xs text-[#8a99ad] font-mono leading-relaxed">
+                          {svc.desc}
+                        </p>
                       </div>
                     </div>
                   </motion.div>
@@ -526,11 +510,11 @@ export default function Services() {
             </AnimatePresence>
           </div>
 
-          {/* Navigation Controls */}
+          {/* Mobile Navigation Controls */}
           <div className="flex items-center justify-center gap-6 mt-6">
             <button
               onClick={handlePrev}
-              className="w-10 h-10 rounded-full border border-neutral-900 bg-[#070707] hover:bg-neutral-900 hover:border-neutral-700 flex items-center justify-center text-neutral-400 hover:text-white transition-all cursor-pointer"
+              className="w-10 h-10 rounded-full border border-neutral-900 bg-[#070707] hover:bg-neutral-900 flex items-center justify-center text-neutral-400 hover:text-white transition-all cursor-pointer"
             >
               <ArrowLeft className="w-4 h-4" />
             </button>
@@ -539,7 +523,7 @@ export default function Services() {
             </span>
             <button
               onClick={handleNext}
-              className="w-10 h-10 rounded-full border border-neutral-900 bg-[#070707] hover:bg-neutral-900 hover:border-neutral-700 flex items-center justify-center text-neutral-400 hover:text-white transition-all cursor-pointer"
+              className="w-10 h-10 rounded-full border border-neutral-900 bg-[#070707] hover:bg-neutral-900 flex items-center justify-center text-neutral-400 hover:text-white transition-all cursor-pointer"
             >
               <ArrowRight className="w-4 h-4" />
             </button>
@@ -556,7 +540,7 @@ export default function Services() {
       >
         {selectedService && (
           <div className="space-y-6">
-            <p className="text-sm text-neutral-400 leading-relaxed">
+            <p className="text-sm text-neutral-400 leading-relaxed font-mono">
               {selectedService.description}
             </p>
 
@@ -573,22 +557,17 @@ export default function Services() {
                     <div>
                       <div className="flex items-center gap-2 mb-2 text-white">
                         <CheckCircle className="w-3.5 h-3.5 text-neutral-400 shrink-0" />
-                        <h5 className="text-xs font-bold tracking-tight">{sub.title}</h5>
+                        <h5 className="text-xs font-bold font-mono tracking-tight">{sub.title}</h5>
                       </div>
-                      <p className="text-[11px] text-neutral-500 leading-relaxed">{sub.desc}</p>
+                      <p className="text-[11px] text-neutral-500 leading-relaxed font-mono">{sub.desc}</p>
                     </div>
-                    {sub.price && (
-                      <span className="text-[10px] font-mono text-white mt-3 text-right">
-                        {sub.price}
-                      </span>
-                    )}
                   </div>
                 ))}
               </div>
             </div>
 
             <div className="border-t border-neutral-900 pt-5 text-left">
-              <p className="text-xs text-neutral-400 leading-relaxed font-medium">
+              <p className="text-xs text-neutral-400 leading-relaxed font-mono">
                 {selectedService.ctaText}
               </p>
               <button
@@ -596,7 +575,7 @@ export default function Services() {
                   setSelectedService(null);
                   document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
                 }}
-                className="mt-4 px-5 py-2.5 bg-white text-[#050505] hover:bg-neutral-200 transition-colors text-xs font-semibold uppercase tracking-wider rounded-lg shadow-md cursor-pointer"
+                className="mt-4 px-5 py-2.5 bg-white text-[#050505] hover:bg-neutral-200 transition-colors text-xs font-mono font-bold uppercase tracking-wider rounded-lg shadow-md cursor-pointer"
               >
                 Inquire About Service
               </button>
