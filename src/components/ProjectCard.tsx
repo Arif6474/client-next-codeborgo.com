@@ -7,10 +7,21 @@ import { PortfolioItem } from "../data/portfolioData";
 interface ProjectCardProps {
   project: PortfolioItem;
   variants?: any;
+  hoveredId?: string | null;
+  onHover?: (id: string | null) => void;
 }
 
-export default function ProjectCard({ project, variants }: ProjectCardProps) {
+export default function ProjectCard({
+  project,
+  variants,
+  hoveredId,
+  onHover,
+}: ProjectCardProps) {
   const Icon = project.icon;
+
+  const isAnyHovered = hoveredId !== null && hoveredId !== undefined;
+  const isHovered = hoveredId === project.id;
+  const isDimmed = isAnyHovered && !isHovered;
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const { currentTarget, clientX, clientY } = e;
@@ -25,13 +36,25 @@ export default function ProjectCard({ project, variants }: ProjectCardProps) {
     <motion.div
       variants={variants}
       onMouseMove={handleMouseMove}
+      onMouseEnter={() => onHover?.(project.id)}
+      onMouseLeave={() => onHover?.(null)}
       data-cursor-text="VIEW CASE"
-      className="group relative rounded-3xl p-[1px] bg-neutral-900 hover:bg-neutral-800 transition-colors duration-500 overflow-hidden shrink-0 flex flex-col justify-between"
+      className={`group relative rounded-3xl p-[1px] bg-neutral-900 hover:bg-neutral-800 overflow-hidden shrink-0 flex flex-col justify-between transition-all duration-500 ease-in-out ${
+        isDimmed
+          ? "opacity-20 scale-[0.96] blur-[4px] filter grayscale-[40%]"
+          : "opacity-100 scale-100 z-10"
+      } ${isHovered ? "z-30 scale-[1.04] shadow-[0_25px_60px_rgba(0,0,0,0.95)] ring-2 ring-amber-400/50" : ""}`}
     >
       {/* Border spotlight effect */}
       <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-0 bg-[radial-gradient(400px_circle_at_var(--mouse-x,-400px)_var(--mouse-y,-400px),rgba(255,255,255,0.18),transparent_80%)]" />
 
-      <div className="relative h-full flex flex-col rounded-[23px] bg-[#070707] overflow-hidden z-10 border border-neutral-900/60 group-hover:border-neutral-800/80 shadow-2xl transition-all duration-500">
+      <div
+        className={`relative h-full flex flex-col rounded-[23px] bg-[#070707] overflow-hidden z-10 border shadow-2xl transition-all duration-500 ease-in-out ${
+          isHovered
+            ? "border-amber-400/40 bg-[#09090d]"
+            : "border-neutral-900/60 group-hover:border-neutral-800/80"
+        }`}
+      >
         {/* Inner spotlight */}
         <div
           className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-0"
@@ -76,29 +99,6 @@ export default function ProjectCard({ project, variants }: ProjectCardProps) {
             </p>
           </div>
 
-          {/* Tech Stack & Metrics */}
-          {/* <div className="space-y-3.5 pt-3 border-t border-neutral-900">
-            <div className="flex flex-wrap gap-1.5">
-              {project.techStack.map((tech) => (
-                <span
-                  key={tech}
-                  className="px-2 py-0.5 text-[9px] font-mono uppercase tracking-wider rounded border border-neutral-800 bg-neutral-900/70 text-neutral-400"
-                >
-                  {tech}
-                </span>
-              ))}
-            </div>
-
-            <div className="grid grid-cols-2 gap-2.5 pt-0.5">
-              {project.metrics.map((m, idx) => (
-                <div key={idx} className="p-2 rounded-lg border border-neutral-850 bg-neutral-900/40">
-                  <span className="text-[8px] font-mono text-neutral-500 uppercase tracking-wider block">{m.label}</span>
-                  <span className="text-xs font-bold font-mono text-white">{m.value}</span>
-                </div>
-              ))}
-            </div>
-          </div> */}
-
           {/* Action Button */}
           <div className="pt-1 mt-auto">
             {project.liveLink ? (
@@ -124,3 +124,4 @@ export default function ProjectCard({ project, variants }: ProjectCardProps) {
     </motion.div>
   );
 }
+

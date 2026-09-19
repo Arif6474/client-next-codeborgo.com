@@ -26,6 +26,7 @@ const categories = [
 export default function PortfolioPage() {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
+  const [hoveredProjectId, setHoveredProjectId] = useState<string | null>(null);
 
   const filteredProjects = portfolioList.filter((project) => {
     const matchesCategory =
@@ -48,22 +49,6 @@ export default function PortfolioPage() {
 
       {/* Page Hero Header */}
       <section className="relative px-6 md:px-12 pt-12 pb-12 z-10 max-w-7xl mx-auto text-center space-y-6">
-        {/* <div className="flex justify-center">
-          <Link
-            href="/"
-            data-cursor-text="HOME"
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-neutral-800 bg-neutral-950/80 text-xs font-mono text-neutral-400 hover:text-white uppercase tracking-widest transition-colors"
-          >
-            <ArrowLeft className="w-3.5 h-3.5" />
-            Back to Studio Home
-          </Link>
-        </div> */}
-
-        {/* <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-neutral-800 bg-neutral-950/80 text-xs font-mono tracking-widest text-neutral-400 uppercase">
-          <Sparkles className="w-3.5 h-3.5 text-amber-300" />
-          Complete Portfolio Showcase
-        </div> */}
-
         <h1 className="text-4xl sm:text-6xl md:text-7xl font-black tracking-tight text-white uppercase font-sans">
           ALL PROJECTS & <br />
           <span className="bg-gradient-to-r from-amber-200 via-white to-cyan-300 bg-clip-text text-transparent">
@@ -121,10 +106,18 @@ export default function PortfolioPage() {
             </button>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+          <div
+            onMouseLeave={() => setHoveredProjectId(null)}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8"
+          >
             <AnimatePresence mode="popLayout">
               {filteredProjects.map((project) => (
-                <ProjectCard key={project.id} project={project} />
+                <ProjectCard
+                  key={project.id}
+                  project={project}
+                  hoveredId={hoveredProjectId}
+                  onHover={setHoveredProjectId}
+                />
               ))}
             </AnimatePresence>
           </div>
@@ -135,3 +128,4 @@ export default function PortfolioPage() {
     </main>
   );
 }
+

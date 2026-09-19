@@ -1,6 +1,6 @@
 "use client";
 
-import { useContext } from "react";
+import { useState, useContext } from "react";
 import Link from "next/link";
 import { motion, Variants } from "framer-motion";
 import { Sparkles, ArrowRight } from "lucide-react";
@@ -11,6 +11,7 @@ import ProjectCard from "./ProjectCard";
 export default function Portfolio() {
   const scrollContainerRef = useContext(ScrollContext);
   const displayedProjects = portfolioList.slice(0, 6);
+  const [hoveredProjectId, setHoveredProjectId] = useState<string | null>(null);
 
   const containerVariants: Variants = {
     hidden: { opacity: 0.8 },
@@ -73,10 +74,17 @@ export default function Portfolio() {
           initial="hidden"
           whileInView="visible"
           viewport={{ root: scrollContainerRef || undefined, once: true, amount: 0.1 }}
+          onMouseLeave={() => setHoveredProjectId(null)}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8"
         >
           {displayedProjects.map((project) => (
-            <ProjectCard key={project.id} project={project} variants={itemVariants} />
+            <ProjectCard
+              key={project.id}
+              project={project}
+              variants={itemVariants}
+              hoveredId={hoveredProjectId}
+              onHover={setHoveredProjectId}
+            />
           ))}
         </motion.div>
 
@@ -96,3 +104,4 @@ export default function Portfolio() {
     </section>
   );
 }
+

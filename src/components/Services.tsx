@@ -291,6 +291,7 @@ const servicesList = [
 
 export default function Services() {
   const [selectedService, setSelectedService] = useState<ServiceDetail | null>(null);
+  const [hoveredServiceId, setHoveredServiceId] = useState<string | null>(null);
   const scrollContainerRef = useContext(ScrollContext);
 
   const [dots] = useState<BgDot[]>(() =>
@@ -402,21 +403,34 @@ export default function Services() {
           initial="hidden"
           whileInView="visible"
           viewport={{ root: scrollContainerRef || undefined, once: true, amount: 0.1 }}
+          onMouseLeave={() => setHoveredServiceId(null)}
           className="hidden md:grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 md:gap-5 lg:gap-6"
         >
           {servicesList.map((svc) => {
             const Icon = svc.icon;
             const theme = serviceThemes[svc.id] || serviceThemes["digital-marketing"];
+            const isHovered = hoveredServiceId === svc.id;
+            const isDimmed = hoveredServiceId !== null && !isHovered;
+
             return (
               <motion.div
                 key={svc.id}
                 variants={itemVariants}
                 data-cursor-text="EXPLORE"
                 onClick={() => setSelectedService(serviceDetailsData[svc.id] || null)}
+                onMouseEnter={() => setHoveredServiceId(svc.id)}
                 onMouseMove={handleMouseMove}
-                whileHover={{ y: -4 }}
-                transition={{ type: "spring", stiffness: 300, damping: 22 }}
-                className={`group relative rounded-[22px] p-6 sm:p-7 flex flex-col justify-between overflow-hidden cursor-pointer transition-all duration-300 min-h-[210px] ${theme.bgClass} ${theme.borderClass} ${theme.glowShadow}`}
+                className={`group relative rounded-[22px] p-6 sm:p-7 flex flex-col justify-between overflow-hidden cursor-pointer min-h-[210px] transition-all duration-500 ease-in-out ${
+                  theme.bgClass
+                } ${theme.borderClass} ${
+                  isDimmed
+                    ? "opacity-20 scale-[0.96] blur-[4px] filter grayscale-[40%]"
+                    : "opacity-100 scale-100"
+                } ${
+                  isHovered
+                    ? "z-30 scale-[1.04] shadow-[0_25px_60px_rgba(0,0,0,0.95)] ring-2 ring-amber-400/50"
+                    : ""
+                }`}
               >
                 {/* Border Spotlight Radial Effect */}
                 <div
@@ -429,7 +443,9 @@ export default function Services() {
                 {/* Top Row: Squircle Icon Badge + Top-Right Arrow */}
                 <div className="flex items-start justify-between relative z-10 w-full mb-8">
                   {/* Icon Container (Squircle) */}
-                  <div className={`w-13 h-13 rounded-2xl flex items-center justify-center transition-transform duration-300 group-hover:scale-105 ${theme.iconBgClass}`}>
+                  <div
+                    className={`w-13 h-13 rounded-2xl flex items-center justify-center transition-transform duration-300 group-hover:scale-105 ${theme.iconBgClass}`}
+                  >
                     <Icon className={`w-6 h-6 ${theme.iconColorClass}`} />
                   </div>
 
