@@ -51,6 +51,11 @@ export const metadata: Metadata = {
     description: "High-performance websites, custom AI agents, and marketing systems built with Italian craftsmanship.",
     images: ["https://codeborgo.com/images/og-cover.png"],
   },
+  verification: {
+    other: {
+      "p:domain_verify": "c068d4a03d8dad7fbc6f7225acfb0f44",
+    },
+  },
 };
 
 export default function RootLayout({
