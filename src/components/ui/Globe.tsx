@@ -348,22 +348,62 @@ export default function Globe() {
 
       rot.angleX = Math.max(-Math.PI / 3, Math.min(Math.PI / 3, rot.angleX));
 
-      // A. Fibonacci Sphere Background Dots
+      // ── Planetary Atmospheric Halo (Dual-Tone Champagne & Cyan) ──
+      const atmosphereGrad = ctx.createRadialGradient(cx, cy, radius * 0.25, cx, cy, radius * 1.18);
+      atmosphereGrad.addColorStop(0, "rgba(251, 191, 36, 0.06)"); // Venetian Champagne core
+      atmosphereGrad.addColorStop(0.5, "rgba(6, 182, 212, 0.07)"); // Electric Cyan aura
+      atmosphereGrad.addColorStop(0.85, "rgba(56, 189, 248, 0.04)"); // Outer sky fringe
+      atmosphereGrad.addColorStop(1, "rgba(0, 0, 0, 0)");
+
+      ctx.beginPath();
+      ctx.arc(cx, cy, radius * 1.18, 0, 2 * Math.PI);
+      ctx.fillStyle = atmosphereGrad;
+      ctx.fill();
+
+      // Delicate Planetary Rim Light
+      const rimGrad = ctx.createRadialGradient(cx, cy, radius * 0.94, cx, cy, radius * 1.03);
+      // rimGrad.addColorStop(0, "rgba(6, 182, 212, 0.16)");
+      // rimGrad.addColorStop(0.5, "rgba(251, 191, 36, 0.12)");
+      // rimGrad.addColorStop(1, "rgba(0, 0, 0, 0)");
+      ctx.beginPath();
+      ctx.arc(cx, cy, radius * 1.03, 0, 2 * Math.PI);
+      ctx.fillStyle = rimGrad;
+      ctx.fill();
+
+      // A. Dual-Tone Fibonacci Sphere Background Dots
       const rotatedPoints = points.map((p) => ({
         orig: p,
         rot: rotate(p, rot.angleX, rot.angleY),
       }));
 
-      rotatedPoints.forEach(({ rot: rp }) => {
+      rotatedPoints.forEach(({ orig, rot: rp }) => {
         const { x: px, y: py, scale } = project(rp.x, rp.y, rp.z, cx, cy);
         const zRatio = (rp.z + radius) / (2 * radius);
-        const opacity = 0.05 + 0.38 * zRatio;
-        const dotSize = 0.75 + 1.2 * scale;
+        const dotSize = 0.75 + 1.25 * scale;
+
+        // Dual-tone color mapping: Venetian Gold near HQ latitudes, Electric Cyan across global expanse
+        const isNearVeniceLatitude = Math.abs(orig.y / radius - 0.71) < 0.35;
+        const opacity = 0.08 + 0.62 * zRatio;
 
         ctx.beginPath();
         ctx.arc(px, py, dotSize, 0, 2 * Math.PI);
-        ctx.fillStyle = `rgba(255, 255, 255, ${opacity})`;
+
+        if (isNearVeniceLatitude) {
+          ctx.fillStyle = `rgba(251, 191, 36, ${opacity})`;
+          if (zRatio > 0.65) {
+            ctx.shadowColor = "rgba(251, 191, 36, 0.8)";
+            ctx.shadowBlur = 4;
+          }
+        } else {
+          ctx.fillStyle = `rgba(56, 189, 248, ${opacity * 0.85})`;
+          if (zRatio > 0.65) {
+            ctx.shadowColor = "rgba(6, 182, 212, 0.7)";
+            ctx.shadowBlur = 3;
+          }
+        }
+
         ctx.fill();
+        ctx.shadowBlur = 0;
       });
 
       // B. Rotated Locations
@@ -373,7 +413,7 @@ export default function Globe() {
         rot: rotate(node, rot.angleX, rot.angleY),
       }));
 
-      // C. Connection Arcs & Particles
+      // C. Dual-Tone Connection Arcs & Particles (Gold for HQ, Cyan for Global)
       const timeFactor = (Date.now() / 2400) % 1;
 
       CONNECTIONS.forEach(([startIdx, endIdx]) => {
@@ -405,10 +445,24 @@ export default function Globe() {
           ctx.beginPath();
           ctx.moveTo(pA.x, pA.y);
           ctx.quadraticCurveTo(pCtrl.x, pCtrl.y, pB.x, pB.y);
-          ctx.strokeStyle = isHQConnection
-            ? `rgba(251, 191, 36, ${0.28 * arcRatio})`
-            : `rgba(255, 255, 255, ${0.12 * arcRatio})`;
-          ctx.lineWidth = isHQConnection ? 1.2 : 0.8;
+
+          if (isHQConnection) {
+            // Venetian Gold Arc
+            const goldGrad = ctx.createLinearGradient(pA.x, pA.y, pB.x, pB.y);
+            goldGrad.addColorStop(0, `rgba(251, 191, 36, ${0.45 * arcRatio})`);
+            goldGrad.addColorStop(0.5, `rgba(254, 240, 138, ${0.6 * arcRatio})`);
+            goldGrad.addColorStop(1, `rgba(251, 191, 36, ${0.45 * arcRatio})`);
+            ctx.strokeStyle = goldGrad;
+            ctx.lineWidth = 1.4;
+          } else {
+            // Electric Cyan Global Transit Arc
+            const cyanGrad = ctx.createLinearGradient(pA.x, pA.y, pB.x, pB.y);
+            cyanGrad.addColorStop(0, `rgba(6, 182, 212, ${0.3 * arcRatio})`);
+            cyanGrad.addColorStop(0.5, `rgba(165, 243, 252, ${0.45 * arcRatio})`);
+            cyanGrad.addColorStop(1, `rgba(6, 182, 212, ${0.3 * arcRatio})`);
+            ctx.strokeStyle = cyanGrad;
+            ctx.lineWidth = 0.9;
+          }
           ctx.stroke();
 
           // Particle Trace
@@ -417,20 +471,32 @@ export default function Globe() {
           const pX = u * u * pA.x + 2 * u * t * pCtrl.x + t * t * pB.x;
           const pY = u * u * pA.y + 2 * u * t * pCtrl.y + t * t * pB.y;
 
+          // Glowing Particle Head
           ctx.beginPath();
-          ctx.arc(pX, pY, isHQConnection ? 2.5 : 1.8, 0, 2 * Math.PI);
+          ctx.arc(pX, pY, isHQConnection ? 2.8 : 2.0, 0, 2 * Math.PI);
           ctx.fillStyle = isHQConnection
-            ? `rgba(251, 191, 36, ${0.9 * arcRatio})`
-            : `rgba(255, 255, 255, ${0.75 * arcRatio})`;
-          ctx.shadowColor = isHQConnection ? "rgba(251, 191, 36, 0.8)" : "rgba(255, 255, 255, 0.5)";
-          ctx.shadowBlur = 6;
+            ? `rgba(253, 224, 71, ${0.95 * arcRatio})`
+            : `rgba(56, 189, 248, ${0.9 * arcRatio})`;
+          ctx.shadowColor = isHQConnection ? "rgba(251, 191, 36, 0.9)" : "rgba(6, 182, 212, 0.85)";
+          ctx.shadowBlur = isHQConnection ? 8 : 6;
           ctx.fill();
           ctx.shadowBlur = 0;
+
+          // Trailing Tail Particle
+          const tTrail = (t - 0.035 + 1) % 1;
+          const uT = 1 - tTrail;
+          const pXTrail = uT * uT * pA.x + 2 * uT * tTrail * pCtrl.x + tTrail * tTrail * pB.x;
+          const pYTrail = uT * uT * pA.y + 2 * uT * tTrail * pCtrl.y + tTrail * tTrail * pB.y;
+          ctx.beginPath();
+          ctx.arc(pXTrail, pYTrail, isHQConnection ? 1.6 : 1.2, 0, 2 * Math.PI);
+          ctx.fillStyle = isHQConnection
+            ? `rgba(251, 191, 36, ${0.5 * arcRatio})`
+            : `rgba(6, 182, 212, ${0.45 * arcRatio})`;
+          ctx.fill();
         }
       });
 
       // D. Draw Country Flags & Premium Badges
-      // Sort nodes back-to-front for proper layering
       const sortedNodes = [...rotatedNodes].sort((a, b) => a.rot.z - b.rot.z);
 
       sortedNodes.forEach((node) => {
@@ -443,21 +509,25 @@ export default function Globe() {
 
           // Multi-layer pulse halo animation
           const pulse = (Date.now() / 1100 + (node.lat % 5)) % 2;
-          const pulseRadius = (isHQ ? 12 : 8) + pulse * (isHQ ? 10 : 6);
-          const pulseAlpha = (1 - pulse / 2) * zRatio * (isHQ ? 0.7 : 0.4);
+          const pulseRadius = (isHQ ? 13 : 8.5) + pulse * (isHQ ? 11 : 6.5);
+          const pulseAlpha = (1 - pulse / 2) * zRatio * (isHQ ? 0.8 : 0.5);
 
           ctx.beginPath();
           ctx.arc(px, py, pulseRadius, 0, 2 * Math.PI);
-          ctx.strokeStyle = isHQ ? `rgba(251, 191, 36, ${pulseAlpha})` : `rgba(255, 255, 255, ${pulseAlpha})`;
-          ctx.lineWidth = 1;
+          ctx.strokeStyle = isHQ
+            ? `rgba(251, 191, 36, ${pulseAlpha})`
+            : `rgba(56, 189, 248, ${pulseAlpha})`;
+          ctx.lineWidth = isHQ ? 1.3 : 0.9;
           ctx.stroke();
 
           // Node center point glow
           ctx.beginPath();
-          ctx.arc(px, py, isHQ ? 3.5 : 2.5, 0, 2 * Math.PI);
-          ctx.fillStyle = isHQ ? `rgba(251, 191, 36, ${zRatio})` : `rgba(255, 255, 255, ${zRatio * 0.9})`;
-          ctx.shadowColor = isHQ ? "rgba(251, 191, 36, 0.9)" : "rgba(255, 255, 255, 0.6)";
-          ctx.shadowBlur = isHQ ? 8 : 4;
+          ctx.arc(px, py, isHQ ? 3.8 : 2.6, 0, 2 * Math.PI);
+          ctx.fillStyle = isHQ
+            ? `rgba(251, 191, 36, ${Math.min(1, zRatio * 1.1)})`
+            : `rgba(56, 189, 248, ${Math.min(1, zRatio * 0.95)})`;
+          ctx.shadowColor = isHQ ? "rgba(251, 191, 36, 0.95)" : "rgba(6, 182, 212, 0.85)";
+          ctx.shadowBlur = isHQ ? 10 : 5;
           ctx.fill();
           ctx.shadowBlur = 0;
 
@@ -466,11 +536,9 @@ export default function Globe() {
           const flagDiameter = Math.round((isHQ ? 18 : 14) * (0.85 + 0.3 * scale) * (isHovered ? 1.25 : 1));
           const flagRadius = flagDiameter / 2;
 
-          // Offset flag position slightly above-right of location dot
           const flagX = px + 10 + (isHovered ? 2 : 0);
           const flagY = py - 4;
 
-          // Text metrics
           const labelText = isHQ ? `HQ • ${node.name.toUpperCase()}` : node.name.toUpperCase();
           ctx.font = isHQ ? "bold 10px monospace" : "600 9px monospace";
           const textMetrics = ctx.measureText(labelText);
@@ -483,18 +551,18 @@ export default function Globe() {
           ctx.save();
           drawRoundedRect(ctx, badgeX, badgeY, badgeWidth, badgeHeight, badgeHeight / 2);
           ctx.fillStyle = isHQ
-            ? `rgba(26, 20, 8, ${0.88 * zRatio})`
+            ? `rgba(28, 20, 8, ${0.92 * zRatio})`
             : isHovered
-            ? `rgba(25, 25, 35, ${0.92 * zRatio})`
-            : `rgba(10, 10, 15, ${0.75 * zRatio})`;
+              ? `rgba(8, 24, 34, ${0.94 * zRatio})`
+              : `rgba(6, 14, 22, ${0.78 * zRatio})`;
           ctx.fill();
 
           ctx.strokeStyle = isHQ
-            ? `rgba(251, 191, 36, ${0.85 * zRatio})`
+            ? `rgba(251, 191, 36, ${0.9 * zRatio})`
             : isHovered
-            ? `rgba(255, 255, 255, ${0.6 * zRatio})`
-            : `rgba(255, 255, 255, ${0.2 * zRatio})`;
-          ctx.lineWidth = isHQ ? 1.2 : 0.8;
+              ? `rgba(56, 189, 248, ${0.85 * zRatio})`
+              : `rgba(56, 189, 248, ${0.28 * zRatio})`;
+          ctx.lineWidth = isHQ ? 1.3 : 0.8;
           ctx.stroke();
 
           // Render Vector Flag Circle inside Pill
@@ -512,11 +580,10 @@ export default function Globe() {
             // Flag rim border
             ctx.beginPath();
             ctx.arc(circleX, circleY, flagRadius, 0, Math.PI * 2);
-            ctx.strokeStyle = isHQ ? `rgba(251, 191, 36, 0.9)` : `rgba(255, 255, 255, 0.4)`;
+            ctx.strokeStyle = isHQ ? `rgba(251, 191, 36, 0.9)` : `rgba(56, 189, 248, 0.55)`;
             ctx.lineWidth = 1;
             ctx.stroke();
           } else {
-            // Emoji Fallback if image loading
             ctx.font = `${flagDiameter}px sans-serif`;
             ctx.fillText(node.flagEmoji, circleX - flagRadius, circleY + flagRadius / 2);
           }
@@ -527,10 +594,10 @@ export default function Globe() {
 
           ctx.font = isHQ ? "bold 10px monospace" : "600 9px monospace";
           ctx.fillStyle = isHQ
-            ? `rgba(253, 224, 71, ${zRatio * 0.95})`
+            ? `rgba(253, 224, 71, ${zRatio * 0.98})`
             : isHovered
-            ? `rgba(255, 255, 255, ${zRatio})`
-            : `rgba(230, 230, 240, ${zRatio * 0.85})`;
+              ? `rgba(255, 255, 255, ${zRatio})`
+              : `rgba(224, 242, 254, ${zRatio * 0.88})`;
           ctx.fillText(labelText, textX, textY);
           ctx.restore();
         }
@@ -623,9 +690,22 @@ export default function Globe() {
 
   return (
     <div className="relative w-[340px] h-[340px] md:w-[460px] md:h-[460px] flex items-center justify-center pointer-events-auto select-none">
-      {/* Outer ambient gold ring */}
-      <div className="absolute w-[280px] h-[280px] md:w-[360px] md:h-[360px] rounded-full border border-amber-500/10 pointer-events-none z-0 blur-[1px]" />
-      <div className="absolute w-[270px] h-[270px] md:w-[340px] md:h-[340px] rounded-full border border-dashed border-neutral-800/50 pointer-events-none z-0 animate-[spin_80s_linear_infinite]" />
+      {/* Ambient Venetian Gold & Cyan Atmospheric Aura */}
+      <div className="absolute w-[300px] h-[300px] md:w-[400px] md:h-[400px] rounded-full bg-gradient-to-tr from-cyan-500/12 via-amber-500/10 to-transparent blur-[55px] pointer-events-none z-0" />
+
+      {/* Outer Hairline Venetian Gold Compass Ring with Coordinate Ticks */}
+      <div className="absolute w-[290px] h-[290px] md:w-[380px] md:h-[380px] rounded-full border border-amber-400/25 pointer-events-none z-0">
+        <span className="absolute -top-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-amber-400/60 rounded-full" />
+        <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-amber-400/60 rounded-full" />
+        <span className="absolute top-1/2 -left-1 -translate-y-1/2 w-1.5 h-1.5 bg-cyan-400/60 rounded-full" />
+        <span className="absolute top-1/2 -right-1 -translate-y-1/2 w-1.5 h-1.5 bg-cyan-400/60 rounded-full" />
+      </div>
+
+      {/* Counter-Spinning Electric Cyan Dashed Coordinate Ring */}
+      <div className="absolute w-[275px] h-[275px] md:w-[355px] md:h-[355px] rounded-full border border-dashed border-cyan-400/20 pointer-events-none z-0 animate-[spin_55s_linear_infinite]" />
+
+      {/* Inner Fine Champagne Orbit */}
+      <div className="absolute w-[260px] h-[260px] md:w-[335px] md:h-[335px] rounded-full border border-amber-500/15 pointer-events-none z-0 animate-[spin_75s_linear_infinite_reverse]" />
 
       <canvas
         ref={canvasRef}
