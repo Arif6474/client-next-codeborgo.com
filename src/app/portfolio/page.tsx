@@ -13,14 +13,7 @@ import ProjectCard from "../../components/ProjectCard";
 
 const categories = [
   "All",
-  "Event Ticketing",
-  "Fine Dining",
-  "B2B & Staffing",
-  "Consultancy & B2B",
-  "E-Commerce",
-  "AI Systems",
-  "SaaS & Web Dev",
-  "Digital Marketing",
+  ...Array.from(new Set(portfolioList.map((project) => project.category))),
 ];
 
 export default function PortfolioPage() {

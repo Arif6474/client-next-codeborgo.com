@@ -1,4 +1,4 @@
-import { Ticket, Utensils, CheckCircle, Building, Heart, ShoppingCart, MessageSquare, LayoutGrid, Sparkles, LineChart } from "lucide-react";
+import { Ticket, Utensils, CheckCircle, Building, Heart, ShoppingCart, MessageSquare, LayoutGrid, Sparkles, LineChart, Cake, Store } from "lucide-react";
 
 export interface ProjectMetric {
   value: string;
@@ -37,24 +37,8 @@ export const portfolioList: PortfolioItem[] = [
     icon: Ticket,
   },
   {
-    id: "casabella",
-    number: "02",
-    tag: "FINE DINING & RESERVATIONS",
-    category: "Fine Dining",
-    title: "Casa Bella Venezia",
-    description: "Multicultural fine dining experience platform featuring real-time menu synchronization, table reservation workflows, and local SEO dominance.",
-    metrics: [
-      { value: "+180%", label: "Direct Bookings" },
-      { value: "Venice, IT", label: "Location Core" },
-    ],
-    techStack: ["Next.js 16", "Tailwind v4", "Reservations Engine", "Local SEO"],
-    image: "/projects/casabella/casaa-bella.png",
-    liveLink: "https://casabella.codeborgo.com/",
-    icon: Utensils,
-  },
-  {
     id: "staynova",
-    number: "03",
+    number: "02",
     tag: "HOSPITALITY STAFFING B2B",
     category: "B2B & Staffing",
     title: "StayNova UAE",
@@ -70,7 +54,7 @@ export const portfolioList: PortfolioItem[] = [
   },
   {
     id: "ennconsultancy",
-    number: "04",
+    number: "03",
     tag: "BUSINESS FORMATION & ADVISORY",
     category: "Consultancy & B2B",
     title: "ENN Consultancy",
@@ -85,8 +69,56 @@ export const portfolioList: PortfolioItem[] = [
     icon: Building,
   },
   {
-    id: "luxury-fashion",
+    id: "michelacakedesigner",
+    number: "04",
+    tag: "ARTISANAL CAKES & 3D STUDIO",
+    category: "Artisanal & Food",
+    title: "Michela Cake Designer",
+    description: "Boutique confectionery studio platform in Mestre featuring an interactive 3D cake design configurator, 190+ bespoke creation catalog, and seamless custom event ordering.",
+    metrics: [
+      { value: "190+ Cakes", label: "Artisan Catalog" },
+      { value: "Mestre, IT", label: "Studio Hub" },
+    ],
+    techStack: ["Next.js", "3D Customizer", "Tailwind CSS", "Order System"],
+    image: "/projects/michelacake/michela1.jpg",
+    liveLink: "https://michelacakedesigner.codeborgo.com/",
+    icon: Cake,
+  },
+  {
+    id: "onebeautystudio",
     number: "05",
+    tag: "LUXURY SALON & WELLNESS",
+    category: "Beauty & Wellness",
+    title: "ONE BEAUTY STUDIO",
+    description: "High-end beauty and nail salon portal in Mestre, Venezia offering curated treatment menus, real-time 24/7 appointment intake workflows, and bespoke aesthetic presentation.",
+    metrics: [
+      { value: "24/7 Intake", label: "Online Booking" },
+      { value: "Venezia, IT", label: "Boutique Location" },
+    ],
+    techStack: ["Next.js", "TypeScript", "Booking System", "Tailwind CSS"],
+    image: "/projects/onebeauty/onebeauty1.jpg",
+    liveLink: "https://onebeautystudio.codeborgo.com/",
+    icon: Sparkles,
+  },
+  {
+    id: "veniceminimarket",
+    number: "06",
+    tag: "LOCAL RETAIL & COMMERCE",
+    category: "Retail & Commerce",
+    title: "Venice Mini Market",
+    description: "Neighborhood retail and convenience platform on Corso del Popolo featuring real store photography, dynamic aisle showcase, and high-ranking local search presence.",
+    metrics: [
+      { value: "Corso del Popolo", label: "Venezia Hub" },
+      { value: "Local SEO", label: "Footfall Engine" },
+    ],
+    techStack: ["Next.js", "Local SEO", "High-Res Gallery", "Tailwind CSS"],
+    image: "/projects/veniceminimarket/venice1.jpg",
+    liveLink: "https://veniceminimarket.com/",
+    icon: Store,
+  },
+  {
+    id: "luxury-fashion",
+    number: "07",
     tag: "CONCEPT STOREFRONT",
     category: "E-Commerce",
     title: "Venezia Luxury Atelier",
@@ -101,7 +133,7 @@ export const portfolioList: PortfolioItem[] = [
   },
   {
     id: "chatbot",
-    number: "06",
+    number: "08",
     tag: "AI SUPPORT AGENT",
     category: "AI Systems",
     title: "Smart Customer Intelligence Bot",
@@ -116,7 +148,7 @@ export const portfolioList: PortfolioItem[] = [
   },
   {
     id: "ecommerce",
-    number: "07",
+    number: "09",
     tag: "FULL-STACK COMMERCE",
     category: "E-Commerce",
     title: "E-Commerce Platform",
@@ -131,7 +163,7 @@ export const portfolioList: PortfolioItem[] = [
   },
   {
     id: "saas-dashboard",
-    number: "08",
+    number: "10",
     tag: "ANALYTICS ENGINE",
     category: "SaaS & Web Dev",
     title: "SaaS Analytics Dashboard",
@@ -146,7 +178,7 @@ export const portfolioList: PortfolioItem[] = [
   },
   {
     id: "beauty-campaign",
-    number: "09",
+    number: "11",
     tag: "BRAND CAMPAIGN",
     category: "Digital Marketing",
     title: "Beauty Brand Social Campaign",
@@ -161,7 +193,7 @@ export const portfolioList: PortfolioItem[] = [
   },
   {
     id: "restaurant",
-    number: "10",
+    number: "12",
     tag: "LOCAL BRAND LAUNCH",
     category: "Fine Dining",
     title: "Restaurant Brand Launch",

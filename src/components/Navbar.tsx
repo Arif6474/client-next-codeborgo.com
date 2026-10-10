@@ -51,9 +51,9 @@ const CORE_CAPABILITIES = [
 const navItems = [
   { name: "Home", href: "#home" },
   { name: "About", href: "#about" },
-  { name: "Services", href: "#services" },
-  { name: "Portfolio", href: "#portfolio", isPage: true },
-  { name: "Pricing", href: "#pricing" },
+  { name: "Services", href: "/services", isPage: true },
+  { name: "Portfolio", href: "/portfolio", isPage: true },
+  { name: "Pricing", href: "/pricing", isPage: true },
 ];
 
 export default function Navbar({ scrollContainerRef }: NavbarProps) {
@@ -85,6 +85,10 @@ export default function Navbar({ scrollContainerRef }: NavbarProps) {
 
     if (pathname === "/portfolio") {
       setActiveSection("portfolio");
+    } else if (pathname === "/pricing") {
+      setActiveSection("pricing");
+    } else if (pathname === "/services") {
+      setActiveSection("services");
     }
 
     if (!container) {
@@ -117,6 +121,7 @@ export default function Navbar({ scrollContainerRef }: NavbarProps) {
     const observer = new IntersectionObserver(observerCallback, observerOptions);
 
     navItems.forEach((item) => {
+      if (item.isPage) return;
       const id = item.href.substring(1);
       const element = document.getElementById(id);
       if (element) observer.observe(element);
@@ -133,14 +138,21 @@ export default function Navbar({ scrollContainerRef }: NavbarProps) {
     item: { name: string; href: string; isPage?: boolean }
   ) => {
     e.preventDefault();
-    const id = item.href.substring(1);
+
+    if (item.isPage || item.href.startsWith("/")) {
+      if (pathname === item.href) {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } else {
+        router.push(item.href);
+      }
+      setIsMobileMenuOpen(false);
+      return;
+    }
+
+    const id = item.href.replace(/^#/, "");
 
     if (pathname !== "/") {
-      if (item.href === "#portfolio") {
-        router.push("/portfolio");
-      } else {
-        router.push(`/${item.href}`);
-      }
+      router.push(`/${item.href}`);
       setIsMobileMenuOpen(false);
       return;
     }
@@ -186,7 +198,14 @@ export default function Navbar({ scrollContainerRef }: NavbarProps) {
           {/* Desktop Navigation Links */}
           <nav className="hidden lg:flex items-center space-x-1 border border-white/10 bg-neutral-950/60 rounded-full px-2 py-1.5 backdrop-blur-md relative">
             {navItems.map((item) => {
-              const isActive = activeSection === item.href.substring(1);
+              const isActive = item.isPage
+                ? pathname === item.href
+                : pathname === "/" && activeSection === item.href.replace(/^#/, "");
+              const itemHref = item.isPage
+                ? item.href
+                : pathname === "/"
+                ? item.href
+                : `/${item.href}`;
               const isServices = item.name === "Services";
 
               return (
@@ -197,7 +216,7 @@ export default function Navbar({ scrollContainerRef }: NavbarProps) {
                   onMouseLeave={() => isServices && handleServicesMouseLeave()}
                 >
                   <a
-                    href={item.href}
+                    href={itemHref}
                     onClick={(e) => handleNavClick(e, item)}
                     className={`relative px-4 py-1.5 text-xs tracking-wider uppercase font-medium transition-colors duration-300 rounded-full flex items-center gap-1 cursor-pointer ${
                       isActive ? "text-white" : "text-neutral-400 hover:text-neutral-200"
@@ -275,9 +294,9 @@ export default function Navbar({ scrollContainerRef }: NavbarProps) {
                   </div>
 
                   <a
-                    href="#services"
+                    href="/services"
                     onClick={(e) => {
-                      handleNavClick(e, { name: "Services", href: "#services" });
+                      handleNavClick(e, { name: "Services", href: "/services", isPage: true });
                       setIsServicesHovered(false);
                     }}
                     className="text-xs text-neutral-400 hover:text-white font-mono flex items-center gap-1 transition-colors group/link"
@@ -294,9 +313,9 @@ export default function Navbar({ scrollContainerRef }: NavbarProps) {
                     return (
                       <a
                         key={cap.id}
-                        href="#services"
+                        href={`/services#${cap.id}`}
                         onClick={(e) => {
-                          handleNavClick(e, { name: "Services", href: "#services" });
+                          handleNavClick(e, { name: cap.title, href: `/services#${cap.id}`, isPage: true });
                           setIsServicesHovered(false);
                         }}
                         className={`group relative p-4 rounded-xl bg-neutral-950/70 border border-neutral-900/90 transition-all duration-300 flex flex-col justify-between ${cap.hoverBorder}`}
@@ -349,7 +368,14 @@ export default function Navbar({ scrollContainerRef }: NavbarProps) {
 
             <div className="flex flex-col space-y-5 my-auto">
               {navItems.map((item, index) => {
-                const isActive = activeSection === item.href.substring(1);
+                const isActive = item.isPage
+                  ? pathname === item.href
+                  : pathname === "/" && activeSection === item.href.replace(/^#/, "");
+                const itemHref = item.isPage
+                  ? item.href
+                  : pathname === "/"
+                  ? item.href
+                  : `/${item.href}`;
                 const isServices = item.name === "Services";
 
                 return (
@@ -359,7 +385,7 @@ export default function Navbar({ scrollContainerRef }: NavbarProps) {
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: index * 0.05 }}
-                        href={item.href}
+                        href={itemHref}
                         onClick={(e) => handleNavClick(e, item)}
                         className="text-2xl sm:text-3xl font-bold tracking-wider uppercase text-left relative flex items-center"
                       >
@@ -406,8 +432,8 @@ export default function Navbar({ scrollContainerRef }: NavbarProps) {
                               return (
                                 <a
                                   key={cap.id}
-                                  href="#services"
-                                  onClick={(e) => handleNavClick(e, { name: "Services", href: "#services" })}
+                                  href={`/services#${cap.id}`}
+                                  onClick={(e) => handleNavClick(e, { name: cap.title, href: `/services#${cap.id}`, isPage: true })}
                                   className="p-3 rounded-lg bg-neutral-950/80 border border-neutral-900 flex items-center gap-3 text-left"
                                 >
                                   <div className={`p-2 rounded border ${cap.bgClass}`}>

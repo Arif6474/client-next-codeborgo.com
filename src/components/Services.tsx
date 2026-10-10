@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useContext } from "react";
+import Link from "next/link";
 import { motion, Variants, AnimatePresence } from "framer-motion";
 import { ScrollContext } from "../app/page";
 import {
@@ -284,9 +285,9 @@ const servicesList = [
   { id: "social-media", name: "Social Media", icon: Share2, desc: "Open the Social Media module" },
   { id: "cloud-devops", name: "Cloud & DevOps", icon: Cloud, desc: "Open the Cloud & DevOps module" },
   { id: "saas-development", name: "SaaS Development", icon: Cpu, desc: "Open the SaaS Development module" },
-  { id: "ux-strategy", name: "UX/UI Strategy", icon: Layers, desc: "Open the UX/UI Strategy module" },
-  { id: "data-analytics", name: "Data & Analytics", icon: BarChart, desc: "Open the Data & Analytics module" },
-  { id: "headless-ecommerce", name: "Headless E-Commerce", icon: ShoppingBag, desc: "Open the Headless E-Commerce module" },
+  // { id: "ux-strategy", name: "UX/UI Strategy", icon: Layers, desc: "Open the UX/UI Strategy module" },
+  // { id: "data-analytics", name: "Data & Analytics", icon: BarChart, desc: "Open the Data & Analytics module" },
+  // { id: "headless-ecommerce", name: "Headless E-Commerce", icon: ShoppingBag, desc: "Open the Headless E-Commerce module" },
 ];
 
 export default function Services() {
@@ -544,6 +545,18 @@ export default function Services() {
               <ArrowRight className="w-4 h-4" />
             </button>
           </div>
+        </div>
+
+        {/* View All Services CTA Button */}
+        <div className="flex justify-center pt-2">
+          <Link
+            href="/services"
+            data-cursor-text="SERVICES"
+            className="group relative inline-flex items-center gap-3 px-8 py-4 rounded-2xl border border-neutral-700 bg-neutral-900/90 hover:bg-neutral-800 text-white font-mono text-xs uppercase tracking-widest font-bold transition-all duration-300 shadow-xl hover:border-amber-300/50 hover:shadow-[0_0_35px_rgba(251,191,36,0.15)] cursor-pointer"
+          >
+            <span>Explore All Capabilities & Modules</span>
+            <ArrowRight className="w-4 h-4 text-amber-300 group-hover:translate-x-1 transition-transform" />
+          </Link>
         </div>
       </div>
 

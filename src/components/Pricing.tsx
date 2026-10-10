@@ -1,6 +1,8 @@
 "use client";
 
 import { useState, useContext } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { motion, Variants } from "framer-motion";
 import { Sparkles, Check, ArrowRight } from "lucide-react";
 import Modal from "./ui/Modal";
@@ -65,6 +67,7 @@ const packages: Package[] = [
 ];
 
 export default function Pricing() {
+  const router = useRouter();
   const [selectedPack, setSelectedPack] = useState<Package | null>(null);
   const [hoveredId, setHoveredId] = useState<string | null>("Venezia-premium");
   const [paymentState, setPaymentState] = useState<"idle" | "processing" | "success">("idle");
@@ -92,6 +95,8 @@ export default function Pricing() {
       const contactSection = document.getElementById("contact");
       if (contactSection) {
         contactSection.scrollIntoView({ behavior: "smooth" });
+      } else {
+        router.push("/#contact");
       }
     } else {
       setSelectedPack(pack);
@@ -306,6 +311,18 @@ export default function Pricing() {
             );
           })}
         </motion.div>
+
+        {/* View Full Pricing & Comparison Link */}
+        <div className="flex justify-center pt-2">
+          <Link
+            href="/pricing"
+            data-cursor-text="PRICING"
+            className="group relative inline-flex items-center gap-3 px-8 py-4 rounded-2xl border border-neutral-700 bg-neutral-900/90 hover:bg-neutral-800 text-white font-mono text-xs uppercase tracking-widest font-bold transition-all duration-300 shadow-xl hover:border-amber-300/50 hover:shadow-[0_0_35px_rgba(251,191,36,0.15)] cursor-pointer"
+          >
+            <span>View Full Deliverables & Comparison</span>
+            <ArrowRight className="w-4 h-4 text-amber-300 group-hover:translate-x-1 transition-transform" />
+          </Link>
+        </div>
       </div>
 
       {/* Stripe Payment Portal Modal */}
