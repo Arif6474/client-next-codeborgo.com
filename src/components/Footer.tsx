@@ -4,8 +4,10 @@ import { useContext } from "react";
 import { motion } from "framer-motion";
 import { ArrowUp } from "lucide-react";
 import { ScrollContext } from "../app/page";
+import { useLanguage } from "../context/LanguageContext";
 
 export default function Footer() {
+  const { t } = useLanguage();
   const scrollContainerRef = useContext(ScrollContext);
   const handleScrollToTop = () => {
     const element = document.getElementById("home") || document.documentElement;
@@ -42,14 +44,14 @@ export default function Footer() {
           {/* Company descriptor & VAT */}
           <div className="flex flex-col items-center md:items-start gap-1">
             <span className="text-neutral-400 text-center md:text-left">
-              CodeBorgo · P.IVA IT01234567890 · Mestre, Venezia, Italy
+              {t.footer.vat}
             </span>
             <div className="flex items-center gap-3 mt-1.5 select-none text-[10px]">
-              <a href="/privacy" className="hover:text-white transition-colors">Privacy Policy</a>
+              <a href="/privacy" className="hover:text-white transition-colors">{t.footer.privacy}</a>
               <span>·</span>
-              <a href="/cookie-policy" className="hover:text-white transition-colors">Cookie Policy</a>
+              <a href="/cookie-policy" className="hover:text-white transition-colors">{t.footer.cookie}</a>
               <span>·</span>
-              <a href="/terms" className="hover:text-white transition-colors">Terms of Service</a>
+              <a href="/terms" className="hover:text-white transition-colors">{t.footer.terms}</a>
             </div>
           </div>
 
@@ -61,12 +63,12 @@ export default function Footer() {
             <span className="w-4 h-4 rounded-full bg-cyan-500/15 flex items-center justify-center">
               <ArrowUp className="w-2.5 h-2.5" />
             </span>
-            Back to Top
+            {t.footer.backToTop}
           </button>
 
           {/* Copyright */}
           <div>
-            <span>© {new Date().getFullYear()} CodeBorgo. All Rights Reserved.</span>
+            <span>© {new Date().getFullYear()} CodeBorgo. {t.footer.allRightsReserved}</span>
           </div>
 
         </div>

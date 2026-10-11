@@ -4,8 +4,10 @@ import { useState, useEffect, useContext } from "react";
 import { motion, AnimatePresence, Variants } from "framer-motion";
 import { MapPin, Mail, Phone, Clock, Send, Sparkles, Copy, Check } from "lucide-react";
 import { ScrollContext } from "../app/page";
+import { useLanguage } from "../context/LanguageContext";
 
 export default function Contact() {
+  const { t, language } = useLanguage();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [company, setCompany] = useState("");
@@ -15,20 +17,18 @@ export default function Contact() {
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [copiedIndex, setCopiedIndex] = useState<string | null>(null);
-  const [consent, setConsent] = useState(false);
   const scrollContainerRef = useContext(ScrollContext);
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
-    if (!name.trim()) newErrors.name = "Full Name is required";
+    if (!name.trim()) newErrors.name = t.contact.form.errors.nameReq;
     if (!email.trim()) {
-      newErrors.email = "Email is required";
+      newErrors.email = t.contact.form.errors.emailReq;
     } else if (!/\S+@\S+\.\S+/.test(email)) {
-      newErrors.email = "Please enter a valid email address";
+      newErrors.email = t.contact.form.errors.emailValid;
     }
-    if (!service) newErrors.service = "Please select a service";
-    if (!message.trim()) newErrors.message = "Message is required";
-    if (!consent) newErrors.consent = "You must agree to the privacy policy";
+    if (!service) newErrors.service = t.contact.form.errors.serviceReq;
+    if (!message.trim()) newErrors.message = t.contact.form.errors.messageReq;
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -48,7 +48,7 @@ export default function Contact() {
       });
       const data = await response.json();
       if (!response.ok) {
-        throw new Error(data.error || "Failed to submit inquiry. Please try again.");
+        throw new Error(data.error || t.contact.form.errors.unexpected);
       }
       setSubmitSuccess(true);
       setName("");
@@ -56,10 +56,9 @@ export default function Contact() {
       setCompany("");
       setService("");
       setMessage("");
-      setConsent(false);
       setErrors({});
     } catch (error: any) {
-      setErrors({ submit: error.message || "An unexpected error occurred." });
+      setErrors({ submit: error.message || t.contact.form.errors.unexpected });
     } finally {
       setIsSubmitting(false);
     }
@@ -86,28 +85,28 @@ export default function Contact() {
     {
       num: "01",
       icon: MapPin,
-      label: "Location",
-      content: <>Gaspare Gozzi, 53<br />30171 Mestre, Venezia, Italy</>,
+      label: t.contact.locationLabel,
+      content: t.contact.locationValue,
     },
     {
       num: "02",
       icon: Mail,
-      label: "Email",
+      label: t.contact.emailLabel,
       content: <span className="font-mono select-all">info@codeborgo.com</span>,
       copyValue: "info@codeborgo.com",
     },
     {
       num: "03",
       icon: Phone,
-      label: "Phone",
+      label: t.contact.phoneLabel,
       content: <span className="font-mono select-all">+39 351 225 5725</span>,
       copyValue: "+39 351 225 5725",
     },
     {
       num: "04",
       icon: Clock,
-      label: "Business Hours",
-      content: <>Mon – Fri: 9:00 AM – 6:00 PM<br />Sat: 10:00 AM – 2:00 PM</>,
+      label: t.contact.hoursLabel,
+      content: t.contact.hoursValue,
     },
   ];
 
@@ -143,14 +142,14 @@ export default function Contact() {
         >
           <motion.p variants={itemVariants} className="text-[10px] tracking-[0.2em] font-mono text-neutral-500 uppercase flex items-center gap-2">
             <Sparkles className="w-3.5 h-3.5" />
-            Start a Conversation
+            {t.contact.badge}
           </motion.p>
           <motion.h2 variants={itemVariants} className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-white leading-[1.08]">
-            {"Let's Build "}
-            <span className="font-light text-neutral-400 text-glow">Together.</span>
+            {t.contact.titleLine1}{" "}
+            <span className="font-light text-neutral-400 text-glow">{t.contact.titleLine2}</span>
           </motion.h2>
           <motion.p variants={itemVariants} className="text-neutral-400 text-sm leading-relaxed max-w-lg">
-            {"Have an upcoming project, system implementation, or strategy overhaul? Leave a brief description and we'll get back to you."}
+            {t.contact.subtitle}
           </motion.p>
         </motion.div>
 
@@ -171,8 +170,6 @@ export default function Contact() {
                 onClick={() => handleCardClick(copyValue, label)}
                 className={`group relative p-[1px] rounded-2xl overflow-hidden h-full ${copyValue ? "cursor-pointer" : ""}`}
               >
-                {/* Conic border beam on hover (static glow gradient instead of spinning animation) */}
-                {/* <div className="absolute inset-[-200%] bg-[conic-gradient(from_0deg,transparent_60%,#06b6d4_88%,#06b6d4_100%)] opacity-0 group-hover:opacity-20 transition-opacity duration-500" /> */}
                 <div className="relative h-full rounded-[15px] bg-neutral-950/20 group-hover:bg-neutral-950/50 border border-neutral-900 group-hover:border-neutral-800 transition-all duration-300 flex flex-col overflow-hidden">
                   {/* Top bar */}
                   <div className="flex items-center justify-between px-5 pt-4 pb-3">
@@ -180,12 +177,12 @@ export default function Contact() {
                       {copiedIndex === label ? (
                         <span className="text-cyan-400 font-bold lowercase tracking-normal flex items-center gap-1">
                           <Check className="w-3 h-3 text-cyan-400" />
-                          copied!
+                          {language === "it" ? "copiato!" : "copied!"}
                         </span>
                       ) : copyValue ? (
                         <span className="text-[8px] text-neutral-400 lowercase tracking-normal flex items-center gap-1 group-hover:text-cyan-400/80 transition-colors duration-300">
                           <Copy className="w-2.5 h-2.5" />
-                          click to copy
+                          {language === "it" ? "clicca per copiare" : "click to copy"}
                         </span>
                       ) : (
                         <span>{num} /</span>
@@ -228,18 +225,34 @@ export default function Contact() {
                       <div className="flex flex-col gap-2 text-left">
                         <label htmlFor="name" className={labelClass}>
                           <span className="w-1 h-1 rounded-full bg-cyan-500" />
-                          Full Name *
+                          {t.contact.form.name} *
                         </label>
-                        <input id="name" type="text" required value={name} onChange={(e) => setName(e.target.value)} placeholder="Lucia Santoro" className={inputClass} />
+                        <input
+                          id="name"
+                          type="text"
+                          required
+                          value={name}
+                          onChange={(e) => setName(e.target.value)}
+                          placeholder={t.contact.form.namePlaceholder}
+                          className={inputClass}
+                        />
                         {errors.name && <span className="text-[9px] font-mono text-red-500 mt-1">{errors.name}</span>}
                       </div>
                       {/* Email */}
                       <div className="flex flex-col gap-2 text-left">
                         <label htmlFor="email" className={labelClass}>
                           <span className="w-1 h-1 rounded-full bg-cyan-500" />
-                          Email Address *
+                          {t.contact.form.email} *
                         </label>
-                        <input id="email" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder="lucia@fashionhouse.it" className={inputClass} />
+                        <input
+                          id="email"
+                          type="email"
+                          required
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          placeholder={t.contact.form.emailPlaceholder}
+                          className={inputClass}
+                        />
                         {errors.email && <span className="text-[9px] font-mono text-red-500 mt-1">{errors.email}</span>}
                       </div>
                     </div>
@@ -249,30 +262,40 @@ export default function Contact() {
                       <div className="flex flex-col gap-2 text-left">
                         <label htmlFor="company" className={labelClass}>
                           <span className="w-1.5 h-1.5 border border-cyan-500/60 rounded-full" />
-                          Company Name
+                          {t.contact.form.company}
                         </label>
-                        <input id="company" type="text" value={company} onChange={(e) => setCompany(e.target.value)} placeholder="Fashion House Italia" className={inputClass} />
+                        <input
+                          id="company"
+                          type="text"
+                          value={company}
+                          onChange={(e) => setCompany(e.target.value)}
+                          placeholder={t.contact.form.companyPlaceholder}
+                          className={inputClass}
+                        />
                       </div>
                       {/* Service select */}
                       <div className="flex flex-col gap-2 text-left">
                         <label htmlFor="service" className={labelClass}>
                           <span className="w-1 h-1 rounded-full bg-cyan-500" />
-                          Service Interested In *
+                          {t.contact.form.service} *
                         </label>
                         <select
                           id="service"
                           required
                           value={service}
                           onChange={(e) => setService(e.target.value)}
-                          className={`${inputClass} bg-neutral-950/95 cursor-pointer appearance-none ${service === "" ? "!text-neutral-500" : "!text-white"
-                            }`}
+                          className={`${inputClass} bg-neutral-950/95 cursor-pointer appearance-none ${
+                            service === "" ? "!text-neutral-500" : "!text-white"
+                          }`}
                         >
-                          <option value="" className="text-neutral-500 bg-neutral-950">Select a service category</option>
-                          <option value="digital-marketing">Digital Marketing</option>
-                          <option value="web-development">Web Development</option>
-                          <option value="ai-services">AI Bot & Agent</option>
-                          <option value="social-media">Social Media Management</option>
-                          <option value="other">Other / Custom Scope</option>
+                          <option value="" className="text-neutral-500 bg-neutral-950">
+                            {t.contact.form.servicePlaceholder}
+                          </option>
+                          {t.contact.form.serviceOptions.map((opt) => (
+                            <option key={opt.value} value={opt.value}>
+                              {opt.label}
+                            </option>
+                          ))}
                         </select>
                         {errors.service && <span className="text-[9px] font-mono text-red-500 mt-1">{errors.service}</span>}
                       </div>
@@ -282,13 +305,19 @@ export default function Contact() {
                     <div className="flex flex-col gap-2 text-left">
                       <label htmlFor="message" className={labelClass}>
                         <span className="w-1 h-1 rounded-full bg-cyan-500" />
-                        Message Details *
+                        {t.contact.form.message} *
                       </label>
-                      <textarea id="message" required value={message} onChange={(e) => setMessage(e.target.value)} placeholder="Outline your project scope or objectives..." rows={5} className={inputClass + " resize-none"} />
+                      <textarea
+                        id="message"
+                        required
+                        value={message}
+                        onChange={(e) => setMessage(e.target.value)}
+                        placeholder={t.contact.form.messagePlaceholder}
+                        rows={5}
+                        className={inputClass + " resize-none"}
+                      />
                       {errors.message && <span className="text-[9px] font-mono text-red-500 mt-1">{errors.message}</span>}
                     </div>
-
-
 
                     {errors.submit && (
                       <div className="p-3 py-2.5 rounded-xl border border-red-950/50 bg-red-950/15 text-red-500 text-[10px] font-mono text-center tracking-wide leading-relaxed">
@@ -305,11 +334,11 @@ export default function Contact() {
                       {isSubmitting ? (
                         <>
                           <div className="w-3.5 h-3.5 rounded-full border border-neutral-600 border-t-neutral-200 animate-spin" />
-                          Sending...
+                          {t.contact.form.sendingBtn}
                         </>
                       ) : (
                         <>
-                          Send Inquiry
+                          {t.contact.form.submitBtn}
                           <Send className="w-3.5 h-3.5" />
                         </>
                       )}
@@ -327,16 +356,18 @@ export default function Contact() {
                       ✓
                     </div>
                     <div className="space-y-1.5">
-                      <h3 className="text-base font-bold text-white tracking-tight">Message Received</h3>
+                      <h3 className="text-base font-bold text-white tracking-tight">
+                        {t.contact.form.successTitle}
+                      </h3>
                       <p className="text-xs text-neutral-400 max-w-sm mx-auto leading-relaxed">
-                        Thank you for contacting CodeBorgo. Your query has been logged. Our Venezia team will reply via email within 12 business hours.
+                        {t.contact.form.successDesc}
                       </p>
                     </div>
                     <button
                       onClick={() => setSubmitSuccess(false)}
                       className="px-4 py-2 border border-neutral-900 bg-neutral-950 hover:text-white hover:bg-neutral-900 text-neutral-500 text-xs font-mono rounded-xl transition-colors cursor-pointer"
                     >
-                      Send Another Message
+                      {t.contact.form.sendAnotherBtn}
                     </button>
                   </motion.div>
                 )}

@@ -4,59 +4,14 @@ import { useEffect, useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, ArrowUpRight, Laptop, Bot, Share2, LineChart, ChevronDown } from "lucide-react";
 import { useRouter, usePathname } from "next/navigation";
+import { useLanguage } from "../context/LanguageContext";
 
 interface NavbarProps {
   scrollContainerRef?: React.RefObject<HTMLDivElement | null>;
 }
 
-const CORE_CAPABILITIES = [
-  {
-    id: "web-development",
-    title: "Web / App Development",
-    pricing: "One-off projects starting at €1,000+",
-    description: "High-performance Next.js websites, custom web apps & UI craftsmanship.",
-    icon: Laptop,
-    bgClass: "bg-purple-500/10 border-purple-500/25 text-purple-400 group-hover:bg-purple-500/20",
-    hoverBorder: "hover:border-purple-500/50 hover:shadow-[0_0_25px_rgba(168,85,247,0.18)]",
-  },
-  {
-    id: "ai-services",
-    title: "AI Agent Development",
-    pricing: "One-off projects starting at €1,000+",
-    description: "Autonomous AI agents, custom LLM integrations & workflow automation.",
-    icon: Bot,
-    bgClass: "bg-emerald-500/10 border-emerald-500/25 text-emerald-400 group-hover:bg-emerald-500/20",
-    hoverBorder: "hover:border-emerald-500/50 hover:shadow-[0_0_25px_rgba(16,185,129,0.18)]",
-  },
-  {
-    id: "social-media",
-    title: "Social Media Content",
-    pricing: "Monthly retainer starting at €1,000+",
-    description: "High-converting brand media, content creation & community growth.",
-    icon: Share2,
-    bgClass: "bg-amber-500/10 border-amber-500/25 text-amber-400 group-hover:bg-amber-500/20",
-    hoverBorder: "hover:border-amber-500/50 hover:shadow-[0_0_25px_rgba(245,158,11,0.18)]",
-  },
-  {
-    id: "digital-marketing",
-    title: "Performance Marketing",
-    pricing: "Monthly retainer starting at €1,000+",
-    description: "SEO optimization, targeted paid advertising & ROI tracking.",
-    icon: LineChart,
-    bgClass: "bg-blue-500/10 border-blue-500/25 text-blue-400 group-hover:bg-blue-500/20",
-    hoverBorder: "hover:border-blue-500/50 hover:shadow-[0_0_25px_rgba(59,130,246,0.18)]",
-  },
-];
-
-const navItems = [
-  { name: "Home", href: "#home" },
-  { name: "About", href: "#about" },
-  { name: "Services", href: "/services", isPage: true },
-  { name: "Portfolio", href: "/portfolio", isPage: true },
-  { name: "Pricing", href: "/pricing", isPage: true },
-];
-
 export default function Navbar({ scrollContainerRef }: NavbarProps) {
+  const { language, setLanguage, t } = useLanguage();
   const [activeSection, setActiveSection] = useState("home");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMobileServicesExpanded, setIsMobileServicesExpanded] = useState(false);
@@ -66,6 +21,53 @@ export default function Navbar({ scrollContainerRef }: NavbarProps) {
 
   const router = useRouter();
   const pathname = usePathname();
+
+  const coreCapabilities = [
+    {
+      id: "web-development",
+      title: t.nav.capabilities.webDev.title,
+      pricing: t.nav.capabilities.webDev.pricing,
+      description: t.nav.capabilities.webDev.description,
+      icon: Laptop,
+      bgClass: "bg-purple-500/10 border-purple-500/25 text-purple-400 group-hover:bg-purple-500/20",
+      hoverBorder: "hover:border-purple-500/50 hover:shadow-[0_0_25px_rgba(168,85,247,0.18)]",
+    },
+    {
+      id: "ai-services",
+      title: t.nav.capabilities.aiDev.title,
+      pricing: t.nav.capabilities.aiDev.pricing,
+      description: t.nav.capabilities.aiDev.description,
+      icon: Bot,
+      bgClass: "bg-emerald-500/10 border-emerald-500/25 text-emerald-400 group-hover:bg-emerald-500/20",
+      hoverBorder: "hover:border-emerald-500/50 hover:shadow-[0_0_25px_rgba(16,185,129,0.18)]",
+    },
+    {
+      id: "social-media",
+      title: t.nav.capabilities.socialMedia.title,
+      pricing: t.nav.capabilities.socialMedia.pricing,
+      description: t.nav.capabilities.socialMedia.description,
+      icon: Share2,
+      bgClass: "bg-amber-500/10 border-amber-500/25 text-amber-400 group-hover:bg-amber-500/20",
+      hoverBorder: "hover:border-amber-500/50 hover:shadow-[0_0_25px_rgba(245,158,11,0.18)]",
+    },
+    {
+      id: "digital-marketing",
+      title: t.nav.capabilities.perfMarketing.title,
+      pricing: t.nav.capabilities.perfMarketing.pricing,
+      description: t.nav.capabilities.perfMarketing.description,
+      icon: LineChart,
+      bgClass: "bg-blue-500/10 border-blue-500/25 text-blue-400 group-hover:bg-blue-500/20",
+      hoverBorder: "hover:border-blue-500/50 hover:shadow-[0_0_25px_rgba(59,130,246,0.18)]",
+    },
+  ];
+
+  const navItems = [
+    { id: "home", name: t.nav.home, href: "#home" },
+    { id: "about", name: t.nav.about, href: "#about" },
+    { id: "services", name: t.nav.services, href: "/services", isPage: true },
+    { id: "portfolio", name: t.nav.portfolio, href: "/portfolio", isPage: true },
+    { id: "pricing", name: t.nav.pricing, href: "/pricing", isPage: true },
+  ];
 
   const handleServicesMouseEnter = () => {
     if (hoverTimeoutRef.current) {
@@ -181,7 +183,7 @@ export default function Navbar({ scrollContainerRef }: NavbarProps) {
           {/* Logo */}
           <a
             href="/#home"
-            onClick={(e) => handleNavClick(e, { name: "Home", href: "#home" })}
+            onClick={(e) => handleNavClick(e, { name: t.nav.home, href: "#home" })}
             className="group flex flex-col cursor-pointer"
           >
             <span className="text-xl font-bold tracking-[0.2em] text-white flex items-center">
@@ -191,7 +193,7 @@ export default function Navbar({ scrollContainerRef }: NavbarProps) {
               </span>
             </span>
             <span className="text-[9px] uppercase tracking-[0.4em] text-neutral-500 font-mono mt-0.5">
-              Venezia / ITALY
+              {t.nav.logoTagline}
             </span>
           </a>
 
@@ -206,11 +208,11 @@ export default function Navbar({ scrollContainerRef }: NavbarProps) {
                 : pathname === "/"
                 ? item.href
                 : `/${item.href}`;
-              const isServices = item.name === "Services";
+              const isServices = item.id === "services";
 
               return (
                 <div
-                  key={item.name}
+                  key={item.id}
                   className="relative"
                   onMouseEnter={() => isServices && handleServicesMouseEnter()}
                   onMouseLeave={() => isServices && handleServicesMouseLeave()}
@@ -243,14 +245,42 @@ export default function Navbar({ scrollContainerRef }: NavbarProps) {
             })}
           </nav>
 
-          {/* Action CTA Button */}
-          <div className="hidden lg:flex items-center">
+          {/* Language Switcher & Action CTA Button */}
+          <div className="hidden lg:flex items-center gap-3">
+            {/* Elegant Language Switcher Pill */}
+            <div className="flex items-center p-0.5 rounded-full border border-neutral-800 bg-neutral-950/80 backdrop-blur-md shadow-inner">
+              <button
+                type="button"
+                onClick={() => setLanguage("en")}
+                className={`px-2.5 py-1 text-[11px] font-mono tracking-wider rounded-full transition-all duration-200 cursor-pointer ${
+                  language === "en"
+                    ? "bg-white text-black font-bold shadow-md"
+                    : "text-neutral-400 hover:text-white"
+                }`}
+                aria-label="Switch to English"
+              >
+                EN
+              </button>
+              <button
+                type="button"
+                onClick={() => setLanguage("it")}
+                className={`px-2.5 py-1 text-[11px] font-mono tracking-wider rounded-full transition-all duration-200 cursor-pointer ${
+                  language === "it"
+                    ? "bg-white text-black font-bold shadow-md"
+                    : "text-neutral-400 hover:text-white"
+                }`}
+                aria-label="Passa all'italiano"
+              >
+                IT
+              </button>
+            </div>
+
             <a
               href="/#contact"
-              onClick={(e) => handleNavClick(e, { name: "Contact", href: "#contact" })}
-              className="group flex items-center gap-1 px-4 py-2 border border-neutral-800 rounded-full bg-transparent text-white text-xs font-semibold uppercase tracking-wider hover:bg-white hover:text-[#050505] transition-all duration-300"
+              onClick={(e) => handleNavClick(e, { name: t.nav.contact, href: "#contact" })}
+              className="group flex items-center gap-1 px-4 py-2 border border-neutral-800 rounded-full bg-transparent text-white text-xs font-semibold uppercase tracking-wider hover:bg-white hover:text-[#050505] transition-all duration-300 cursor-pointer"
             >
-              Lets Talk
+              {t.nav.letsTalk}
               <ArrowUpRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
             </a>
           </div>
@@ -289,26 +319,26 @@ export default function Navbar({ scrollContainerRef }: NavbarProps) {
                       <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
                     </span>
                     <h3 className="text-xs font-bold tracking-[0.2em] text-white uppercase font-mono">
-                      Four Core Capabilities
+                      {t.nav.coreCapabilitiesTitle}
                     </h3>
                   </div>
 
                   <a
                     href="/services"
                     onClick={(e) => {
-                      handleNavClick(e, { name: "Services", href: "/services", isPage: true });
+                      handleNavClick(e, { name: t.nav.services, href: "/services", isPage: true });
                       setIsServicesHovered(false);
                     }}
                     className="text-xs text-neutral-400 hover:text-white font-mono flex items-center gap-1 transition-colors group/link"
                   >
-                    Explore All Capabilities{" "}
+                    {t.nav.exploreCapabilities}{" "}
                     <ArrowUpRight className="w-3.5 h-3.5 group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5 transition-transform" />
                   </a>
                 </div>
 
                 {/* 2x2 Services Grid */}
                 <div className="grid grid-cols-2 gap-4">
-                  {CORE_CAPABILITIES.map((cap) => {
+                  {coreCapabilities.map((cap) => {
                     const Icon = cap.icon;
                     return (
                       <a
@@ -427,7 +457,7 @@ export default function Navbar({ scrollContainerRef }: NavbarProps) {
                             exit={{ opacity: 0, height: 0 }}
                             className="pl-8 pr-2 grid grid-cols-1 gap-2.5 overflow-hidden"
                           >
-                            {CORE_CAPABILITIES.map((cap) => {
+                            {coreCapabilities.map((cap) => {
                               const Icon = cap.icon;
                               return (
                                 <a
@@ -464,12 +494,43 @@ export default function Navbar({ scrollContainerRef }: NavbarProps) {
                 transition={{ delay: 0.3 }}
                 className="pt-6 border-t border-neutral-900 flex flex-col space-y-4"
               >
+                {/* Mobile Language Switcher Row */}
+                <div className="flex items-center justify-between p-3 rounded-xl bg-neutral-950 border border-neutral-800">
+                  <span className="text-xs font-mono uppercase tracking-wider text-neutral-400">
+                    {language === "it" ? "Lingua del Sito" : "Website Language"}
+                  </span>
+                  <div className="flex items-center p-0.5 rounded-lg bg-neutral-900 border border-neutral-800 text-xs font-mono">
+                    <button
+                      type="button"
+                      onClick={() => setLanguage("en")}
+                      className={`px-3 py-1 rounded-md transition-all cursor-pointer ${
+                        language === "en"
+                          ? "bg-white text-black font-bold shadow-sm"
+                          : "text-neutral-400 hover:text-white"
+                      }`}
+                    >
+                      EN
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setLanguage("it")}
+                      className={`px-3 py-1 rounded-md transition-all cursor-pointer ${
+                        language === "it"
+                          ? "bg-white text-black font-bold shadow-sm"
+                          : "text-neutral-400 hover:text-white"
+                      }`}
+                    >
+                      IT
+                    </button>
+                  </div>
+                </div>
+
                 <a
                   href="/#contact"
-                  onClick={(e) => handleNavClick(e, { name: "Contact", href: "#contact" })}
-                  className="w-full text-center py-4 rounded-xl border border-neutral-800 text-white font-semibold uppercase tracking-wider text-sm hover:bg-neutral-900 transition-colors"
+                  onClick={(e) => handleNavClick(e, { name: t.nav.contact, href: "#contact" })}
+                  className="w-full text-center py-4 rounded-xl border border-neutral-800 text-white font-semibold uppercase tracking-wider text-sm hover:bg-neutral-900 transition-colors cursor-pointer"
                 >
-                  Lets Talk
+                  {t.nav.letsTalk}
                 </a>
               </motion.div>
             </div>

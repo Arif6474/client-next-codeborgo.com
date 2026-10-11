@@ -5,6 +5,7 @@ import { motion, AnimatePresence, Variants } from "framer-motion";
 import { Star, LayoutGrid } from "lucide-react";
 import Globe from "./ui/Globe";
 import { ScrollContext } from "../app/page";
+import { useLanguage } from "../context/LanguageContext";
 
 interface BgDot {
   id: number;
@@ -14,16 +15,12 @@ interface BgDot {
   duration: number;
 }
 
-const SERVICES = [
-  "Web Craftsmanship",
-  "UI/UX Architecture",
-  "Growth Systems",
-  "Brand Strategy"
-];
-
 export default function Hero() {
+  const { t } = useLanguage();
   const [serviceIndex, setServiceIndex] = useState(0);
   const scrollContainerRef = useContext(ScrollContext);
+
+  const servicesList = t.hero.rotatingServices;
 
   const [dots] = useState<BgDot[]>(() =>
     [...Array(40)].map((_, i) => ({
@@ -37,10 +34,10 @@ export default function Hero() {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setServiceIndex((prev) => (prev + 1) % SERVICES.length);
+      setServiceIndex((prev) => (prev + 1) % servicesList.length);
     }, 3000);
     return () => clearInterval(interval);
-  }, []);
+  }, [servicesList.length]);
   const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
@@ -138,7 +135,7 @@ export default function Hero() {
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-green-500"></span>
               </span>
-              <span className="text-neutral-400 uppercase tracking-widest truncate">Now accepting new projects for Q3 2026</span>
+              <span className="text-neutral-400 uppercase tracking-widest truncate">{t.hero.badge}</span>
             </div>
           </motion.div>
 
@@ -147,7 +144,7 @@ export default function Hero() {
             variants={itemVariants}
             className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-white leading-[1.08] w-full"
           >
-            Premium Digital Excellence <br />
+            {t.hero.titleLine1} <br />
             <span className="relative inline-block h-[1.15em] w-full overflow-hidden mt-1 align-bottom">
               <AnimatePresence mode="wait">
                 <motion.span
@@ -158,7 +155,7 @@ export default function Hero() {
                   transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
                   className="absolute left-0 right-0 font-semibold bg-gradient-to-r from-amber-200 via-yellow-100 to-rose-200 bg-clip-text text-transparent drop-shadow-[0_0_30px_rgba(251,191,36,0.06)] block"
                 >
-                  {SERVICES[serviceIndex]}
+                  {servicesList[serviceIndex]}
                 </motion.span>
               </AnimatePresence>
             </span>
@@ -169,7 +166,7 @@ export default function Hero() {
             variants={itemVariants}
             className="text-xs sm:text-sm md:text-base text-neutral-400 max-w-2xl leading-relaxed w-full font-normal"
           >
-            {"We're a Venice-based studio building high-performance websites, custom AI agents, and marketing systems that actually move numbers. Founder-led, senior-only, and obsessive about detail — no outsourcing, no templates."}
+            {t.hero.subtitle}
           </motion.p>
 
           {/* Action Buttons */}
@@ -187,7 +184,7 @@ export default function Hero() {
                 onClick={() => handleCtaClick("contact")}
                 className="relative px-5 py-3 bg-[#050505] hover:bg-[#050505]/95 text-white font-semibold text-xs uppercase tracking-widest rounded-[11px] flex items-center gap-2 transition-colors duration-300 z-10 cursor-pointer"
               >
-                Free Consultation
+                {t.hero.ctaConsultation}
                 <span className="text-neutral-550 group-hover:text-white group-hover:translate-x-0.5 transition-all text-xs">
                   →
                 </span>
@@ -198,7 +195,7 @@ export default function Hero() {
               onClick={() => handleCtaClick("services")}
               className="px-5 py-3 border border-neutral-900 bg-neutral-950/40 text-neutral-400 hover:text-white font-semibold text-xs uppercase tracking-widest rounded-xl hover:bg-neutral-900/20 hover:border-neutral-850 transition-all duration-300 cursor-pointer"
             >
-              Services
+              {t.hero.ctaServices}
             </button>
           </motion.div>
         </motion.div>
@@ -329,7 +326,7 @@ export default function Hero() {
             className="group flex items-center gap-2 px-4 py-2 border border-neutral-900 bg-neutral-950/40 text-neutral-400 hover:text-white text-[10px] font-mono tracking-wider uppercase rounded-xl hover:bg-neutral-900/20 hover:border-neutral-850 transition-all duration-300"
           >
             <LayoutGrid className="w-3.5 h-3.5" />
-            Our Projects
+            {t.hero.ourProjects}
           </button>
         </div>
       </div>

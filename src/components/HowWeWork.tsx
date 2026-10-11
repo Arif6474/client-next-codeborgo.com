@@ -4,90 +4,62 @@ import { useState, useEffect, useContext } from "react";
 import { motion, AnimatePresence, Variants } from "framer-motion";
 import { Sparkles, Search, Layers, Code, CheckCircle2, ArrowRight } from "lucide-react";
 import { ScrollContext } from "../app/page";
+import { useLanguage } from "../context/LanguageContext";
 
-interface StepItem {
-  num: string;
-  title: string;
-  shortDesc: string;
-  desc: string;
-  icon: any;
-  color: string;
-  bgClass: string;
-  borderClass: string;
-  accentDot: string;
-  details: string[];
-}
-
-const STEPS: StepItem[] = [
+const STEP_ICONS = [Search, Layers, Code, CheckCircle2];
+const STEP_STYLES = [
   {
-    num: "01",
-    title: "Discovery & Alignment",
-    shortDesc: "Milestone roadmap & scope spec",
-    desc: "We schedule a deep-dive technical alignment call to outline your brand goals, system architecture, and target KPIs. We convert project constraints into a detailed milestone roadmap with a fixed-scope contract.",
-    icon: Search,
     color: "text-cyan-400",
     bgClass: "bg-cyan-500/10",
     borderClass: "border-cyan-500/30",
     accentDot: "bg-cyan-400",
-    details: ["Requirements gathering", "Technical specification", "Fixed-scope quote & SLA"],
   },
   {
-    num: "02",
-    title: "UX & Figma Interface Design",
-    shortDesc: "Responsive prototypes & design tokens",
-    desc: "We build fully responsive UX wireframes and high-fidelity mockups inside Figma. You get to interact with responsive flow prototypes and refine visual spacing before any front-end code is written.",
-    icon: Layers,
     color: "text-purple-400",
     bgClass: "bg-purple-500/10",
     borderClass: "border-purple-500/30",
     accentDot: "bg-purple-400",
-    details: ["Visual identity design", "Interactive Figma prototype", "Motion behavior specs"],
   },
   {
-    num: "03",
-    title: "Full-Stack Development",
-    shortDesc: "Next.js 16 & TypeScript codebase",
-    desc: "We compile your designs into clean, performance-optimized Next.js 16 structures. You track development progress in real-time through a private Vercel staging deployment link with automated staging checks.",
-    icon: Code,
     color: "text-emerald-400",
     bgClass: "bg-emerald-500/10",
     borderClass: "border-emerald-500/30",
     accentDot: "bg-emerald-400",
-    details: ["Next.js 16 (App Router)", "TypeScript codebase", "Milestone staging preview URLs"],
   },
   {
-    num: "04",
-    title: "Testing, Launch & Support",
-    shortDesc: "DNS routing & 30-day SLA support",
-    desc: "We perform multi-device cross-browser testing, configure production DNS routing, and finalize search console maps indexing. We hand over code keys and provide a 30-day post-launch support package.",
-    icon: CheckCircle2,
     color: "text-amber-400",
     bgClass: "bg-amber-500/10",
     borderClass: "border-amber-500/30",
     accentDot: "bg-amber-400",
-    details: ["Domain & DNS routing", "Performance & SEO checks", "30-day support SLA"],
   },
 ];
 
 export default function HowWeWork() {
+  const { t } = useLanguage();
   const scrollContainerRef = useContext(ScrollContext);
   const [activeIdx, setActiveIdx] = useState(0);
   const [isAutoPlay, setIsAutoPlay] = useState(true);
 
+  const steps = t.howWeWork.steps.map((st, i) => ({
+    ...st,
+    icon: STEP_ICONS[i] || Search,
+    ...STEP_STYLES[i],
+  }));
+
   useEffect(() => {
     if (!isAutoPlay) return;
     const interval = setInterval(() => {
-      setActiveIdx((prev) => (prev + 1) % STEPS.length);
+      setActiveIdx((prev) => (prev + 1) % steps.length);
     }, 7000);
     return () => clearInterval(interval);
-  }, [isAutoPlay]);
+  }, [isAutoPlay, steps.length]);
 
   const handleStepClick = (idx: number) => {
     setActiveIdx(idx);
     setIsAutoPlay(false);
   };
 
-  const currentStep = STEPS[activeIdx];
+  const currentStep = steps[activeIdx] || steps[0];
 
   const headerContainerVariants: Variants = {
     hidden: { opacity: 0 },
@@ -140,19 +112,19 @@ export default function HowWeWork() {
             className="text-[10px] tracking-[0.2em] font-mono text-cyan-400 uppercase flex items-center gap-2"
           >
             <Sparkles className="w-3.5 h-3.5 text-cyan-400 animate-pulse" />
-            Our Delivery Engine
+            {t.howWeWork.badge}
           </motion.p>
           <motion.h2
             variants={itemVariants}
             className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-white leading-[1.08]"
           >
-            How We <span className="font-light text-neutral-400">Work.</span>
+            {t.howWeWork.titleLine1} <span className="font-light text-neutral-400">{t.howWeWork.titleLine2}</span>
           </motion.h2>
           <motion.p
             variants={itemVariants}
             className="text-neutral-500 text-sm leading-relaxed max-w-lg"
           >
-            A reliable, four-step framework built on clear specifications and fixed deliverables.
+            {t.howWeWork.subtitle}
           </motion.p>
         </motion.div>
 
@@ -170,10 +142,10 @@ export default function HowWeWork() {
             <div className="absolute left-[34px] top-6 bottom-6 w-[2px] bg-neutral-900 z-0 hidden sm:block" />
             <div
               className="absolute left-[34px] top-6 w-[2px] bg-gradient-to-b from-cyan-400 via-purple-400 to-amber-400 transition-all duration-500 z-0 hidden sm:block"
-              style={{ height: `${(activeIdx / (STEPS.length - 1)) * 82}%` }}
+              style={{ height: `${(activeIdx / (steps.length - 1)) * 82}%` }}
             />
 
-            {STEPS.map((step, idx) => {
+            {steps.map((step, idx) => {
               const isActive = activeIdx === idx;
               const Icon = step.icon;
 

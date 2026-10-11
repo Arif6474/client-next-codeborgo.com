@@ -4,6 +4,7 @@ import { useState, useEffect, useContext } from "react";
 import Link from "next/link";
 import { motion, Variants, AnimatePresence } from "framer-motion";
 import { ScrollContext } from "../app/page";
+import { useLanguage } from "../context/LanguageContext";
 import {
   LineChart,
   Laptop,
@@ -291,6 +292,7 @@ const servicesList = [
 ];
 
 export default function Services() {
+  const { t, language } = useLanguage();
   const [selectedService, setSelectedService] = useState<ServiceDetail | null>(null);
   const [hoveredServiceId, setHoveredServiceId] = useState<string | null>(null);
   const scrollContainerRef = useContext(ScrollContext);
@@ -379,22 +381,22 @@ export default function Services() {
             className="text-[10px] tracking-[0.2em] font-mono text-neutral-500 uppercase flex items-center gap-2"
           >
             <Sparkles className="w-3.5 h-3.5" />
-            What We Deliver
+            {t.services.badge}
           </motion.p>
 
           <motion.h2
             variants={itemVariants}
             className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-white leading-[1.08]"
           >
-            Our{" "}
-            <span className="font-light text-neutral-400">Services</span>
+            {t.services.titleLine1}{" "}
+            <span className="font-light text-neutral-400">{t.services.titleLine2}</span>
           </motion.h2>
 
           <motion.p
             variants={itemVariants}
             className="text-neutral-500 text-sm leading-relaxed max-w-lg"
           >
-            Tailored digital craftsmanship — click any card to explore deliverables and specs.
+            {t.services.subtitle}
           </motion.p>
         </motion.div>
 
@@ -412,6 +414,9 @@ export default function Services() {
             const theme = serviceThemes[svc.id] || serviceThemes["digital-marketing"];
             const isHovered = hoveredServiceId === svc.id;
             const isDimmed = hoveredServiceId !== null && !isHovered;
+            const svcTranslation = t.services.items[svc.id];
+            const title = svcTranslation?.title || svc.name;
+            const desc = svcTranslation?.tagline || svc.desc;
 
             return (
               <motion.div
@@ -457,10 +462,10 @@ export default function Services() {
                 {/* Bottom Row: Title + Subtitle */}
                 <div className="relative z-10 mt-auto">
                   <h3 className="text-xl font-bold font-mono tracking-tight text-white mb-1.5 group-hover:text-glow transition-colors">
-                    {svc.name}
+                    {title}
                   </h3>
                   <p className="text-xs text-[#8a99ad] font-mono leading-relaxed group-hover:text-neutral-300 transition-colors">
-                    {svc.desc}
+                    {desc}
                   </p>
                 </div>
               </motion.div>
@@ -514,10 +519,10 @@ export default function Services() {
                       {/* Bottom Row */}
                       <div className="mt-auto">
                         <h3 className="text-lg font-bold font-mono tracking-tight text-white mb-1">
-                          {svc.name}
+                          {t.services.items[svc.id]?.title || svc.name}
                         </h3>
                         <p className="text-xs text-[#8a99ad] font-mono leading-relaxed">
-                          {svc.desc}
+                          {t.services.items[svc.id]?.tagline || svc.desc}
                         </p>
                       </div>
                     </div>
@@ -554,64 +559,69 @@ export default function Services() {
             data-cursor-text="SERVICES"
             className="group relative inline-flex items-center gap-3 px-8 py-4 rounded-2xl border border-neutral-700 bg-neutral-900/90 hover:bg-neutral-800 text-white font-mono text-xs uppercase tracking-widest font-bold transition-all duration-300 shadow-xl hover:border-amber-300/50 hover:shadow-[0_0_35px_rgba(251,191,36,0.15)] cursor-pointer"
           >
-            <span>Explore All Capabilities & Modules</span>
+            <span>{t.services.allCapabilitiesBtn}</span>
             <ArrowRight className="w-4 h-4 text-amber-300 group-hover:translate-x-1 transition-transform" />
           </Link>
         </div>
       </div>
 
       {/* Detail Modal */}
-      <Modal
-        isOpen={selectedService !== null}
-        onClose={() => setSelectedService(null)}
-        title={selectedService?.title}
-        subtitle={selectedService?.tagline}
-      >
-        {selectedService && (
-          <div className="space-y-6">
-            <p className="text-sm text-neutral-400 leading-relaxed font-mono">
-              {selectedService.description}
-            </p>
+      {(() => {
+        const modalData = selectedService ? (t.services.items[selectedService.id] || selectedService) : null;
+        return (
+          <Modal
+            isOpen={selectedService !== null}
+            onClose={() => setSelectedService(null)}
+            title={modalData?.title}
+            subtitle={modalData?.tagline}
+          >
+            {modalData && (
+              <div className="space-y-6">
+                <p className="text-sm text-neutral-400 leading-relaxed font-mono">
+                  {modalData.description}
+                </p>
 
-            <div className="border-t border-neutral-900 pt-5">
-              <h4 className="text-xs font-mono font-bold tracking-widest text-neutral-500 uppercase mb-4">
-                WHAT IS INCLUDED
-              </h4>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {selectedService.subServices.map((sub, idx) => (
-                  <div
-                    key={idx}
-                    className="p-4 rounded-xl border border-neutral-900 bg-neutral-950/40 text-left flex flex-col justify-between"
-                  >
-                    <div>
-                      <div className="flex items-center gap-2 mb-2 text-white">
-                        <CheckCircle className="w-3.5 h-3.5 text-neutral-400 shrink-0" />
-                        <h5 className="text-xs font-bold font-mono tracking-tight">{sub.title}</h5>
+                <div className="border-t border-neutral-900 pt-5">
+                  <h4 className="text-xs font-mono font-bold tracking-widest text-neutral-500 uppercase mb-4">
+                    {language === "it" ? "COSA È INCLUSO" : "WHAT IS INCLUDED"}
+                  </h4>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {modalData.subServices.map((sub, idx) => (
+                      <div
+                        key={idx}
+                        className="p-4 rounded-xl border border-neutral-900 bg-neutral-950/40 text-left flex flex-col justify-between"
+                      >
+                        <div>
+                          <div className="flex items-center gap-2 mb-2 text-white">
+                            <CheckCircle className="w-3.5 h-3.5 text-neutral-400 shrink-0" />
+                            <h5 className="text-xs font-bold font-mono tracking-tight">{sub.title}</h5>
+                          </div>
+                          <p className="text-[11px] text-neutral-500 leading-relaxed font-mono">{sub.desc}</p>
+                        </div>
                       </div>
-                      <p className="text-[11px] text-neutral-500 leading-relaxed font-mono">{sub.desc}</p>
-                    </div>
+                    ))}
                   </div>
-                ))}
-              </div>
-            </div>
+                </div>
 
-            <div className="border-t border-neutral-900 pt-5 text-left">
-              <p className="text-xs text-neutral-400 leading-relaxed font-mono">
-                {selectedService.ctaText}
-              </p>
-              <button
-                onClick={() => {
-                  setSelectedService(null);
-                  document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
-                }}
-                className="mt-4 px-5 py-2.5 bg-white text-[#050505] hover:bg-neutral-200 transition-colors text-xs font-mono font-bold uppercase tracking-wider rounded-lg shadow-md cursor-pointer"
-              >
-                Inquire About Service
-              </button>
-            </div>
-          </div>
-        )}
-      </Modal>
+                <div className="border-t border-neutral-900 pt-5 text-left">
+                  <p className="text-xs text-neutral-400 leading-relaxed font-mono">
+                    {modalData.ctaText}
+                  </p>
+                  <button
+                    onClick={() => {
+                      setSelectedService(null);
+                      document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
+                    }}
+                    className="mt-4 px-5 py-2.5 bg-white text-[#050505] hover:bg-neutral-200 transition-colors text-xs font-mono font-bold uppercase tracking-wider rounded-lg shadow-md cursor-pointer"
+                  >
+                    {language === "it" ? "Richiedi Informazioni" : "Inquire About Service"}
+                  </button>
+                </div>
+              </div>
+            )}
+          </Modal>
+        );
+      })()}
     </section>
   );
 }

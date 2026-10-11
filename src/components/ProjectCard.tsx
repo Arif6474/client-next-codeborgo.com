@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { ExternalLink } from "lucide-react";
 import { PortfolioItem } from "../data/portfolioData";
+import { useLanguage } from "../context/LanguageContext";
 
 interface ProjectCardProps {
   project: PortfolioItem;
@@ -17,11 +18,14 @@ export default function ProjectCard({
   hoveredId,
   onHover,
 }: ProjectCardProps) {
+  const { t } = useLanguage();
   const Icon = project.icon;
 
   const isAnyHovered = hoveredId !== null && hoveredId !== undefined;
   const isHovered = hoveredId === project.id;
   const isDimmed = isAnyHovered && !isHovered;
+
+  const localizedDescription = t.portfolio.projectDescriptions[project.id] || project.description;
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const { currentTarget, clientX, clientY } = e;
@@ -95,7 +99,7 @@ export default function ProjectCard({
               {project.title}
             </h3>
             <p className="text-xs text-neutral-400 leading-relaxed font-normal">
-              {project.description}
+              {localizedDescription}
             </p>
           </div>
 
@@ -110,12 +114,12 @@ export default function ProjectCard({
               >
                 <span className="relative z-10 flex items-center gap-2">
                   <ExternalLink className="w-3.5 h-3.5 transition-transform duration-300 group-hover/btn:-translate-y-0.5 group-hover/btn:translate-x-0.5" />
-                  Visit Live Project
+                  {t.portfolio.visitLive}
                 </span>
               </a>
             ) : (
               <div className="h-[42px] w-full border border-dashed border-neutral-800 rounded-xl flex items-center justify-center">
-                <span className="text-[10px] font-mono text-neutral-500 uppercase tracking-widest">Concept Demo / In Build</span>
+                <span className="text-[10px] font-mono text-neutral-500 uppercase tracking-widest">{t.portfolio.conceptBuild}</span>
               </div>
             )}
           </div>

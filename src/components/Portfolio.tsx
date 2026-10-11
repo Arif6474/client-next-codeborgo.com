@@ -7,8 +7,10 @@ import { Sparkles, ArrowRight } from "lucide-react";
 import { ScrollContext } from "../app/page";
 import { portfolioList } from "../data/portfolioData";
 import ProjectCard from "./ProjectCard";
+import { useLanguage } from "../context/LanguageContext";
 
 export default function Portfolio() {
+  const { t } = useLanguage();
   const scrollContainerRef = useContext(ScrollContext);
   const displayedProjects = portfolioList.slice(0, 6);
   const [hoveredProjectId, setHoveredProjectId] = useState<string | null>(null);
@@ -47,16 +49,16 @@ export default function Portfolio() {
         >
           <motion.div variants={itemVariants} className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-neutral-800 bg-neutral-950/80 text-xs font-mono tracking-widest text-neutral-400 uppercase">
             <Sparkles className="w-3.5 h-3.5 text-amber-300" />
-            Editorial Case Studies
+            {t.portfolio.badge}
           </motion.div>
 
           <motion.h2
             variants={itemVariants}
             className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight text-white leading-tight uppercase"
           >
-            FEATURED <br />
+            {t.portfolio.titleLine1} <br />
             <span className="bg-gradient-to-r from-amber-200 via-neutral-200 to-white bg-clip-text text-transparent">
-              CASE STUDIES.
+              {t.portfolio.titleLine2}
             </span>
           </motion.h2>
 
@@ -64,7 +66,7 @@ export default function Portfolio() {
             variants={itemVariants}
             className="text-sm md:text-base text-neutral-400 leading-relaxed font-normal"
           >
-            A curated selection of client platforms and engineering concept builds demonstrating our technical range across web, commerce, AI systems, and luxury brand digital architecture.
+            {t.portfolio.subtitle}
           </motion.p>
         </motion.div>
 
@@ -95,7 +97,7 @@ export default function Portfolio() {
             data-cursor-text="ALL WORK"
             className="group relative inline-flex items-center gap-3 px-8 py-4 rounded-2xl border border-neutral-700 bg-neutral-900/90 hover:bg-neutral-800 text-white font-mono text-xs uppercase tracking-widest font-bold transition-all duration-300 shadow-xl hover:border-amber-300/50 hover:shadow-[0_0_35px_rgba(251,191,36,0.15)] cursor-pointer"
           >
-            <span>View All Projects ({portfolioList.length})</span>
+            <span>{t.portfolio.viewAllBtn} ({portfolioList.length})</span>
             <ArrowRight className="w-4 h-4 text-amber-300 group-hover:translate-x-1 transition-transform" />
           </Link>
         </div>

@@ -7,6 +7,7 @@ import { motion, Variants } from "framer-motion";
 import { Sparkles, Check, ArrowRight } from "lucide-react";
 import Modal from "./ui/Modal";
 import { ScrollContext } from "../app/page";
+import { useLanguage } from "../context/LanguageContext";
 
 interface Package {
   id: string;
@@ -18,60 +19,41 @@ interface Package {
   isPopular?: boolean;
 }
 
-const packages: Package[] = [
-  {
-    id: "studio-standard",
-    badge: "ESSENTIAL MVP",
-    name: "Studio MVP Launch",
-    price: 1250,
-    desc: "Complete aesthetic storefronts & custom web architectures.",
-    features: [
-      "Custom Next.js & React Frontend",
-      "Figma Design & Wireframing",
-      "SEO Infrastructure & Web Vitals Audit",
-      "Full Mobile & Tablet Responsive",
-      "30-Day Post-Launch Support SLA"
-    ],
-  },
-  {
-    id: "Venezia-premium",
-    badge: "SCALE & GROWTH",
-    name: "Venezia Signature",
-    price: 2500,
-    desc: "Bespoke digital architectures & custom AI agent automations.",
-    features: [
-      "Everything in Studio MVP",
-      "Custom AI Agent & Chatbot Setup",
-      "Interactive Animations & Kinetic Layouts",
-      "Headless E-Commerce & CMS Setup",
-      "CI/CD Pipeline & Cloud Deployment",
-      "90-Day Post-Launch Support SLA"
-    ],
-    isPopular: true,
-  },
-  {
-    id: "enterprise-suite",
-    badge: "ENTERPRISE ECOSYSTEM",
-    name: "Enterprise Architecture",
-    price: "5,000+",
-    desc: "Full digital engineering partner for ambitious global products.",
-    features: [
-      "Unlimited Multi-Tenant SaaS Codebase",
-      "Custom LLM Fine-Tuning Workflows",
-      "Advanced BI & Visual Dashboards",
-      "Dedicated DevOps Cloud Infrastructure",
-      "Regular Security & Vulnerability Audits",
-      "12 Months Dedicated SLA Support"
-    ],
-  },
-];
-
 export default function Pricing() {
+  const { t, language } = useLanguage();
   const router = useRouter();
   const [selectedPack, setSelectedPack] = useState<Package | null>(null);
   const [hoveredId, setHoveredId] = useState<string | null>("Venezia-premium");
   const [paymentState, setPaymentState] = useState<"idle" | "processing" | "success">("idle");
   const scrollContainerRef = useContext(ScrollContext);
+
+  const packages: Package[] = [
+    {
+      id: "studio-standard",
+      badge: t.pricing.packages.studio.badge,
+      name: t.pricing.packages.studio.name,
+      price: 1500,
+      desc: t.pricing.packages.studio.desc,
+      features: t.pricing.packages.studio.features,
+    },
+    {
+      id: "Venezia-premium",
+      badge: t.pricing.packages.venezia.badge,
+      name: t.pricing.packages.venezia.name,
+      price: 2500,
+      desc: t.pricing.packages.venezia.desc,
+      features: t.pricing.packages.venezia.features,
+      isPopular: true,
+    },
+    {
+      id: "enterprise-suite",
+      badge: t.pricing.packages.enterprise.badge,
+      name: t.pricing.packages.enterprise.name,
+      price: language === "it" ? "5.000+" : "5,000+",
+      desc: t.pricing.packages.enterprise.desc,
+      features: t.pricing.packages.enterprise.features,
+    },
+  ];
 
   const [dots] = useState<{ id: number; size: number; x: number; y: number; duration: number }[]>(() =>
     [...Array(12)].map((_, i) => ({
@@ -207,16 +189,16 @@ export default function Pricing() {
         >
           <motion.div variants={itemVariants} className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-neutral-800 bg-neutral-950/80 text-xs font-mono tracking-widest text-neutral-400 uppercase">
             <Sparkles className="w-3.5 h-3.5 text-amber-300" />
-            Interactive Pricing Panels
+            {t.pricing.badge}
           </motion.div>
 
           <motion.h2
             variants={itemVariants}
             className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight text-white leading-tight uppercase"
           >
-            TRANSPARENT <br />
+            {t.pricing.titleLine1} <br />
             <span className="bg-gradient-to-r from-cyan-200 via-white to-amber-200 bg-clip-text text-transparent">
-              INVESTMENT SCOPE.
+              {t.pricing.titleLine2}
             </span>
           </motion.h2>
 
@@ -224,7 +206,7 @@ export default function Pricing() {
             variants={itemVariants}
             className="text-sm md:text-base text-neutral-400 leading-relaxed font-normal"
           >
-            Fixed pricing with zero surprise invoices. Select or hover a package panel to view deliverables.
+            {t.pricing.subtitle}
           </motion.p>
         </motion.div>
 
@@ -259,7 +241,7 @@ export default function Pricing() {
               >
                 {isPopular && (
                   <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-3.5 py-1 rounded-full border border-amber-300/40 bg-amber-400/10 backdrop-blur-md text-[10px] font-mono font-bold tracking-widest text-amber-300 uppercase">
-                    ★ Recommended
+                    {t.pricing.recommendedBadge}
                   </div>
                 )}
 
@@ -280,7 +262,9 @@ export default function Pricing() {
                       {typeof pack.price === "number" ? `€${pack.price.toLocaleString()}` : `€${pack.price}`}
                     </span>
                     {typeof pack.price === "number" && (
-                      <span className="text-[10px] font-mono text-neutral-400">/ fixed scope</span>
+                      <span className="text-[10px] font-mono text-neutral-400">
+                        / {t.pricing.fixedScopeNotice}
+                      </span>
                     )}
                   </div>
 
@@ -303,7 +287,11 @@ export default function Pricing() {
                         : "border border-neutral-800 bg-neutral-900 text-neutral-300 hover:text-white"
                     }`}
                   >
-                    <span>{pack.id === "enterprise-suite" ? "Book Enterprise Consultation" : "Choose Package"}</span>
+                    <span>
+                      {pack.id === "enterprise-suite"
+                        ? (language === "it" ? "Richiedi Consulenza Enterprise" : "Book Enterprise Consultation")
+                        : (language === "it" ? "Scegli Pacchetto" : "Choose Package")}
+                    </span>
                     <ArrowRight className="w-3.5 h-3.5" />
                   </button>
                 </div>
@@ -319,7 +307,7 @@ export default function Pricing() {
             data-cursor-text="PRICING"
             className="group relative inline-flex items-center gap-3 px-8 py-4 rounded-2xl border border-neutral-700 bg-neutral-900/90 hover:bg-neutral-800 text-white font-mono text-xs uppercase tracking-widest font-bold transition-all duration-300 shadow-xl hover:border-amber-300/50 hover:shadow-[0_0_35px_rgba(251,191,36,0.15)] cursor-pointer"
           >
-            <span>View Full Deliverables & Comparison</span>
+            <span>{language === "it" ? "Visualizza Tutti i Servizi & Confronto" : "View Full Deliverables & Comparison"}</span>
             <ArrowRight className="w-4 h-4 text-amber-300 group-hover:translate-x-1 transition-transform" />
           </Link>
         </div>

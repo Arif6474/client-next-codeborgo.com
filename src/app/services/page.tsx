@@ -29,6 +29,7 @@ import Footer from "../../components/Footer";
 import CustomCursor from "../../components/ui/CustomCursor";
 import NoiseBg from "../../components/ui/NoiseBg";
 import Modal from "../../components/ui/Modal";
+import { useLanguage } from "../../context/LanguageContext";
 
 interface SubService {
   title: string;
@@ -299,10 +300,19 @@ const workflowSteps = [
 ];
 
 export default function ServicesPage() {
+  const { t, language } = useLanguage();
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
   const [hoveredServiceId, setHoveredServiceId] = useState<string | null>(null);
   const [modalService, setModalService] = useState<ServiceItem | null>(null);
+
+  const categoryLabels: Record<string, string> = {
+    All: t.services.categories.all,
+    "Web & Apps": t.services.categories.webApps,
+    "AI & Systems": t.services.categories.aiSystems,
+    "Cloud & SaaS": t.services.categories.cloudSaas,
+    "Growth & Strategy": t.services.categories.growthStrategy,
+  };
 
   const filteredServices = allServices.filter((svc) => {
     const matchesCategory =
@@ -339,18 +349,21 @@ export default function ServicesPage() {
       <section className="relative px-6 md:px-12 pt-14 pb-14 z-10 max-w-7xl mx-auto text-center space-y-6">
         <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full border border-neutral-800 bg-neutral-950/80 text-xs font-mono tracking-widest text-neutral-400 uppercase">
           <Sparkles className="w-3.5 h-3.5 text-amber-300" />
-          Engineering & Creative Capabilities
+          {language === "it" ? "Competenze Ingegneristiche & Creative" : "Engineering & Creative Capabilities"}
         </div>
 
         <h1 className="text-4xl sm:text-6xl md:text-7xl font-black tracking-tight text-white uppercase font-sans">
-          FULL-CYCLE SERVICES & <br />
+          {language === "it" ? "SERVIZI A CICLO COMPLETO & " : "FULL-CYCLE SERVICES & "}
+          <br />
           <span className="bg-gradient-to-r from-amber-200 via-white to-cyan-300 bg-clip-text text-transparent">
-            TECHNICAL ARCHITECTURES.
+            {language === "it" ? "ARCHITETTURE TECNICHE." : "TECHNICAL ARCHITECTURES."}
           </span>
         </h1>
 
         <p className="text-sm md:text-base text-neutral-400 max-w-2xl mx-auto leading-relaxed">
-          From headless Next.js platforms and autonomous AI agents to enterprise multi-tenant cloud software. Tailored digital craftsmanship engineered in Venice for ambitious global products.
+          {language === "it"
+            ? "Da piattaforme headless Next.js e agenti IA autonomi a software cloud enterprise multi-tenant. Artigianato digitale ingegnerizzato a Venezia per prodotti ambiziosi nel mondo."
+            : "From headless Next.js platforms and autonomous AI agents to enterprise multi-tenant cloud software. Tailored digital craftsmanship engineered in Venice for ambitious global products."}
         </p>
 
         {/* Search & Category Filter */}
@@ -362,7 +375,11 @@ export default function ServicesPage() {
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search by capability, tool (e.g. Next.js, Claude, Shopify)..."
+              placeholder={
+                language === "it"
+                  ? "Cerca per competenza, strumento (es. Next.js, Claude, Shopify)..."
+                  : "Search by capability, tool (e.g. Next.js, Claude, Shopify)..."
+              }
               className="w-full pl-11 pr-4 py-3 text-xs font-mono rounded-xl border border-neutral-800 bg-neutral-950/80 text-white placeholder-neutral-500 focus:outline-none focus:border-neutral-700 transition-colors"
             />
           </div>
@@ -379,7 +396,7 @@ export default function ServicesPage() {
                     : "bg-neutral-900/60 border border-neutral-800 text-neutral-400 hover:text-white hover:border-neutral-700"
                 }`}
               >
-                {cat}
+                {categoryLabels[cat] || cat}
               </button>
             ))}
           </div>
@@ -392,6 +409,11 @@ export default function ServicesPage() {
           {filteredServices.map((svc) => {
             const Icon = svc.icon;
             const isHovered = hoveredServiceId === svc.id;
+            const svcTrans = t.services.items[svc.id];
+            const title = svcTrans?.title || svc.name;
+            const tagline = svcTrans?.tagline || svc.tagline;
+            const description = svcTrans?.description || svc.description;
+            const subServices = svcTrans?.subServices || svc.subServices;
 
             return (
               <div
@@ -427,26 +449,26 @@ export default function ServicesPage() {
                       <Icon className={`w-6 h-6 ${svc.iconColorClass}`} />
                     </div>
                     <span className="text-[9px] font-mono tracking-widest text-neutral-400 uppercase border border-neutral-800 bg-black/40 px-2.5 py-1 rounded-full">
-                      {svc.category}
+                      {categoryLabels[svc.category] || svc.category}
                     </span>
                   </div>
 
                   {/* Title & Tagline */}
                   <div>
                     <h3 className="text-xl font-bold text-white tracking-tight group-hover:text-amber-200 transition-colors">
-                      {svc.name}
+                      {title}
                     </h3>
                     <p className="text-[11px] font-mono text-neutral-400 mt-1">
-                      {svc.tagline}
+                      {tagline}
                     </p>
                     <p className="text-xs text-neutral-400 mt-3 leading-relaxed font-normal">
-                      {svc.description}
+                      {description}
                     </p>
                   </div>
 
                   {/* Subservices List */}
                   <div className="pt-4 border-t border-neutral-800/80 space-y-2.5">
-                    {svc.subServices.slice(0, 3).map((sub) => (
+                    {subServices.slice(0, 3).map((sub) => (
                       <div key={sub.title} className="flex items-start gap-2 text-xs text-neutral-300">
                         <Check className="w-3.5 h-3.5 text-amber-300 shrink-0 mt-0.5" />
                         <div>
@@ -473,7 +495,7 @@ export default function ServicesPage() {
                 {/* Bottom Action */}
                 <div className="pt-6 relative z-10 mt-auto">
                   <div className="w-full py-3 px-4 rounded-xl border border-neutral-800 bg-neutral-900/60 group-hover:bg-white group-hover:text-black group-hover:border-white transition-all duration-300 flex items-center justify-between font-mono text-xs uppercase tracking-wider font-semibold">
-                    <span>Explore Specifications</span>
+                    <span>{language === "it" ? "Esplora Specifiche" : "Explore Specifications"}</span>
                     <ArrowUpRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                   </div>
                 </div>
@@ -487,28 +509,28 @@ export default function ServicesPage() {
       <section className="relative px-6 md:px-12 py-20 z-10 max-w-6xl mx-auto border-t border-neutral-900">
         <div className="text-center max-w-2xl mx-auto mb-16 space-y-3">
           <span className="text-xs font-mono uppercase tracking-widest text-amber-300">
-            HOW WE BUILD
+            {t.howWeWork.badge}
           </span>
           <h2 className="text-3xl sm:text-4xl font-black uppercase text-white tracking-tight">
-            OUR 4-STAGE DELIVERY PROCESS
+            {language === "it" ? "IL NOSTRO PROCESSO DI RILASCIO IN 4 FASI" : "OUR 4-STAGE DELIVERY PROCESS"}
           </h2>
           <p className="text-xs sm:text-sm text-neutral-400">
-            From technical intake to global edge launch, each sprint is engineered for rapid iteration and zero downtime.
+            {t.howWeWork.subtitle}
           </p>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {workflowSteps.map((step) => (
+          {t.howWeWork.steps.map((step, idx) => (
             <div
-              key={step.number}
+              key={step.num}
               className="p-6 rounded-2xl border border-neutral-800 bg-neutral-950/60 backdrop-blur-md flex flex-col justify-between space-y-4 relative group hover:border-neutral-700 transition-colors"
             >
               <div className="flex justify-between items-start">
                 <span className="text-2xl font-black font-mono text-white/20 group-hover:text-amber-300/40 transition-colors">
-                  {step.number}
+                  {step.num}
                 </span>
                 <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-neutral-900 border border-neutral-800 text-neutral-400">
-                  {step.time}
+                  {workflowSteps[idx]?.time || `Phase ${step.num}`}
                 </span>
               </div>
               <div className="space-y-2">
@@ -526,10 +548,12 @@ export default function ServicesPage() {
           <div className="absolute top-0 right-0 w-80 h-80 bg-amber-400/5 blur-[100px] pointer-events-none" />
 
           <h3 className="text-2xl sm:text-4xl font-black uppercase tracking-tight text-white">
-            READY TO ARCHITECT YOUR PROJECT?
+            {language === "it" ? "PRONTO A PROGETTARE IL TUO PROGETTO?" : "READY TO ARCHITECT YOUR PROJECT?"}
           </h3>
           <p className="text-xs sm:text-sm text-neutral-400 max-w-xl mx-auto leading-relaxed">
-            Discuss your requirements with our lead engineers. We provide an initial technical audit and fixed proposal within 48 hours.
+            {language === "it"
+              ? "Discuti i tuoi requisiti con i nostri lead engineer. Forniamo un audit tecnico iniziale e una proposta a perimetro fisso entro 48 ore."
+              : "Discuss your requirements with our lead engineers. We provide an initial technical audit and fixed proposal within 48 hours."}
           </p>
 
           <div className="flex flex-wrap items-center justify-center gap-4 pt-2">
@@ -538,7 +562,7 @@ export default function ServicesPage() {
               data-cursor-text="CONTACT"
               className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl bg-white text-black hover:bg-neutral-200 font-mono text-xs uppercase tracking-wider font-bold transition-all shadow-xl hover:scale-105"
             >
-              <span>Initiate Discovery Call</span>
+              <span>{language === "it" ? "Prenota Chiamata Conoscitiva" : "Initiate Discovery Call"}</span>
               <ArrowUpRight className="w-4 h-4" />
             </Link>
             <Link
@@ -546,7 +570,7 @@ export default function ServicesPage() {
               data-cursor-text="PRICING"
               className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl border border-neutral-800 bg-neutral-900 hover:bg-neutral-800 text-white font-mono text-xs uppercase tracking-wider font-bold transition-all"
             >
-              <span>Explore Pricing Packages</span>
+              <span>{language === "it" ? "Esplora Pacchetti Prezzo" : "Explore Pricing Packages"}</span>
               <ArrowRight className="w-4 h-4 text-amber-300" />
             </Link>
           </div>
@@ -556,69 +580,74 @@ export default function ServicesPage() {
       <Footer />
 
       {/* Detail Specifications Modal */}
-      <Modal
-        isOpen={modalService !== null}
-        onClose={() => setModalService(null)}
-        title={modalService?.name}
-        subtitle={modalService?.tagline}
-      >
-        {modalService && (
-          <div className="space-y-6">
-            <p className="text-xs sm:text-sm text-neutral-300 leading-relaxed font-normal">
-              {modalService.description}
-            </p>
+      {(() => {
+        const modalTrans = modalService ? t.services.items[modalService.id] : null;
+        return (
+          <Modal
+            isOpen={modalService !== null}
+            onClose={() => setModalService(null)}
+            title={modalTrans?.title || modalService?.name}
+            subtitle={modalTrans?.tagline || modalService?.tagline}
+          >
+            {modalService && (
+              <div className="space-y-6">
+                <p className="text-xs sm:text-sm text-neutral-300 leading-relaxed font-normal">
+                  {modalTrans?.description || modalService.description}
+                </p>
 
-            <div className="space-y-3 pt-2">
-              <h4 className="text-xs font-mono uppercase tracking-widest text-amber-300">
-                Core Deliverables & Specifications
-              </h4>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {modalService.subServices.map((sub) => (
-                  <div
-                    key={sub.title}
-                    className="p-3.5 rounded-xl border border-neutral-900 bg-neutral-950/60 flex flex-col justify-between"
-                  >
-                    <span className="text-xs font-bold text-white mb-1">{sub.title}</span>
-                    <p className="text-[11px] text-neutral-400 leading-relaxed">{sub.desc}</p>
+                <div className="space-y-3 pt-2">
+                  <h4 className="text-xs font-mono uppercase tracking-widest text-amber-300">
+                    {language === "it" ? "Deliverable Chiave & Specifiche" : "Core Deliverables & Specifications"}
+                  </h4>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {(modalTrans?.subServices || modalService.subServices).map((sub) => (
+                      <div
+                        key={sub.title}
+                        className="p-3.5 rounded-xl border border-neutral-900 bg-neutral-950/60 flex flex-col justify-between"
+                      >
+                        <span className="text-xs font-bold text-white mb-1">{sub.title}</span>
+                        <p className="text-[11px] text-neutral-400 leading-relaxed">{sub.desc}</p>
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
-            </div>
+                </div>
 
-            <div className="pt-2">
-              <h4 className="text-xs font-mono uppercase tracking-widest text-neutral-400 mb-2">
-                Tech Stack & Integrations
-              </h4>
-              <div className="flex flex-wrap gap-2">
-                {modalService.tools.map((tool) => (
-                  <span
-                    key={tool}
-                    className="text-xs font-mono px-3 py-1 rounded-lg bg-neutral-900 border border-neutral-800 text-neutral-300"
+                <div className="pt-2">
+                  <h4 className="text-xs font-mono uppercase tracking-widest text-neutral-400 mb-2">
+                    {language === "it" ? "Stack Tecnologico & Integrazioni" : "Tech Stack & Integrations"}
+                  </h4>
+                  <div className="flex flex-wrap gap-2">
+                    {modalService.tools.map((tool) => (
+                      <span
+                        key={tool}
+                        className="text-xs font-mono px-3 py-1 rounded-lg bg-neutral-900 border border-neutral-800 text-neutral-300"
+                      >
+                        {tool}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="pt-4 border-t border-neutral-900 flex flex-col sm:flex-row gap-3">
+                  <Link
+                    href="/#contact"
+                    onClick={() => setModalService(null)}
+                    className="flex-1 py-3.5 px-4 bg-white text-black hover:bg-neutral-200 text-center rounded-xl font-mono text-xs uppercase tracking-wider font-bold transition-colors"
                   >
-                    {tool}
-                  </span>
-                ))}
+                    {language === "it" ? "Richiedi Questo Servizio" : "Inquire About This Service"}
+                  </Link>
+                  <button
+                    onClick={() => setModalService(null)}
+                    className="py-3.5 px-5 border border-neutral-800 hover:bg-neutral-900 text-white rounded-xl font-mono text-xs uppercase tracking-wider transition-colors"
+                  >
+                    {language === "it" ? "Chiudi" : "Close"}
+                  </button>
+                </div>
               </div>
-            </div>
-
-            <div className="pt-4 border-t border-neutral-900 flex flex-col sm:flex-row gap-3">
-              <Link
-                href="/#contact"
-                onClick={() => setModalService(null)}
-                className="flex-1 py-3.5 px-4 bg-white text-black hover:bg-neutral-200 text-center rounded-xl font-mono text-xs uppercase tracking-wider font-bold transition-colors"
-              >
-                Inquire About This Service
-              </Link>
-              <button
-                onClick={() => setModalService(null)}
-                className="py-3.5 px-5 border border-neutral-800 hover:bg-neutral-900 text-white rounded-xl font-mono text-xs uppercase tracking-wider transition-colors"
-              >
-                Close
-              </button>
-            </div>
-          </div>
-        )}
-      </Modal>
+            )}
+          </Modal>
+        );
+      })()}
     </main>
   );
 }

@@ -4,52 +4,18 @@ import { useState, useContext } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Plus, Minus, MessageCircle } from "lucide-react";
 import { ScrollContext } from "../app/page";
-
-interface FAQItem {
-  question: string;
-  answer: string;
-}
-
-const faqList: FAQItem[] = [
-  {
-    question: "What technologies does CodeBorgo specialize in?",
-    answer:
-      "We specialize in modern frontend and full-stack solutions. Our primary stack includes Next.js (App Router), React, TypeScript, Tailwind CSS, Node.js, and serverless databases like PostgreSQL. For AI implementations, we work directly with Anthropic Claude and OpenAI API integration vectors.",
-  },
-  {
-    question: "How long does a typical custom website build take?",
-    answer:
-      "A standard landing page or basic website takes 1–2 weeks. Complete custom Next.js builds (such as our Starter package) typically require 3–4 weeks. Enterprise portals with custom dashboards or complex database operations run about 6–12 weeks.",
-  },
-  {
-    question: "Can we pay in installments for larger projects?",
-    answer:
-      "Yes. For our Starter, Professional, and Enterprise packages, we structure payments in stages — commonly a 50% kick-off deposit, 25% on mid-development review, and the remaining 25% upon final build authorization and launch.",
-  },
-  {
-    question: "What does your post-launch SLA support cover?",
-    answer:
-      "Our SLA support covers technical server monitoring, API connection repairs, database optimization, styling adjustments, and minor text/image updates. Continued feature rollouts or major design extensions are billed separately under design retainer contracts.",
-  },
-  {
-    question: "How do you build and secure custom AI chatbots?",
-    answer:
-      "We analyze your support logs or internal documentation, parse the text into a vector database, write instructions defining the chatbot's voice constraints, and establish secure serverless endpoints. All user inputs are sanitized to protect database security.",
-  },
-  {
-    question: "Do you offer ongoing design retainer packages?",
-    answer:
-      "Absolutely. Our retainer plans give you a dedicated design & development bandwidth each month — ideal for startups and growing businesses that need continuous iteration, A/B testing, new feature rollouts, and brand consistency across all digital touchpoints.",
-  },
-];
+import { useLanguage } from "../context/LanguageContext";
 
 export default function FAQ() {
+  const { t, language } = useLanguage();
   const [openIndex, setOpenIndex] = useState<number | null>(0);
   const scrollContainerRef = useContext(ScrollContext);
 
   const toggle = (idx: number) => {
     setOpenIndex(openIndex === idx ? null : idx);
   };
+
+  const faqItems = t.faq.items;
 
   return (
     <section
@@ -67,16 +33,16 @@ export default function FAQ() {
           className="flex flex-col gap-4 lg:gap-6"
         >
           <p className="text-[10px] tracking-[0.25em] font-mono text-neutral-500 uppercase">
-            ✦ &nbsp; COMMON INQUIRIES
+            {t.faq.badge}
           </p>
 
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-white leading-[1.1]">
-            Frequently<br />
-            <span className="font-light text-neutral-400">Asked Questions.</span>
+            {t.faq.titleLine1}<br />
+            <span className="font-light text-neutral-400">{t.faq.titleLine2}</span>
           </h2>
 
           <p className="text-neutral-500 text-sm leading-relaxed max-w-xs">
-            {"Everything you need to know about working with CodeBorgo. Can't find an answer?"}
+            {t.faq.subtitle}
           </p>
 
           {/* CTA */}
@@ -85,13 +51,15 @@ export default function FAQ() {
             className="mt-2 inline-flex items-center gap-2.5 px-5 py-3 rounded-xl border border-neutral-800 bg-neutral-950 hover:bg-neutral-900 hover:border-neutral-700 text-white text-xs font-mono tracking-wider uppercase transition-all duration-300 group w-fit"
           >
             <MessageCircle className="w-3.5 h-3.5 text-neutral-400 group-hover:text-white transition-colors" />
-            Ask a question
+            {language === "it" ? "Fai una domanda" : "Ask a question"}
           </a>
 
           {/* Decorative number pill */}
           <div className="mt-6 flex items-center gap-3 opacity-30">
             <div className="h-px flex-1 bg-neutral-800" />
-            <span className="text-[10px] font-mono text-neutral-500">{faqList.length} QUESTIONS</span>
+            <span className="text-[10px] font-mono text-neutral-500">
+              {faqItems.length} {language === "it" ? "DOMANDE" : "QUESTIONS"}
+            </span>
           </div>
         </motion.div>
 
@@ -103,7 +71,7 @@ export default function FAQ() {
           transition={{ duration: 0.5, delay: 0.1 }}
           className="flex flex-col divide-y divide-neutral-900"
         >
-          {faqList.map((faq, idx) => {
+          {faqItems.map((faq, idx) => {
             const isOpen = openIndex === idx;
             return (
               <div key={idx} className="group">

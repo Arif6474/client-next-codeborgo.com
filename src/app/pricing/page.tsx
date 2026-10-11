@@ -20,6 +20,7 @@ import Footer from "../../components/Footer";
 import CustomCursor from "../../components/ui/CustomCursor";
 import NoiseBg from "../../components/ui/NoiseBg";
 import Modal from "../../components/ui/Modal";
+import { useLanguage } from "../../context/LanguageContext";
 
 interface Package {
   id: string;
@@ -36,7 +37,7 @@ const packages: Package[] = [
     id: "studio-standard",
     badge: "ESSENTIAL MVP",
     name: "Studio MVP Launch",
-    price: 1250,
+    price: 1500,
     desc: "Complete aesthetic storefronts & high-performance Next.js web architectures.",
     features: [
       "Custom Next.js & React Frontend",
@@ -126,11 +127,49 @@ const faqs = [
   },
 ];
 
+const faqsIt = [
+  {
+    q: "Come funziona la pianificazione dei pagamenti del progetto?",
+    a: "Operiamo su impegni a traguardi chiari: 50% di acconto iniziale per avviare la discovery e l'architettura, e 50% all'approvazione finale di produzione e al rilascio. Nessun costo orario a sorpresa.",
+  },
+  {
+    q: "Manteniamo la proprietà completa del codice e del design?",
+    a: "Sì, al 100%. Al saldo finale, tutta la proprietà intellettuale, repository git, prototipi Figma e pipeline di cloud deployment vengono trasferiti interamente alla tua organizzazione.",
+  },
+  {
+    q: "E se abbiamo bisogno di manutenzione continua o nuove funzionalità post-lancio?",
+    a: "Ogni piano include un SLA post-lancio (da 30 giorni a 12 mesi). Successivamente offriamo piani retainer mensili a partire da €1.000/mese per iterazione continua di funzionalità, ottimizzazione SEO e monitoraggio dell'infrastruttura.",
+  },
+  {
+    q: "Possiamo richiedere integrazioni IA personalizzate o API di terze parti in seguito?",
+    a: "Assolutamente. Le nostre architetture sono sviluppate in modo modulare con Next.js App Router e pattern a microservizi, rendendo future integrazioni con OpenAI, Claude, Stripe, CRM ed ERP prive di attrito.",
+  },
+  {
+    q: "Quanto velocemente potete avviare un nuovo progetto?",
+    a: "La maggior parte dei progetti viene avviata entro 3-5 giorni lavorativi successivi alla discovery di intake e alla conferma dell'acconto.",
+  },
+];
+
 export default function PricingPage() {
+  const { t, language } = useLanguage();
   const [selectedPack, setSelectedPack] = useState<Package | null>(null);
   const [hoveredId, setHoveredId] = useState<string | null>("Venezia-premium");
   const [paymentState, setPaymentState] = useState<"idle" | "processing" | "success">("idle");
   const [openFaq, setOpenFaq] = useState<number | null>(0);
+
+  const localizedPackages = packages.map((pack) => {
+    let trans = t.pricing.packages.studio;
+    if (pack.id === "Venezia-premium") trans = t.pricing.packages.venezia;
+    if (pack.id === "enterprise-suite") trans = t.pricing.packages.enterprise;
+
+    return {
+      ...pack,
+      badge: trans.badge,
+      name: trans.name,
+      desc: trans.desc,
+      features: trans.features,
+    };
+  });
 
   // Form states for checkout
   const [cardName, setCardName] = useState("");
@@ -177,24 +216,24 @@ export default function PricingPage() {
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
-    if (!cardName.trim()) newErrors.cardName = "Name is required";
+    if (!cardName.trim()) newErrors.cardName = language === "it" ? "Nome obbligatorio" : "Name is required";
     if (!cardEmail.trim()) {
-      newErrors.cardEmail = "Email is required";
+      newErrors.cardEmail = language === "it" ? "Email obbligatoria" : "Email is required";
     } else if (!/\S+@\S+\.\S+/.test(cardEmail)) {
-      newErrors.cardEmail = "Enter a valid email";
+      newErrors.cardEmail = language === "it" ? "Inserisci un'email valida" : "Enter a valid email";
     }
 
     const plainCard = cardNumber.replace(/\s/g, "");
     if (plainCard.length !== 16) {
-      newErrors.cardNumber = "Enter a 16-digit card number";
+      newErrors.cardNumber = language === "it" ? "Inserisci una carta a 16 cifre" : "Enter a 16-digit card number";
     }
 
     if (cardExpiry.length !== 5 || !cardExpiry.includes("/")) {
-      newErrors.cardExpiry = "Expiry date must be MM/YY";
+      newErrors.cardExpiry = language === "it" ? "Scadenza in formato MM/AA" : "Expiry date must be MM/YY";
     }
 
     if (cardCvc.length !== 3) {
-      newErrors.cardCvc = "CVC must be 3 digits";
+      newErrors.cardCvc = language === "it" ? "Il CVC deve essere di 3 cifre" : "CVC must be 3 digits";
     }
 
     setErrors(newErrors);
@@ -220,33 +259,36 @@ export default function PricingPage() {
       <section className="relative px-6 md:px-12 pt-14 pb-16 z-10 max-w-7xl mx-auto text-center space-y-6">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-neutral-800 bg-neutral-950/80 text-xs font-mono tracking-widest text-neutral-400 uppercase">
           <Sparkles className="w-3.5 h-3.5 text-amber-300" />
-          Transparent Value Architecture
+          {t.pricing.badge}
         </div>
 
         <h1 className="text-4xl sm:text-6xl md:text-7xl font-black tracking-tight text-white uppercase font-sans">
-          FIXED INVESTMENT. <br />
+          {language === "it" ? "INVESTIMENTO FISSO. " : "FIXED INVESTMENT. "}
+          <br />
           <span className="bg-gradient-to-r from-amber-200 via-white to-cyan-300 bg-clip-text text-transparent">
-            ZERO SURPRISE INVOICES.
+            {language === "it" ? "ZERO FATTURE A SORPRESA." : "ZERO SURPRISE INVOICES."}
           </span>
         </h1>
 
         <p className="text-sm md:text-base text-neutral-400 max-w-2xl mx-auto leading-relaxed">
-          Predictable scopes backed by Italian design craftsmanship, Next.js technical precision, and post-launch SLAs. Choose the tier that matches your ambition.
+          {language === "it"
+            ? "Scopi prevedibili supportati dall'artigianato del design italiano, dalla precisione tecnica di Next.js e da SLA post-lancio. Scegli il livello che corrisponde alla tua ambizione."
+            : "Predictable scopes backed by Italian design craftsmanship, Next.js technical precision, and post-launch SLAs. Choose the tier that matches your ambition."}
         </p>
 
         {/* Value Trust Badges */}
         <div className="pt-4 flex flex-wrap justify-center items-center gap-6 sm:gap-10 text-xs font-mono text-neutral-400">
           <div className="flex items-center gap-2">
             <ShieldCheck className="w-4 h-4 text-emerald-400" />
-            <span>100% IP & Source Code Ownership</span>
+            <span>{language === "it" ? "100% Proprietà IP & Codice Sorgente" : "100% IP & Source Code Ownership"}</span>
           </div>
           <div className="flex items-center gap-2">
             <Zap className="w-4 h-4 text-amber-300" />
-            <span>Guaranteed Core Web Vitals</span>
+            <span>{language === "it" ? "Core Web Vitals Garantiti (100/100)" : "Guaranteed Core Web Vitals"}</span>
           </div>
           <div className="flex items-center gap-2">
             <Clock className="w-4 h-4 text-cyan-400" />
-            <span>Post-Launch Support SLAs</span>
+            <span>{language === "it" ? "SLA di Supporto Post-Lancio Inclusi" : "Post-Launch Support SLAs"}</span>
           </div>
         </div>
       </section>
@@ -254,7 +296,7 @@ export default function PricingPage() {
       {/* Pricing Cards Grid */}
       <section className="relative px-6 md:px-12 pb-24 z-10 max-w-7xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 items-stretch max-w-6xl mx-auto w-full">
-          {packages.map((pack) => {
+          {localizedPackages.map((pack) => {
             const isHovered = hoveredId === pack.id;
             const isPopular = pack.isPopular;
 
@@ -276,7 +318,7 @@ export default function PricingPage() {
               >
                 {isPopular && (
                   <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-3.5 py-1 rounded-full border border-amber-300/40 bg-amber-400/10 backdrop-blur-md text-[10px] font-mono font-bold tracking-widest text-amber-300 uppercase">
-                    ★ Most Popular Choice
+                    {t.pricing.recommendedBadge}
                   </div>
                 )}
 
@@ -297,7 +339,7 @@ export default function PricingPage() {
                       {typeof pack.price === "number" ? `€${pack.price.toLocaleString()}` : `€${pack.price}`}
                     </span>
                     {typeof pack.price === "number" && (
-                      <span className="text-[10px] font-mono text-neutral-400">/ fixed scope</span>
+                      <span className="text-[10px] font-mono text-neutral-400">/ {t.pricing.fixedScopeNotice}</span>
                     )}
                   </div>
 
@@ -320,7 +362,13 @@ export default function PricingPage() {
                         : "border border-neutral-800 bg-neutral-900 text-neutral-300 hover:text-white"
                     }`}
                   >
-                    <span>{pack.id === "enterprise-suite" ? "Book Enterprise Consultation" : "Choose Package"}</span>
+                    <span>
+                      {pack.id === "enterprise-suite"
+                        ? t.pricing.bookConsultationBtn
+                        : language === "it"
+                        ? "Scegli Pacchetto"
+                        : "Choose Package"}
+                    </span>
                     <ArrowRight className="w-3.5 h-3.5" />
                   </button>
                 </div>
@@ -406,15 +454,15 @@ export default function PricingPage() {
       <section className="relative px-6 md:px-12 py-20 z-10 max-w-4xl mx-auto border-t border-neutral-900">
         <div className="text-center space-y-3 mb-12">
           <span className="text-xs font-mono uppercase tracking-widest text-amber-300">
-            QUESTIONS & ANSWERS
+            {language === "it" ? "DOMANDE & RISPOSTE" : "QUESTIONS & ANSWERS"}
           </span>
           <h2 className="text-3xl sm:text-4xl font-black uppercase text-white tracking-tight">
-            PRICING & ENGAGEMENT FAQ
+            {language === "it" ? "FAQ SU PREZZI & COLLABORAZIONE" : "PRICING & ENGAGEMENT FAQ"}
           </h2>
         </div>
 
         <div className="space-y-4">
-          {faqs.map((faq, index) => {
+          {(language === "it" ? faqsIt : faqs).map((faq, index) => {
             const isOpen = openFaq === index;
             return (
               <div
@@ -457,10 +505,12 @@ export default function PricingPage() {
           <div className="absolute top-0 right-0 w-80 h-80 bg-amber-400/5 blur-[100px] pointer-events-none" />
 
           <h3 className="text-2xl sm:text-4xl font-black uppercase tracking-tight text-white">
-            NEED A CUSTOM ENTERPRISE SCOPE?
+            {language === "it" ? "HAI BISOGNO DI UN PROGETTO ENTERPRISE SU MISURA?" : "NEED A CUSTOM ENTERPRISE SCOPE?"}
           </h3>
           <p className="text-xs sm:text-sm text-neutral-400 max-w-xl mx-auto leading-relaxed">
-            From specialized LLM integrations and proprietary internal tooling to dedicated engineering retainers, our Venetian studio delivers bespoke excellence.
+            {language === "it"
+              ? "Da integrazioni LLM specializzate e strumenti interni proprietari a contratti di sviluppo continuativo dedicati, il nostro studio veneziano offre eccellenza su misura."
+              : "From specialized LLM integrations and proprietary internal tooling to dedicated engineering retainers, our Venetian studio delivers bespoke excellence."}
           </p>
 
           <div className="pt-2">
@@ -469,7 +519,7 @@ export default function PricingPage() {
               data-cursor-text="CONTACT"
               className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl bg-white text-black hover:bg-neutral-200 font-mono text-xs uppercase tracking-wider font-bold transition-all shadow-xl hover:scale-105"
             >
-              <span>Speak With Our Engineers</span>
+              <span>{language === "it" ? "Parla con i Nostri Ingegneri" : "Speak With Our Engineers"}</span>
               <ArrowUpRight className="w-4 h-4" />
             </Link>
           </div>
@@ -483,14 +533,16 @@ export default function PricingPage() {
         isOpen={selectedPack !== null}
         onClose={() => setSelectedPack(null)}
         title={selectedPack ? `Checkout - ${selectedPack.name}` : ""}
-        subtitle="Stripe Secure Gateway"
+        subtitle={language === "it" ? "Gateway Sicuro Stripe" : "Stripe Secure Gateway"}
       >
         {selectedPack && (
           <div className="space-y-6">
             <div className="p-4 rounded-xl border border-neutral-900 bg-neutral-950/40 flex justify-between items-center text-left">
               <div>
-                <p className="text-xs font-bold text-white">{selectedPack.name} Package</p>
-                <p className="text-[10px] text-neutral-500">Standard single-payment invoice</p>
+                <p className="text-xs font-bold text-white">{selectedPack.name}</p>
+                <p className="text-[10px] text-neutral-500">
+                  {language === "it" ? "Fattura standard a pagamento unico" : "Standard single-payment invoice"}
+                </p>
               </div>
               <span className="text-lg font-bold text-white font-mono">
                 €{typeof selectedPack.price === "number" ? selectedPack.price.toLocaleString() : selectedPack.price}
@@ -501,7 +553,7 @@ export default function PricingPage() {
               <form onSubmit={handlePaymentSubmit} className="space-y-4">
                 <div className="flex flex-col gap-1.5 text-left">
                   <label htmlFor="cardName" className="text-[10px] font-mono text-neutral-500 uppercase">
-                    CARDHOLDER NAME *
+                    {language === "it" ? "INTESTATARIO CARTA *" : "CARDHOLDER NAME *"}
                   </label>
                   <input
                     id="cardName"
@@ -517,7 +569,7 @@ export default function PricingPage() {
 
                 <div className="flex flex-col gap-1.5 text-left">
                   <label htmlFor="cardEmail" className="text-[10px] font-mono text-neutral-500 uppercase">
-                    EMAIL ADDRESS *
+                    {language === "it" ? "INDIRIZZO EMAIL *" : "EMAIL ADDRESS *"}
                   </label>
                   <input
                     id="cardEmail"
@@ -533,7 +585,7 @@ export default function PricingPage() {
 
                 <div className="flex flex-col gap-1.5 text-left">
                   <label htmlFor="cardNumber" className="text-[10px] font-mono text-neutral-500 uppercase">
-                    CARD NUMBER *
+                    {language === "it" ? "NUMERO CARTA *" : "CARD NUMBER *"}
                   </label>
                   <input
                     id="cardNumber"
@@ -550,7 +602,7 @@ export default function PricingPage() {
                 <div className="grid grid-cols-2 gap-4">
                   <div className="flex flex-col gap-1.5 text-left">
                     <label htmlFor="cardExpiry" className="text-[10px] font-mono text-neutral-500 uppercase">
-                      EXPIRY DATE *
+                      {language === "it" ? "SCADENZA *" : "EXPIRY DATE *"}
                     </label>
                     <input
                       id="cardExpiry"
@@ -566,7 +618,7 @@ export default function PricingPage() {
 
                   <div className="flex flex-col gap-1.5 text-left">
                     <label htmlFor="cardCvc" className="text-[10px] font-mono text-neutral-500 uppercase">
-                      CVC CODE *
+                      {language === "it" ? "CODICE CVC *" : "CVC CODE *"}
                     </label>
                     <input
                       id="cardCvc"
@@ -585,7 +637,7 @@ export default function PricingPage() {
                   type="submit"
                   className="w-full py-3 bg-white text-[#050505] hover:bg-neutral-200 transition-colors text-xs font-semibold uppercase tracking-wider rounded-lg shadow-md mt-6 cursor-pointer"
                 >
-                  Pay €{typeof selectedPack.price === "number" ? selectedPack.price.toLocaleString() : selectedPack.price}
+                  {language === "it" ? "Paga " : "Pay "}€{typeof selectedPack.price === "number" ? selectedPack.price.toLocaleString() : selectedPack.price}
                 </button>
               </form>
             )}
@@ -594,7 +646,7 @@ export default function PricingPage() {
               <div className="py-12 flex flex-col items-center justify-center space-y-4">
                 <div className="w-8 h-8 rounded-full border-2 border-neutral-800 border-t-white animate-spin" />
                 <p className="text-xs text-neutral-400 font-mono tracking-wider">
-                  AUTHORIZING FUNDS via Stripe Gateway...
+                  {language === "it" ? "AUTORIZZAZIONE FONDI tramite Stripe Gateway..." : "AUTHORIZING FUNDS via Stripe Gateway..."}
                 </p>
               </div>
             )}
@@ -605,16 +657,21 @@ export default function PricingPage() {
                   ✓
                 </div>
                 <div className="space-y-1.5">
-                  <h4 className="text-sm font-bold text-white tracking-tight">Payment Successful</h4>
+                  <h4 className="text-sm font-bold text-white tracking-tight">
+                    {language === "it" ? "Pagamento Riuscito" : "Payment Successful"}
+                  </h4>
                   <p className="text-xs text-neutral-400 max-w-sm leading-relaxed">
-                    Thank you for choosing CodeBorgo. A confirmation invoice has been sent to <strong className="text-white">{cardEmail}</strong>.
+                    {language === "it"
+                      ? "Grazie per aver scelto CodeBorgo. La ricevuta di conferma è stata inviata a "
+                      : "Thank you for choosing CodeBorgo. A confirmation invoice has been sent to "}
+                    <strong className="text-white">{cardEmail}</strong>.
                   </p>
                 </div>
                 <button
                   onClick={() => setSelectedPack(null)}
                   className="px-5 py-2 border border-neutral-800 hover:bg-neutral-900 text-white text-xs font-mono rounded-lg transition-colors mt-4 cursor-pointer"
                 >
-                  Close Receipt
+                  {language === "it" ? "Chiudi Ricevuta" : "Close Receipt"}
                 </button>
               </div>
             )}

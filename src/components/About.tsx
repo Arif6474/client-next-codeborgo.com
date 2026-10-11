@@ -4,6 +4,7 @@ import { useState, useEffect, useRef, useContext } from "react";
 import { motion, Variants, useInView } from "framer-motion";
 import { Sparkles, Hammer, Layers, TrendingUp, Cpu } from "lucide-react";
 import { ScrollContext } from "../app/page";
+import { useLanguage } from "../context/LanguageContext";
 
 interface BgDot {
   id: number;
@@ -61,6 +62,7 @@ function CountUp({ target, duration = 1.8, suffix = "", prefix = "", scrollConta
 }
 
 export default function About() {
+  const { t } = useLanguage();
   const scrollContainerRef = useContext(ScrollContext);
 
   const [dots] = useState<BgDot[]>(() =>
@@ -93,35 +95,35 @@ export default function About() {
   const values = [
     {
       num: "01",
-      title: "Precision Engineering",
-      desc: "Pixel-perfect frontend code written with React, Next.js, and TypeScript. No bloat, pure speed.",
+      title: t.about.values.precision.title,
+      desc: t.about.values.precision.desc,
       icon: Hammer,
     },
     {
       num: "02",
-      title: "Aesthetic Integrity",
-      desc: "Inspired by classical Italian design. High-contrast typography, large spacing, and clean grids.",
+      title: t.about.values.aesthetic.title,
+      desc: t.about.values.aesthetic.desc,
       icon: Layers,
     },
     {
       num: "03",
-      title: "Measurable Growth",
-      desc: "Marketing campaigns and product experiences built to achieve specific financial and traffic metrics.",
+      title: t.about.values.growth.title,
+      desc: t.about.values.growth.desc,
       icon: TrendingUp,
     },
     {
       num: "04",
-      title: "Cognitive Systems",
-      desc: "Production-grade custom AI models and automations that reduce support overhead by 60%.",
+      title: t.about.values.cognitive.title,
+      desc: t.about.values.cognitive.desc,
       icon: Cpu,
     },
   ];
 
   const stats = [
-    { target: 100, suffix: "%", label: "Senior-Built", prefix: "" },
-    { target: 24, prefix: "<", suffix: "h", label: "Response Time" },
-    { target: 98, suffix: "+", label: "Target PageSpeed", prefix: "" },
-    { target: 100, suffix: "%", label: "Venezia & EU-Based", prefix: "" },
+    { target: 100, suffix: "%", label: t.about.stats.seniorBuilt, prefix: "" },
+    { target: 24, prefix: "<", suffix: "h", label: t.about.stats.responseTime },
+    { target: 98, suffix: "+", label: t.about.stats.targetPageSpeed, prefix: "" },
+    { target: 100, suffix: "%", label: t.about.stats.veniceEuBased, prefix: "" },
   ];
 
   return (
@@ -188,17 +190,17 @@ export default function About() {
               className="text-[10px] tracking-[0.2em] font-mono text-neutral-500 uppercase flex items-center gap-2"
             >
               <Sparkles className="w-3.5 h-3.5" />
-              Agency Philosophy
+              {t.about.badge}
             </motion.p>
 
             <motion.h2
               variants={itemVariants}
               className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-white leading-[1.08]"
             >
-              Italian Design Meets{" "}
+              {t.about.titleLine1}{" "}
               <br />
               <span className="font-light text-neutral-400 text-glow">
-                Digital Engineering.
+                {t.about.titleLine2}
               </span>
             </motion.h2>
           </div>
@@ -212,19 +214,19 @@ export default function About() {
               variants={itemVariants}
               className="text-neutral-450 text-sm md:text-base leading-relaxed"
             >
-              {"CodeBorgo is a new studio built on an old idea: that digital products should be as functional as they are beautiful. We're based in Venezia, and we bring the same standard of craft to a landing page as a Venetian workshop brings to anything it makes."}
+              {t.about.p1}
             </motion.p>
             <motion.p
               variants={itemVariants}
               className="text-neutral-455 text-sm leading-relaxed"
             >
-              {"We're small on purpose. That means you work directly with the people building your product — not an account manager and a queue. We don't ship generic templates; we design and engineer bespoke sites, stores, and automations around your actual business goals."}
+              {t.about.p2}
             </motion.p>
             <motion.p
               variants={itemVariants}
               className="text-neutral-500 text-sm leading-relaxed"
             >
-              {"If you're an ambitious brand or an early-stage startup that wants a partner who cares about the details, that's exactly who we built this for."}
+              {t.about.p3}
             </motion.p>
           </motion.div>
         </motion.div>

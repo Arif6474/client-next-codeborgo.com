@@ -4,6 +4,7 @@ import { useState, useContext } from "react";
 import { motion, Variants } from "framer-motion";
 import { Sparkles, ArrowRight } from "lucide-react";
 import { ScrollContext } from "../app/page";
+import { useLanguage } from "../context/LanguageContext";
 
 interface BgDot {
   id: number;
@@ -14,6 +15,7 @@ interface BgDot {
 }
 
 export default function CallToAction() {
+  const { t } = useLanguage();
   const scrollContainerRef = useContext(ScrollContext);
 
   const [dots] = useState<BgDot[]>(() =>
@@ -67,18 +69,18 @@ export default function CallToAction() {
 
           <p className="text-[10px] tracking-[0.25em] font-mono text-neutral-400 uppercase flex items-center gap-2 select-none">
             <Sparkles className="w-3.5 h-3.5 text-amber-300" />
-            FINAL DIRECTIVE
+            {t.cta.badge}
           </p>
 
           <h2 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight text-white leading-tight uppercase font-sans">
-            HAVE AN IMPOSSIBLE <br />
+            {t.cta.titleLine1} <br />
             <span className="bg-gradient-to-r from-amber-200 via-white to-neutral-400 bg-clip-text text-transparent">
-              IDEA?
+              {t.cta.titleLine2}
             </span>
           </h2>
 
           <p className="text-neutral-400 text-xs sm:text-sm leading-relaxed max-w-md">
-            Tell us about your project vision. You will hear back within 24 hours with honest next steps and a fixed quote outline.
+            {t.cta.subtitle}
           </p>
 
           <div className="pt-4">
@@ -87,7 +89,7 @@ export default function CallToAction() {
               data-cursor-text="LET'S TALK →"
               className="relative px-8 py-4 bg-white hover:bg-neutral-100 text-black font-bold text-xs uppercase tracking-widest rounded-xl flex items-center gap-3 transition-all duration-300 shadow-[0_0_35px_rgba(255,255,255,0.25)] hover:shadow-[0_0_50px_rgba(255,255,255,0.4)] cursor-pointer group"
             >
-              <span>LET'S BUILD IT</span>
+              <span>{t.cta.button}</span>
               <ArrowRight className="w-4 h-4 text-black group-hover:translate-x-1 transition-transform" />
             </button>
           </div>

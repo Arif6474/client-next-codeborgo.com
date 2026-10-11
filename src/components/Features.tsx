@@ -4,6 +4,7 @@ import { useState, useEffect, useContext } from "react";
 import { motion, Variants } from "framer-motion";
 import { Zap, Shield, Eye, Flame, GraduationCap, Clock, Sparkles } from "lucide-react";
 import { ScrollContext } from "../app/page";
+import { useLanguage } from "../context/LanguageContext";
 
 interface BgDot {
   id: number;
@@ -14,6 +15,7 @@ interface BgDot {
 }
 
 export default function Features() {
+  const { t } = useLanguage();
   const scrollContainerRef = useContext(ScrollContext);
 
   const [dots] = useState<BgDot[]>(() =>
@@ -51,48 +53,48 @@ export default function Features() {
 
   const featuresList = [
     {
-      title: "Ultra Performance",
-      desc: "Server-side rendering, CDN edge caching, and optimized asset delivery yielding 98+ PageSpeed scores.",
+      title: t.features.items.perf.title,
+      desc: t.features.items.perf.desc,
       icon: Zap,
       themeClass: "text-amber-400 border-amber-950/20 bg-amber-950/10 group-hover:border-amber-500/60 drop-shadow-[0_0_8px_rgba(251,191,36,0.35)]",
       borderGlow: "group-hover:bg-[radial-gradient(250px_circle_at_var(--mouse-x,-400px)_var(--mouse-y,-400px),rgba(251,191,36,0.25),transparent_80%)]",
       spotlightColor: "rgba(251,191,36,0.04)"
     },
     {
-      title: "Bespoke Aesthetics",
-      desc: "Fully tailored user interfaces crafted from scratch. High typography hierarchy and premium spacing rules.",
+      title: t.features.items.aesthetic.title,
+      desc: t.features.items.aesthetic.desc,
       icon: Flame,
       themeClass: "text-rose-400 border-rose-950/20 bg-rose-950/10 group-hover:border-rose-500/60 drop-shadow-[0_0_8px_rgba(244,63,94,0.35)]",
       borderGlow: "group-hover:bg-[radial-gradient(250px_circle_at_var(--mouse-x,-400px)_var(--mouse-y,-400px),rgba(244,63,94,0.25),transparent_80%)]",
       spotlightColor: "rgba(244,63,94,0.04)"
     },
     {
-      title: "Advanced AI Bots",
-      desc: "Chatbots and background workflows engineered with OpenAI/Claude APIs to automate 80% of customer support.",
+      title: t.features.items.ai.title,
+      desc: t.features.items.ai.desc,
       icon: GraduationCap,
       themeClass: "text-violet-400 border-violet-950/20 bg-violet-950/10 group-hover:border-violet-500/60 drop-shadow-[0_0_8px_rgba(139,92,246,0.35)]",
       borderGlow: "group-hover:bg-[radial-gradient(250px_circle_at_var(--mouse-x,-400px)_var(--mouse-y,-400px),rgba(139,92,246,0.25),transparent_80%)]",
       spotlightColor: "rgba(139,92,246,0.04)"
     },
     {
-      title: "Security By Design",
-      desc: "Enterprise-grade SSL compliance, PCI-compliant Stripe billing, and serverless route isolation.",
+      title: t.features.items.security.title,
+      desc: t.features.items.security.desc,
       icon: Shield,
       themeClass: "text-emerald-400 border-emerald-950/20 bg-emerald-950/10 group-hover:border-emerald-500/60 drop-shadow-[0_0_8px_rgba(16,185,129,0.35)]",
       borderGlow: "group-hover:bg-[radial-gradient(250px_circle_at_var(--mouse-x,-400px)_var(--mouse-y,-400px),rgba(16,185,129,0.25),transparent_80%)]",
       spotlightColor: "rgba(16,185,129,0.04)"
     },
     {
-      title: "ROI-Focused SEO",
-      desc: "Targeted keyword planning and content architectures designed to capture organic pipelines and increase sales.",
+      title: t.features.items.speed.title,
+      desc: t.features.items.speed.desc,
       icon: Eye,
       themeClass: "text-cyan-400 border-cyan-950/20 bg-cyan-950/10 group-hover:border-cyan-500/60 drop-shadow-[0_0_8px_rgba(6,182,212,0.35)]",
       borderGlow: "group-hover:bg-[radial-gradient(250px_circle_at_var(--mouse-x,-400px)_var(--mouse-y,-400px),rgba(6,182,212,0.25),transparent_80%)]",
       spotlightColor: "rgba(6,182,212,0.04)"
     },
     {
-      title: "Bespoke Maintenance",
-      desc: "Continuous post-launch audit reports, design upgrades, server patching, and responsive 24/7 client support.",
+      title: t.features.items.sla.title,
+      desc: t.features.items.sla.desc,
       icon: Clock,
       themeClass: "text-sky-400 border-sky-950/20 bg-sky-950/10 group-hover:border-sky-500/60 drop-shadow-[0_0_8px_rgba(14,165,233,0.35)]",
       borderGlow: "group-hover:bg-[radial-gradient(250px_circle_at_var(--mouse-x,-400px)_var(--mouse-y,-400px),rgba(14,165,233,0.25),transparent_80%)]",
@@ -166,23 +168,22 @@ export default function Features() {
             className="text-[10px] tracking-[0.2em] font-mono text-neutral-500 uppercase flex items-center gap-2"
           >
             <Sparkles className="w-3.5 h-3.5" />
-            Core Capabilities
+            {t.features.badge}
           </motion.p>
 
           <motion.h2
             variants={itemVariants}
             className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-white leading-[1.08]"
           >
-            High Performance.{" "}
-            <span className="font-light text-neutral-400">Zero Compromise.</span>
+            {t.features.titleLine1}{" "}
+            <span className="font-light text-neutral-400">{t.features.titleLine2}</span>
           </motion.h2>
 
           <motion.p
             variants={itemVariants}
             className="text-neutral-500 text-sm leading-relaxed max-w-lg"
           >
-            We operate at the intersection of design craftsmanship and backend
-            performance — here is how we build value into every deployment.
+            {t.features.subtitle}
           </motion.p>
         </motion.div>
 

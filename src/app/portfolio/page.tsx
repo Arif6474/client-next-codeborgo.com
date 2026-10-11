@@ -10,6 +10,7 @@ import NoiseBg from "../../components/ui/NoiseBg";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import ProjectCard from "../../components/ProjectCard";
+import { useLanguage } from "../../context/LanguageContext";
 
 const categories = [
   "All",
@@ -17,6 +18,7 @@ const categories = [
 ];
 
 export default function PortfolioPage() {
+  const { t } = useLanguage();
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
   const [hoveredProjectId, setHoveredProjectId] = useState<string | null>(null);
@@ -43,14 +45,14 @@ export default function PortfolioPage() {
       {/* Page Hero Header */}
       <section className="relative px-6 md:px-12 pt-12 pb-12 z-10 max-w-7xl mx-auto text-center space-y-6">
         <h1 className="text-4xl sm:text-6xl md:text-7xl font-black tracking-tight text-white uppercase font-sans">
-          ALL PROJECTS & <br />
+          {t.portfolio.pageTitleLine1} <br />
           <span className="bg-gradient-to-r from-amber-200 via-white to-cyan-300 bg-clip-text text-transparent">
-            CONCEPT BUILDS.
+            {t.portfolio.pageTitleLine2}
           </span>
         </h1>
 
         <p className="text-sm md:text-base text-neutral-400 max-w-2xl mx-auto leading-relaxed">
-          Explore our complete archive of production platforms, customer bots, custom SaaS dashboards, and luxury e-commerce concepts built with Italian craft & Next.js architecture.
+          {t.portfolio.pageSubtitle}
         </p>
 
         {/* Search & Filter Bar */}
@@ -62,7 +64,7 @@ export default function PortfolioPage() {
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search by title, tech stack (e.g. Next.js, Claude API)..."
+              placeholder={t.portfolio.searchPlaceholder}
               className="w-full pl-11 pr-4 py-3 text-xs font-mono rounded-xl border border-neutral-800 bg-neutral-950/80 text-white placeholder-neutral-500 focus:outline-none focus:border-neutral-700"
             />
           </div>
@@ -79,7 +81,7 @@ export default function PortfolioPage() {
                     : "bg-neutral-950/60 border border-neutral-850 text-neutral-400 hover:text-white hover:border-neutral-700"
                 }`}
               >
-                {cat}
+                {cat === "All" ? t.portfolio.allCategories : cat}
               </button>
             ))}
           </div>
