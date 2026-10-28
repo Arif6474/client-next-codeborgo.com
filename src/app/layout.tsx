@@ -93,12 +93,12 @@ export default function RootLayout({
             }),
           }}
         />
-        <script
+        {/* <script
           src="https://api.chatbot.arifislam.com/widget.js"
           data-tenant="code-borgo"
           data-api-base="https://api.chatbot.arifislam.com"
           defer
-        ></script>
+        ></script> */}
         <LanguageProvider>
           {children}
           <CookieBanner />
