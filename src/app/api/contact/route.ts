@@ -23,6 +23,18 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Message details are required" }, { status: 400 });
     }
 
+    // 1. Save Inquiry dynamically to CodeBorgo Backend Database
+    const backendUrl = process.env.BACKEND_URL || "http://localhost:5020";
+    try {
+      await fetch(`${backendUrl}/api/public/inquiries`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, company, service, message }),
+      });
+    } catch (dbErr) {
+      console.error("Failed to forward inquiry to CodeBorgo backend database:", dbErr);
+    }
+
     const apiKey = process.env.RESEND_API_KEY;
     if (!apiKey) {
       console.error("Missing RESEND_API_KEY environment variable");
